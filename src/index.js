@@ -13,7 +13,7 @@ const getNodeParams = (strs = []) => {
   return data;
 }
 
-const Base_url = getNodeParams(process.argv).url + "/api-admin";
+const Base_url = getNodeParams(process.argv).url;
 const pathUrl = process.env.PWD + `/${(getNodeParams(process.argv).path ?? "src/api")}/`;
 http.get(Base_url + "/swagger-resources", function (res) {
 

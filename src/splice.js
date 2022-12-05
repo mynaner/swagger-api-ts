@@ -1,8 +1,8 @@
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2022-12-01 17:04:52
- * @FilePath: /kll_admin_react/swagger/splice.js
+ * @LastEditTime: 2022-12-05 11:18:22
+ * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data) => {
   let pageApiFunc = "";
@@ -199,7 +199,7 @@ export const spliceDefinitionsType = (keyname, data) => {
     ${listD
       .map(
         (e) =>
-          ` ${e.description ? `/** ${e.description} */\n` : ""} ${e.key}?:${e.value
+          ` ${e.description ? `/** ${e.description} */\n` : ""} ${e.key}?:${e.description.includes("枚举") ? 'number' : e.value
           };\n`
       )
       .join("")}
