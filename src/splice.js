@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2022-12-05 11:18:22
+ * @LastEditTime: 2022-12-05 12:07:04
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data) => {
@@ -199,7 +199,7 @@ export const spliceDefinitionsType = (keyname, data) => {
     ${listD
       .map(
         (e) =>
-          ` ${e.description ? `/** ${e.description} */\n` : ""} ${e.key}?:${e.description.includes("枚举") ? 'number' : e.value
+          ` ${e.description ? `/** ${e.description} */\n` : ""} ${e.key}?:${e.description?.includes("枚举") ? 'number' : e.value
           };\n`
       )
       .join("")}
