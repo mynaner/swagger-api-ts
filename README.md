@@ -18,9 +18,11 @@ sudo npm install swagger-api-ts-0.0.1.tgz -g
 ### 命令参数
 
 ```
-swagger --url=http://xxxx:9999 --path=src/api1
+swagger --url=http://xxxx:9999 --suffix=admin --path=src/api1
 
-url  接口文档地址
+
+suffix 项目 必传
+url  接口文档地址 必传
 path 存入命令行当前文件下的路径
 ```
 

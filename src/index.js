@@ -14,8 +14,17 @@ const getNodeParams = (strs = []) => {
 }
 
 const Base_url = getNodeParams(process.argv).url;
+
+if (!Base_url) {
+  throw ("url 不能为空")
+}
+const Base_rul_suffix = getNodeParams(process.argv).suffix;
+
+if (!Base_rul_suffix) {
+  throw ("suffix 不能为空")
+}
 const pathUrl = process.env.PWD + `/${(getNodeParams(process.argv).path ?? "src/api")}/`;
-http.get(Base_url + "/swagger-resources", function (res) {
+http.get(Base_url + '/' + Base_rul_suffix + '/v3/api-docs/swagger-config', function (res) {
 
   // 分段返回的 自己拼接
   let html = "";
@@ -27,8 +36,7 @@ http.get(Base_url + "/swagger-resources", function (res) {
   res.on("end", function () {
     fs.emptyDirSync(`${pathUrl}`);
     const json = JSON.parse(html);
-    // getOhterUrls(json[1].url); 
-    json.forEach((element) => {
+    json.urls.forEach((element) => {
       getOhterUrls(element.url);
     });
   });

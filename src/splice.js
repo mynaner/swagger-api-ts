@@ -1,14 +1,19 @@
+import { stringify } from "querystring";
+import { any } from "ramda";
+
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2022-12-05 12:07:04
+ * @LastEditTime: 2022-12-05 11:18:22
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data) => {
   let pageApiFunc = "";
   for (const key in data) {
+
     if (Object.hasOwnProperty.call(data, key)) {
       const element = data[key];
+
       pageApiFunc += spliceApiFuncResult(url, key, element);
     }
   }
@@ -26,39 +31,63 @@ const spliceApiFuncResult = (url, type, data) => {
 
   const apiUrl = url.replace(/\{/g, "${");
 
-  const params = data.parameters?.map((element) => {
-    return spliceApiParamsType(element);
-  }) ?? [];
-  const resultType = spliceApiResultType(data.responses["200"], funcName);
-  const paramsList = params.filter(e => e.name != "dto");
+
+  const params = schemaParamsType(data)
+  /// 判断是否是导出接口 
+  const resultType = funcName.toLowerCase().includes("export") || data.summary?.includes("导出") ? "Blob" : spliceApiResultType(data.responses["200"]);
+
+
+
+  const paramsList = params;
+
   const paramsInterface = () => {
 
     if (paramsList.length > 0) {
-      return `export interface ${funcName.split("_").map(e => titleCase(e)).join("")}  ${data.summary?.includes("分页") ? `extends Paging` : ''} {
-        ${params?.map((e) => e.name + `?:` + e.type).join(";")}
-        
+
+      let isExtends = params?.filter((e) => !e.name).join(",")
+
+      if (isExtends) {
+        isExtends = "extends " + isExtends
+      }
+      if (data.summary?.includes("分页")) {
+        if (isExtends) {
+          isExtends = isExtends + ",Paging"
+        } else {
+          isExtends = "extends Paging"
+        }
+      }
+      return `export interface ${funcName.split("_").map(e => titleCase(e)).join("")}  ${isExtends} {
+        ${params?.filter((e) => e.name).map((e) => {
+        if (e.name) {
+          return e.name + `?:` + e.type + ";"
+        }
+      }).join("")}
+      ${params.find(e => e.type == "File") ? '[key:string]:any' : ''}
       }`
+
     } else {
       if (data.summary?.includes("分页")) {
-        return `export interface ${funcName.split("_").map(e => titleCase(e)).join("")} extends Paging {
-          pageNum?: number;
-          pageSize?: number;
-        }`
+        return `export interface ${funcName.split("_").map(e => titleCase(e)).join("")} extends Paging{}`
       }
-      return ""
+
     }
+    return ""
 
   }
+
   /// 文件类型 formdata
   let havFileStr = ""
   const havFile = paramsList?.find(e => e.type == "File")
   if (havFile) {
 
-    havFileStr = `
-      const formdata = new FormData()
-      ${paramsList.map(e => (`if(params?.${e.name}){ 
-        formdata.set("${e.name}",params.${e.name}+'')
-      }`)).join(";")} ;
+    havFileStr = ` 
+      const formdata = new FormData();
+      for (const key in params) {
+        if (Object.prototype.hasOwnProperty.call(params, key)) {
+          const element = params[key];
+          formdata.set(key, element);
+        }
+      }
       `
   }
 
@@ -75,8 +104,11 @@ const spliceApiFuncResult = (url, type, data) => {
     if (data.summary?.includes("excel导出")) str.push("responseType: 'arraybuffer'")
     return `{${str.join(',')}}`;
   }
+
   const paramsD = () => {
+
     if (params.length == 0 && !data.summary?.includes("分页")) return "";
+
     let str = ""
     const d = params.find(e => e.name == "dto");
     const p = paramsList;
@@ -84,6 +116,7 @@ const spliceApiFuncResult = (url, type, data) => {
       str += `data:${d.type},`
     }
     if (p.length || data.summary?.includes("分页")) {
+
       str += `params:${funcName.split("_").map(e => titleCase(e)).join("")}`
     }
     return str;
@@ -94,10 +127,12 @@ const spliceApiFuncResult = (url, type, data) => {
   /** 
    * @description:  ${data.summary}
    ${paramsD().split(",").map(e => {
-    if (e.trim) {
-      return `* @param {${e.split(':')[1]}} ${e.split(':')[0]}`
+
+    const str = e.split(":");
+    if (str.length == 2 && str[0] != "") {
+      return `* @param {${str[1]}} ${str[0]}`
     }
-    return ""
+    return " "
   })} 
    * @return {*}
    */
@@ -120,61 +155,108 @@ const spliceApiFuncResult = (url, type, data) => {
     `;
 };
 
+/**
+ * 接口参数
+ * @param {*} data 
+ * @returns 
+ */
+export const schemaParamsType = (data) => {
+  const params = [];
+  data.parameters?.forEach(element => {
+
+    if (element.schema['$ref']) {
+      const schema = element.schema['$ref'].split("/");
+      params.push(schema[schema.length - 1])
+    } else {
+      params.push({
+        name: element.name,
+        type: integerFc({ type: element.schema.type, format: element.schema.format }, true)
+      })
+    }
+  });
+  if (data.requestBody) {
+    /// 上传文件参数
+    if (data.requestBody.content["application/json"].schema["$ref"]) {
+      const schema = data.requestBody.content["application/json"].schema['$ref'].split("/");
+      params.push(schema[schema.length - 1])
+    } else {
+      params.push({
+        name: "file",
+        type: "File"
+      })
+    }
 
 
-export const spliceApiParamsType = (data) => {
-  let type = integerFc(data.type, data.format);
-  return {
-    name: data?.schema?.originalRef ? 'dto' : data.name,
-    type: data?.schema?.originalRef ?? type,
-    isData: Boolean(data?.schema),
-    isRequired: data.required
-  };
+  }
+  return params
 };
 
-export const spliceApiResultType = (data, name) => {
-  let d = data?.schema?.originalRef;
-  if (d) {
-    d = d
-      ?.replace(/\»/g, "_")
-      .replace(/\«/g, "_")
-      .split("_")
-      .filter((e) => e != "");
-  } else {
-    // 判断是不是导出接口
-    if (name.includes("export")) {
-      return "Blob";
-    } else {
-      return;
+
+/**
+ * 返回参数
+ * @param {*} data 
+ * @returns 
+ */
+export const spliceApiResultType = (data) => {
+  const schema = data.content['*/*'].schema['$ref']?.split("/")
+
+  if (data.content['*/*'].schema?.type) {
+    if (data.content['*/*'].schema?.type == "object") {
+      return "any";
+    }
+    const schema = data.content['*/*'].schema.items['$ref']?.split("/")
+    const types = schema[schema.length - 1]
+    if (data.content['*/*'].schema?.type == "array") {
+      return `${types}[]`;
     }
   }
-  if (d.length < 2 || d[0] != "R" || d.length > 3) {
-    return;
+
+  const types = schema[schema.length - 1]
+
+
+  if (types[0] != "R") {
+    return types
   }
 
-  if (d[1] == "long") {
-    return "string";
-  }
-  if (d[1] == "int") {
-    return "number";
-  }
-  if (d.length == 2 && d[1] != "Void") {
-    return d[1];
-  }
 
-  if (d.length == 3) {
-
-    if (["Array", "List"].includes(d[1])) {
-      if (d[2] == "long") {
-        return "string[]";
-      }
-      return `${d[2]}[]`;
+  if (types.substring(1, 10) == "MapString") {
+    const str = types.substring(10);
+    if (str.substring(0, 4) == "List") {
+      return `MapString<${str.substring(4)}[]>`
     }
-    if (["IPage"].includes(d[1])) {
-      return `IPage<${d[2]}>`;
-    }
+
+    return `MapString<${types.substring(10)}>`
   }
-  return;
+
+
+  if (types.substring(1, 4) == "Map") {
+
+  }
+  if (types.substring(1, 13) == "MapLocalDate") {
+    return `MapString<${types.substring(13)}>`
+  }
+
+  /// 没有返回参数的
+  if (types.substring(1) == "Void") {
+    return
+  }
+  if (types.substring(1) == "Int" || types.substring(1) == "Integer") {
+    return "number"
+  }
+  /// 返回 List 参数的
+  if (types.substring(1, 5) == "List") {
+    if (types.substring(5) == 'Long') {
+      return "string[]";
+    }
+    return `${types.substring(5)}[]`;
+  }
+
+  if (types.substring(1, 6) == "IPage") {
+    return `IPage<${types.substring(6)}>`;
+  }
+
+
+  return types.substring(1);
 };
 
 // ${typOjb[key].map((e) => `${e.key}:${e.value};\n`).join("")}
@@ -184,35 +266,41 @@ export const spliceDefinitionsType = (keyname, data) => {
   for (const key in data.properties) {
     if (Object.hasOwnProperty.call(data.properties, key)) {
       const element = data.properties[key];
-
       listD.push({
         key: key,
-        value: element?.originalRef ?? integerFc(element.type, element.format, element.items),
+        value: integerFc(element, keyname.substring(keyname.length - 3, keyname.length) == "Dto"),
         description: element.description,
       });
+
     }
   }
-
   return ` 
-    
     export interface ${keyname}{
     ${listD
       .map(
-        (e) =>
-          ` ${e.description ? `/** ${e.description} */\n` : ""} ${e.key}?:${e.description?.includes("枚举") ? 'number' : e.value
-          };\n`
+        (e) => {
+          return ` ${e.description ? `/** ${e?.description} */\n` : ""} ${e.key}?:${e.description?.includes("枚举") ? 'number' : e.value};\n`
+        }
       )
       .join("")}
     }`;
 };
 
-const integerFc = (type, format, items) => {
+const integerFc = (element, isDot) => {
+
+  const type = element.type;
+  const format = element.format;
+  const items = element.items;
+  const refstr = element['$ref']
+
+  if (element.enum) {
+    return isDot ? "number" : "MsgType"
+  }
+
   if (['int', 'integer'].includes(type)) {
     return format == "int64" ? "string" : "number";
   }
-  if (type == "file") {
-    return "File"
-  }
+  if (type == "file") return "File"
 
   if (type == "array" && items) {
 
@@ -221,7 +309,12 @@ const integerFc = (type, format, items) => {
     if (['int', 'integer'].includes(items.type)) {
       fx = items.format == "int64" ? "string" : "number";
     }
-    return `${items.originalRef ?? fx}[]`
+    if (items["$ref"]) {
+      const ref = (items["$ref"]).split("/")
+      return `${ref[ref.length - 1]}[]`
+    }
+
+    return `string[]`
   }
   if (type == "array" && !items) {
     return "string[]"
@@ -229,7 +322,10 @@ const integerFc = (type, format, items) => {
   if (type == "long") {
     return "string"
   }
-
+  if (refstr) {
+    const ref = refstr.split("/")
+    return `${ref[ref.length - 1]}`
+  }
   return type;
 };
 

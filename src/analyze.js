@@ -7,8 +7,7 @@
 import { spliceApiFunc, spliceDefinitionsType } from "./splice.js";
 import fs from "fs-extra";
 
-
-
+var num = 0;
 export const analyzeJson = (jsondata, pathUrl) => {
 
   if (!jsondata.paths) return;
@@ -19,29 +18,33 @@ export const analyzeJson = (jsondata, pathUrl) => {
       const element = jsondata.paths[key];
       if (!fileName) {
         fileName = key.split("/")[1];
-
       }
+
       page += spliceApiFunc(key, element);
+
+
     }
   }
+  for (const key in jsondata.components.schemas) {
 
-  for (const key in jsondata.definitions) {
-    if (Object.hasOwnProperty.call(jsondata.definitions, key)) {
-      const element = jsondata.definitions[key];
-      if (!key.includes("«")) {
+    if (Object.hasOwnProperty.call(jsondata.components.schemas, key)) {
+      const element = jsondata.components.schemas[key];
+      if (key.substring(1, 2).charCodeAt() > 65 && (key.substring(1, 2).charCodeAt() < 90)) {
+
+      } else if (key.substring(0, 5) != "IPage") {
         page += spliceDefinitionsType(key, element);
       }
     }
   }
+
   saveFile(page, "index", pathUrl);
 };
 
 const saveFile = async (pageStr, fileName, pathUrl) => {
   let url = `${pathUrl}${fileName}`;
 
-
   let page = `
-  import { IPage,Paging } from "@/types/index";\n
+  import { IPage,Paging,MapString,MsgType } from "@/types/index";\n
   import { server ,download} from "@/utils/axios/request"; \n
    ${pageStr} 
   `;
