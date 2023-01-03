@@ -1,5 +1,3 @@
-import { stringify } from "querystring";
-import { any } from "ramda";
 
 /*
  * @Date: 2022-10-19 11:07:47
@@ -33,6 +31,8 @@ const spliceApiFuncResult = (url, type, data) => {
 
 
   const params = schemaParamsType(data)
+
+
   /// 判断是否是导出接口 
   const resultType = funcName.toLowerCase().includes("export") || data.summary?.includes("导出") ? "Blob" : spliceApiResultType(data.responses["200"]);
 
@@ -44,7 +44,7 @@ const spliceApiFuncResult = (url, type, data) => {
 
     if (paramsList.length > 0) {
 
-      let isExtends = params?.filter((e) => !e.name).join(",")
+      let isExtends = params?.filter((e) => e.name == "vo" || e.name == "dot").map(e => e.type).join(",")
 
       if (isExtends) {
         isExtends = "extends " + isExtends
@@ -57,7 +57,7 @@ const spliceApiFuncResult = (url, type, data) => {
         }
       }
       return `export interface ${funcName.split("_").map(e => titleCase(e)).join("")}  ${isExtends} {
-        ${params?.filter((e) => e.name).map((e) => {
+        ${params?.filter((e) => !(e.name == "vo" || e.name == "dot")).map((e) => {
         if (e.name) {
           return e.name + `?:` + e.type + ";"
         }
@@ -74,7 +74,6 @@ const spliceApiFuncResult = (url, type, data) => {
     return ""
 
   }
-
   /// 文件类型 formdata
   let havFileStr = ""
   const havFile = paramsList?.find(e => e.type == "File")
@@ -96,8 +95,10 @@ const spliceApiFuncResult = (url, type, data) => {
   const axiosConfig = () => {
     if (!params.length) return "";
     if (havFileStr != "") return "{data:formdata}";
-    const d = params.find(e => e.name == "dto");
-    const p = paramsList;
+    const d = params.find(e => e.name == "vo");
+    const p = paramsList.filter(e => e.name != "vo");
+
+
     let str = [];
     if (d) str.push("data")
     if (p.length) str.push("params")
@@ -110,8 +111,8 @@ const spliceApiFuncResult = (url, type, data) => {
     if (params.length == 0 && !data.summary?.includes("分页")) return "";
 
     let str = ""
-    const d = params.find(e => e.name == "dto");
-    const p = paramsList;
+    const d = params.find(e => e.name == "vo");
+    const p = paramsList.filter(e => e.name != "vo");
     if (d) {
       str += `data:${d.type},`
     }
@@ -166,7 +167,7 @@ export const schemaParamsType = (data) => {
 
     if (element.schema['$ref']) {
       const schema = element.schema['$ref'].split("/");
-      params.push(schema[schema.length - 1])
+      params.push({ name: "dot", type: schema[schema.length - 1] })
     } else {
       params.push({
         name: element.name,
@@ -178,7 +179,7 @@ export const schemaParamsType = (data) => {
     /// 上传文件参数
     if (data.requestBody.content["application/json"].schema["$ref"]) {
       const schema = data.requestBody.content["application/json"].schema['$ref'].split("/");
-      params.push(schema[schema.length - 1])
+      params.push({ name: "vo", type: schema[schema.length - 1] })
     } else {
       params.push({
         name: "file",
