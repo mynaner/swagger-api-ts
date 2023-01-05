@@ -122,7 +122,6 @@ const spliceApiFuncResult = (url, type, data) => {
     }
     return str;
   }
-
   return `
    ${paramsInterface()}
   /** 
@@ -294,6 +293,7 @@ const integerFc = (element, isDot) => {
   const items = element.items;
   const refstr = element['$ref']
 
+
   if (element.enum) {
     return isDot ? "number" : "MsgType"
   }
@@ -320,11 +320,16 @@ const integerFc = (element, isDot) => {
   if (type == "array" && !items) {
     return "string[]"
   }
-  if (type == "long") {
+
+  if (["long"].includes(type)) {
     return "string"
   }
+
   if (refstr) {
     const ref = refstr.split("/")
+    if (ref[ref.length - 1] == "LocalTime") {
+      return "string"
+    }
     return `${ref[ref.length - 1]}`
   }
   return type;

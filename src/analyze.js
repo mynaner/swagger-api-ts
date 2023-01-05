@@ -31,7 +31,7 @@ export const analyzeJson = (jsondata, pathUrl) => {
       const element = jsondata.components.schemas[key];
       if (key.substring(1, 2).charCodeAt() > 65 && (key.substring(1, 2).charCodeAt() < 90)) {
 
-      } else if (key.substring(0, 5) != "IPage") {
+      } else if (key.substring(0, 5) != "IPage" && !["LocalTime"].includes(key)) {
         page += spliceDefinitionsType(key, element);
       }
     }
