@@ -37,7 +37,6 @@ const spliceApiFuncResult = (url, type, data) => {
   const resultType = funcName.toLowerCase().includes("export") || data.summary?.includes("导出") ? "Blob" : spliceApiResultType(data.responses["200"]);
 
 
-
   const paramsList = params;
 
   const paramsInterface = () => {
@@ -97,7 +96,9 @@ const spliceApiFuncResult = (url, type, data) => {
     if (havFileStr != "") return "{data:formdata}";
     const d = params.find(e => e.name == "vo");
     const p = paramsList.filter(e => e.name != "vo");
-
+    if (funcName == "put_tcc_info") {
+      console.log(d, p);
+    }
 
     let str = [];
     if (d) str.push("data")
@@ -122,6 +123,11 @@ const spliceApiFuncResult = (url, type, data) => {
     }
     return str;
   }
+  // if (params.length > 1) {
+  //   console.log(paramsD());
+  // }
+
+
   return `
    ${paramsInterface()}
   /** 
@@ -198,6 +204,7 @@ export const schemaParamsType = (data) => {
  * @returns 
  */
 export const spliceApiResultType = (data) => {
+
   const schema = data.content['*/*'].schema['$ref']?.split("/")
 
   if (data.content['*/*'].schema?.type) {
@@ -216,6 +223,11 @@ export const spliceApiResultType = (data) => {
 
   if (types[0] != "R") {
     return types
+  }
+
+
+  if (types.substring(1, 5) == "Long") {
+    return "string"
   }
 
 

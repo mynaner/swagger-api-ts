@@ -18,12 +18,7 @@ sudo npm install swagger-api-ts-0.0.1.tgz -g
 ### 命令参数
 
 ```
-swagger --url=http://xxxx:9999 --suffix=admin --path=src/api1
-
-
-suffix 项目 必传
-url  接口文档地址 必传
-path 存入命令行当前文件下的路径
+swagger
 ```
 
 ### 线上发布
@@ -33,4 +28,18 @@ path 存入命令行当前文件下的路径
 npm login
 # 发布
 npm publish
+```
+
+### 0.0.4 加入 配置文件 swagger.json
+
+```json
+{
+  "url": "", // 接口地址
+  "suffix": "", // 接口后缀
+  "path": "src/api", // 输出地址 相对路径
+  "type_file": "@/types/common", // 导入类型文件
+  "server_file": "@/utils/request", // 导入请求文件 必须是 server 方法请求
+  "import_types": ["IPage", "Paging", "MsgType"], // 导入类型
+  "import_other_server": [] // 导入请求文件其他方法
+}
 ```

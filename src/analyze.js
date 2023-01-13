@@ -8,7 +8,7 @@ import { spliceApiFunc, spliceDefinitionsType } from "./splice.js";
 import fs from "fs-extra";
 
 var num = 0;
-export const analyzeJson = (jsondata, pathUrl) => {
+export const analyzeJson = (jsondata, pathUrl, config) => {
 
   if (!jsondata.paths) return;
   let fileName;
@@ -37,15 +37,15 @@ export const analyzeJson = (jsondata, pathUrl) => {
     }
   }
 
-  saveFile(page, "index", pathUrl);
+  saveFile(page, "index", pathUrl, config);
 };
 
-const saveFile = async (pageStr, fileName, pathUrl) => {
+const saveFile = async (pageStr, fileName, pathUrl, config) => {
   let url = `${pathUrl}${fileName}`;
 
   let page = `
-  import { IPage,Paging,MapString,MsgType } from "@/types/index";\n
-  import { server ,download} from "@/utils/axios/request"; \n
+  import { ${(config?.import_types ?? []).join(",")} } from "${config?.type_file ?? '@/types/index'}";\n
+  import { server, ${(config?.import_other_server ?? []).join(",")}} from "${config?.server_file ?? '@/utils/axios/request'}"; \n
    ${pageStr} 
   `;
 
