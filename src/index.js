@@ -4,8 +4,18 @@ import http from "http";
 import fs from "fs-extra";
 
 console.info("读取配置文件...");
-const configFile = fs.readFileSync(process.env.PWD + '/swagger.json', 'utf8');
+const getNodeParams = (strs = []) => {
+  var s = strs.filter(e => (e.includes("=") && (e.split("--")[0] == "")));
+  const data = {}
+  s.forEach(e => {
+    const res = e.split("--")[1].split("=");
+    data[res[0]] = res[1]
+  })
+  return data;
+}
 
+const fileName = getNodeParams(process.argv).file;
+const configFile = fs.readFileSync(process.env.PWD + `/swagger${fileName ? '.' + fileName : ''}.json`, 'utf8');
 const config = JSON.parse(configFile);
 if (!config) {
   throw ("配置文件错误")

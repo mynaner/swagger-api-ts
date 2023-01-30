@@ -96,9 +96,7 @@ const spliceApiFuncResult = (url, type, data) => {
     if (havFileStr != "") return "{data:formdata}";
     const d = params.find(e => e.name == "vo");
     const p = paramsList.filter(e => e.name != "vo");
-    if (funcName == "put_tcc_info") {
-      console.log(d, p);
-    }
+
 
     let str = [];
     if (d) str.push("data")
@@ -123,10 +121,6 @@ const spliceApiFuncResult = (url, type, data) => {
     }
     return str;
   }
-  // if (params.length > 1) {
-  //   console.log(paramsD());
-  // }
-
 
   return `
    ${paramsInterface()}

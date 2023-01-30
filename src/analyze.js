@@ -7,7 +7,6 @@
 import { spliceApiFunc, spliceDefinitionsType } from "./splice.js";
 import fs from "fs-extra";
 
-var num = 0;
 export const analyzeJson = (jsondata, pathUrl, config) => {
 
   if (!jsondata.paths) return;
@@ -19,10 +18,7 @@ export const analyzeJson = (jsondata, pathUrl, config) => {
       if (!fileName) {
         fileName = key.split("/")[1];
       }
-
       page += spliceApiFunc(key, element);
-
-
     }
   }
   for (const key in jsondata.components.schemas) {

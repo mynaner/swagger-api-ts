@@ -43,3 +43,9 @@ npm publish
   "import_other_server": [] // 导入请求文件其他方法
 }
 ```
+
+### 0.0.41 加入自定义配置文件
+
+```
+swagger --file=admin // 就可以读取  swagger.admin.json 文件的配置数据
+```
