@@ -49,3 +49,5 @@ npm publish
 ```
 swagger --file=admin // 就可以读取  swagger.admin.json 文件的配置数据
 ```
+
+### 1.0.0 正式发布

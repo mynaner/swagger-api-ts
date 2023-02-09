@@ -34,7 +34,7 @@ const spliceApiFuncResult = (url, type, data) => {
 
 
   /// 判断是否是导出接口 
-  const resultType = funcName.toLowerCase().includes("export") || data.summary?.includes("导出") ? "Blob" : spliceApiResultType(data.responses["200"]);
+  const resultType = funcName.toLowerCase().includes("export") || data.summary?.includes("导出") ? "ArrayBuffer" : spliceApiResultType(data.responses["200"]);
 
 
   const paramsList = params;
@@ -101,7 +101,7 @@ const spliceApiFuncResult = (url, type, data) => {
     let str = [];
     if (d) str.push("data")
     if (p.length) str.push("params")
-    if (data.summary?.includes("excel导出")) str.push("responseType: 'arraybuffer'")
+    if (data.summary?.includes("导出")) str.push("responseType: 'arraybuffer'")
     return `{${str.join(',')}}`;
   }
 
@@ -144,9 +144,9 @@ const spliceApiFuncResult = (url, type, data) => {
   const res = await server.${type.toUpperCase()
     }${resultType ? `<${resultType}>` : ""} (\`${apiUrl.replace(/\${/g, "${params.")}\`,${axiosConfig()} );
 
-        ${resultType === 'Blob' ? `
-        if (res instanceof Blob) {
-          return res as Blob;
+        ${resultType === 'ArrayBuffer' ? `
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
         } else {
           return null;
         }
