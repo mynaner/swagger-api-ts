@@ -5,21 +5,21 @@
  * @LastEditTime: 2022-12-05 11:18:22
  * @FilePath: /swaggerapits/src/splice.js
  */
-export const spliceApiFunc = (url, data) => {
+export const spliceApiFunc = (url, data, deprecated = false) => {
   let pageApiFunc = "";
   for (const key in data) {
 
     if (Object.hasOwnProperty.call(data, key)) {
       const element = data[key];
 
-      pageApiFunc += spliceApiFuncResult(url, key, element);
+      pageApiFunc += spliceApiFuncResult(url, key, element, deprecated);
     }
   }
   return pageApiFunc;
 };
 
 
-const spliceApiFuncResult = (url, type, data) => {
+const spliceApiFuncResult = (url, type, data, deprecated) => {
   const funcName = `${type}${url
     .replace(/\//g, "_")
     .replace(/\-/g, "_")
@@ -32,9 +32,12 @@ const spliceApiFuncResult = (url, type, data) => {
 
   const params = schemaParamsType(data)
 
+  if (!deprecated && data.deprecated) {
+    return ""
+  }
 
   /// 判断是否是导出接口 
-  const resultType = funcName.toLowerCase().includes("export") || data.summary?.includes("导出") ? "ArrayBuffer" : spliceApiResultType(data.responses["200"]);
+  const resultType = funcName.toLowerCase().includes("export") || data.summary?.includes("导出") ? "Blob" : spliceApiResultType(data.responses["200"]);
 
 
   const paramsList = params;
@@ -92,6 +95,10 @@ const spliceApiFuncResult = (url, type, data) => {
 
 
   const axiosConfig = () => {
+
+    if (params.length == 0 && data.summary?.includes("分页")) {
+      return ' {params}';
+    }
     if (!params.length) return "";
     if (havFileStr != "") return "{data:formdata}";
     const d = params.find(e => e.name == "vo");
@@ -101,7 +108,7 @@ const spliceApiFuncResult = (url, type, data) => {
     let str = [];
     if (d) str.push("data")
     if (p.length) str.push("params")
-    if (data.summary?.includes("导出")) str.push("responseType: 'arraybuffer'")
+    if (data.summary?.includes("excel导出")) str.push("responseType: 'arraybuffer'")
     return `{${str.join(',')}}`;
   }
 
@@ -144,9 +151,9 @@ const spliceApiFuncResult = (url, type, data) => {
   const res = await server.${type.toUpperCase()
     }${resultType ? `<${resultType}>` : ""} (\`${apiUrl.replace(/\${/g, "${params.")}\`,${axiosConfig()} );
 
-        ${resultType === 'ArrayBuffer' ? `
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
+        ${resultType === 'Blob' ? `
+        if (res instanceof Blob) {
+          return res as Blob;
         } else {
           return null;
         }
@@ -198,7 +205,7 @@ export const schemaParamsType = (data) => {
  * @returns 
  */
 export const spliceApiResultType = (data) => {
-
+  if (!data.content) return;
   const schema = data.content['*/*'].schema['$ref']?.split("/")
 
   if (data.content['*/*'].schema?.type) {

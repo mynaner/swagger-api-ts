@@ -51,3 +51,27 @@ swagger --file=admin // 就可以读取  swagger.admin.json 文件的配置数�
 ```
 
 ### 1.0.0 正式发布
+
+### 1.0.1
+
+```
+接口地址可能为 url 和 urls
+spliceApiResultType 方法的 data.content 可能为空
+```
+
+### 1.0.2
+
+> 对弃用接口配置 默认不加载弃用接口
+
+```json
+{
+  "url": "", // 接口地址
+  "suffix": "", // 接口后缀
+  "path": "src/api", // 输出地址 相对路径
+  "type_file": "@/types/common", // 导入类型文件
+  "server_file": "@/utils/request", // 导入请求文件 必须是 server 方法请求
+  "import_types": ["IPage", "Paging", "MsgType"], // 导入类型
+  "import_other_server": [], // 导入请求文件其他方法
+  "deprecated": false // // 是否加载弃用接口
+}
+```

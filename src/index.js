@@ -43,9 +43,15 @@ http.get(Base_url + '/' + Base_url_suffix + '/v3/api-docs/swagger-config', funct
   res.on("end", function () {
     fs.emptyDirSync(`${pathUrl}`);
     const json = JSON.parse(html);
-    json.urls.forEach((element) => {
-      getOhterUrls(element.url);
-    });
+    if (json.urls) {
+      json.urls.forEach((element) => {
+        getOhterUrls(element.url);
+      });
+    } else if (json.url) {
+      getOhterUrls(json.url);
+    } else {
+      throw ("没有地址")
+    }
   });
 });
 

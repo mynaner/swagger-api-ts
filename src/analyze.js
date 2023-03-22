@@ -18,7 +18,7 @@ export const analyzeJson = (jsondata, pathUrl, config) => {
       if (!fileName) {
         fileName = key.split("/")[1];
       }
-      page += spliceApiFunc(key, element);
+      page += spliceApiFunc(key, element, config.deprecated);
     }
   }
   for (const key in jsondata.components.schemas) {
