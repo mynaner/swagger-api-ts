@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2022-12-05 11:30:52
+ * @LastEditTime: 2023-09-25 10:29:43
  * @FilePath: /swaggerapits/README.md
 -->
 
@@ -75,3 +75,11 @@ spliceApiResultType 方法的 data.content 可能为空
   "deprecated": false // // 是否加载弃用接口
 }
 ```
+
+> swagger --file=tcc
+
+### 1.0.3
+
+> 修改 bug 导出数据类型错误
+
+> 新增 flutter 支持 (未完成)

@@ -2,8 +2,8 @@
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-09-25 10:11:55
- * @FilePath: /swaggerapits/src/splice.js
+ * @LastEditTime: 2023-09-25 10:05:11
+ * @FilePath: /swaggerapits/src/splice.flutter.js
  */
 export const spliceApiFunc = (url, data, deprecated = false) => {
   let pageApiFunc = "";
@@ -37,7 +37,7 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
   }
 
   /// 判断是否是导出接口 
-  const resultType = (funcName.toLowerCase().includes("export") || data.summary?.includes("导出")) ? "ArrayBuffer" : spliceApiResultType(data.responses["200"]);
+  const resultType = (funcName.toLowerCase().includes("export") || data.summary?.includes("导出")) ? "Blob" : spliceApiResultType(data.responses["200"]);
 
 
   const paramsList = params;
@@ -151,9 +151,9 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
   const res = await server.${type.toUpperCase()
     }${resultType ? `<${resultType}>` : ""} (\`${apiUrl.replace(/\${/g, "${params.")}\`,${axiosConfig()} );
 
-        ${resultType === 'ArrayBuffer' ? `
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
+        ${resultType === 'Blob' ? `
+        if (res instanceof Blob) {
+          return res as Blob;
         } else {
           return null;
         }

@@ -1,0 +1,13 @@
+{
+    "url": "http://tcc.yzt66.com:9999",
+    "suffix": "share-app",
+    "path": "src/api",
+    "type_file": "@/types/common",
+    "server_file": "@/utils/request",
+    "import_types": [
+        "IPage",
+        "Paging",
+        "MsgType"
+    ],
+    "import_other_server": []
+}
