@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-09-25 10:29:43
+ * @LastEditTime: 2023-10-07 17:44:09
  * @FilePath: /swaggerapits/README.md
 -->
 
@@ -12,7 +12,7 @@
 ```
 npm pack
 
-sudo npm install swagger-api-ts-0.0.1.tgz -g
+sudo npm install swagger-api-ts-1.0.3.tgz -g
 ```
 
 ### 命令参数
@@ -83,3 +83,29 @@ spliceApiResultType 方法的 data.content 可能为空
 > 修改 bug 导出数据类型错误
 
 > 新增 flutter 支持 (未完成)
+
+### 1.1.0
+
+> 新增 flutter 支持
+> 移除 type_file server_file import_types import_other_server 字短
+
+```json
+{
+  "url": "", // 接口地址
+  "suffix": "", // 接口后缀
+  "path": "src/api", // 输出地址 相对路径
+  // "type_file": "@/types/common", // 导入类型文件 **弃用 请使用字短 header **
+  // "server_file": "@/utils/request", // 导入请求文件 必须是 server 方法请求 **弃用 请使用字短 header **
+  // "import_types": ["IPage", "Paging", "MsgType"], // 导入类型  // 导入请求文件 必须是 server 方法请求 **弃用 请使用字短 header **
+  //  "import_other_server": [], // 导入请求文件其他方法
+  "language": "flutter", /// 语言 flutter 默认 js
+  "deprecated": false, /// 是否加载弃用接口
+  // 代码头部 数组
+  "header": [
+    "import 'package:zhtc_blue/tools/dio_util/dio_util.dart';",
+    "import 'package:zhtc_blue/app/data/models/common_model.dart';"
+  ],
+  /// 过滤掉不需要的借口,或者在其他地方已经实现了
+  "filter": ["/common/oss/ali"]
+}
+```

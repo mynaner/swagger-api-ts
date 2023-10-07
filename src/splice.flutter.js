@@ -1,10 +1,104 @@
 
-/*
- * @Date: 2022-10-19 11:07:47
- * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-09-25 10:05:11
- * @FilePath: /swaggerapits/src/splice.flutter.js
+
+
+function getCamelCase(str) {
+  let arr = str.split('_');
+  return arr.map((item, index) => {
+    if (index === 0) {
+      return item;
+    } else {
+      return item.charAt(0).toUpperCase() + item.slice(1);
+    }
+  }).join('');
+}
+
+/**
+ * 
+ * @param {string} name 方法名
+ * @param {string} url 请求地址
+ * @param {'get'|'post'|"put"|'delete'} dioMethod 请求类型
+ * @param {string} resultType 返回类型
+ * @param {[string,string][]} urlParams urlParams参数  
+ * @param {string} params params参数 
+ * @param {string} data data参数
+ * @returns 
  */
+const templatefn = (name, url, dioMethod = "get", resultType, urlParams, params, data) => {
+
+
+
+
+
+  /// 
+  let listParams = "";
+  let dioData = data;
+  let dioParam = "";
+  let diourlParam = "";
+
+  if (typeof params == "string") {
+    dioParam = "params.toJson()";
+    listParams = `required ${params} params,`
+  }
+
+
+  if (urlParams.length > 0) {
+    listParams += urlParams.map(e => {
+      return e.reverse().join("? ");
+    }).join(",");
+    urlParams = `{${urlParams.map(e => `"${e[1]}":${e[1]}`).join(",")}}`;
+    // dioData = data.map(e => `"${e[0]}":${e[1]}`).join(",");
+  }
+
+  if (data) {
+    if (urlParams.length != 0 || typeof params == "string") {
+      listParams += ","
+    }
+    listParams += `required ${data} data`
+  }
+
+
+  const rfromJson = () => {
+    if (resultType) {
+
+      if (['int', "bool", 'String', "dynamic"].includes(resultType)) {
+        return;
+      } else if (resultType.substring(0, 4) == "List") {
+        const t = resultType.substring(5, resultType.length - 1);
+        if (!['List<int>', "List<bool>", 'List<String>'].includes(resultType)) {
+          return ` 
+              ${resultType} list = [];
+              if (data != null) {
+                for (var item in data) {
+                  list.add(${t}.fromJson(item));
+                }
+              }
+              return list;
+            `
+        }
+      } else {
+        return `return ${resultType}.fromJson(data);`
+      }
+    } else {
+      return;
+    }
+  }
+
+  const fromJsonStr = ` fromJson: (data) {
+     ${rfromJson()}
+  },`
+
+  // params
+  return `Future<${resultType ? resultType + "?" : 'bool'}> ${getCamelCase(name)}(${listParams.length > 0 ? `{ ${listParams}}` : ""}) async {
+    var res = await DioUtil.instance.request<${resultType ?? "void"}>("${url}",
+        method: DioMethod.${dioMethod} ${dioParam.length ? `,params:${dioParam}` : `${urlParams.length ? `,params:${urlParams}` : ''}`}${dioData ? ',data: data.toJson()' : ''},
+        ${rfromJson() ? fromJsonStr : ''}
+       
+        );
+return res.${resultType ? 'result' : 'success'};
+  }\n`
+}
+
+
 export const spliceApiFunc = (url, data, deprecated = false) => {
   let pageApiFunc = "";
   for (const key in data) {
@@ -25,7 +119,9 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
     .replace(/\-/g, "_")
     .replace(/\${/g, "")
     .replace(/\}/g, "")
-    .replace(/\{/g, "")}`;
+    .replace(/\{/g, "")
+    } `;
+
 
   const apiUrl = url.replace(/\{/g, "${");
 
@@ -37,129 +133,12 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
   }
 
   /// 判断是否是导出接口 
-  const resultType = (funcName.toLowerCase().includes("export") || data.summary?.includes("导出")) ? "Blob" : spliceApiResultType(data.responses["200"]);
+  const resultType = (funcName.toLowerCase().includes("export") || data.summary?.includes("导出")) ? "ArrayBuffer" : spliceApiResultType(data.responses["200"]);
+  const dot = params.find(e => e.name == "dot");
+  const vo = params.find(e => e.name == "vo");
+  const plist = params.filter(e => !["dot", "vo"].includes(e.name))?.map(e => [e.name, e.type]);
 
-
-  const paramsList = params;
-
-  const paramsInterface = () => {
-
-    if (paramsList.length > 0) {
-
-      let isExtends = params?.filter((e) => e.name == "vo" || e.name == "dot").map(e => e.type).join(",")
-
-      if (isExtends) {
-        isExtends = "extends " + isExtends
-      }
-      if (data.summary?.includes("分页")) {
-        if (isExtends) {
-          isExtends = isExtends + ",Paging"
-        } else {
-          isExtends = "extends Paging"
-        }
-      }
-      return `export interface ${funcName.split("_").map(e => titleCase(e)).join("")}  ${isExtends} {
-        ${params?.filter((e) => !(e.name == "vo" || e.name == "dot")).map((e) => {
-        if (e.name) {
-          return e.name + `?:` + e.type + ";"
-        }
-      }).join("")}
-      ${params.find(e => e.type == "File") ? '[key:string]:any' : ''}
-      }`
-
-    } else {
-      if (data.summary?.includes("分页")) {
-        return `export interface ${funcName.split("_").map(e => titleCase(e)).join("")} extends Paging{}`
-      }
-
-    }
-    return ""
-
-  }
-  /// 文件类型 formdata
-  let havFileStr = ""
-  const havFile = paramsList?.find(e => e.type == "File")
-  if (havFile) {
-
-    havFileStr = ` 
-      const formdata = new FormData();
-      for (const key in params) {
-        if (Object.prototype.hasOwnProperty.call(params, key)) {
-          const element = params[key];
-          formdata.set(key, element);
-        }
-      }
-      `
-  }
-
-
-
-  const axiosConfig = () => {
-
-    if (params.length == 0 && data.summary?.includes("分页")) {
-      return ' {params}';
-    }
-    if (!params.length) return "";
-    if (havFileStr != "") return "{data:formdata}";
-    const d = params.find(e => e.name == "vo");
-    const p = paramsList.filter(e => e.name != "vo");
-
-
-    let str = [];
-    if (d) str.push("data")
-    if (p.length) str.push("params")
-    if (data.summary?.includes("excel导出")) str.push("responseType: 'arraybuffer'")
-    return `{${str.join(',')}}`;
-  }
-
-  const paramsD = () => {
-
-    if (params.length == 0 && !data.summary?.includes("分页")) return "";
-
-    let str = ""
-    const d = params.find(e => e.name == "vo");
-    const p = paramsList.filter(e => e.name != "vo");
-    if (d) {
-      str += `data:${d.type},`
-    }
-    if (p.length || data.summary?.includes("分页")) {
-
-      str += `params:${funcName.split("_").map(e => titleCase(e)).join("")}`
-    }
-    return str;
-  }
-
-  return `
-   ${paramsInterface()}
-  /** 
-   * @description:  ${data.summary}
-   ${paramsD().split(",").map(e => {
-
-    const str = e.split(":");
-    if (str.length == 2 && str[0] != "") {
-      return `* @param {${str[1]}} ${str[0]}`
-    }
-    return " "
-  })} 
-   * @return {*}
-   */
-  export const ${funcName} = async(${paramsD()}) => {
-
-    ${havFileStr}
-    
-
-  const res = await server.${type.toUpperCase()
-    }${resultType ? `<${resultType}>` : ""} (\`${apiUrl.replace(/\${/g, "${params.")}\`,${axiosConfig()} );
-
-        ${resultType === 'Blob' ? `
-        if (res instanceof Blob) {
-          return res as Blob;
-        } else {
-          return null;
-        }
-        ` : `return res?.${resultType ? `result${resultType.substring(resultType.length - 2) == '[]' ? '??[]' : ''}` : "success"}; `}
-        }
-    `;
+  return templatefn(funcName, apiUrl.replace(/\${/g, "${"), type, resultType, plist, vo?.type, dot?.type);
 };
 
 /**
@@ -215,7 +194,7 @@ export const spliceApiResultType = (data) => {
     const schema = data.content['*/*'].schema.items['$ref']?.split("/")
     const types = schema[schema.length - 1]
     if (data.content['*/*'].schema?.type == "array") {
-      return `${types}[]`;
+      return `List<${types}>`;
     }
   }
 
@@ -228,7 +207,7 @@ export const spliceApiResultType = (data) => {
 
 
   if (types.substring(1, 5) == "Long") {
-    return "string"
+    return "String"
   }
 
 
@@ -254,21 +233,23 @@ export const spliceApiResultType = (data) => {
     return
   }
   if (types.substring(1) == "Int" || types.substring(1) == "Integer") {
-    return "number"
+    return "int"
   }
   /// 返回 List 参数的
   if (types.substring(1, 5) == "List") {
     if (types.substring(5) == 'Long') {
-      return "string[]";
+      return "List<String>";
     }
-    return `${types.substring(5)}[]`;
+    return `List<${types.substring(5)}>`;
   }
 
   if (types.substring(1, 6) == "IPage") {
-    return `IPage<${types.substring(6)}>`;
+    return `IPage${types.substring(6)}`;
   }
 
-
+  if (types.substring(1) == "Boolean") {
+    return "bool"
+  }
   return types.substring(1);
 };
 
@@ -279,77 +260,188 @@ export const spliceDefinitionsType = (keyname, data) => {
   for (const key in data.properties) {
     if (Object.hasOwnProperty.call(data.properties, key)) {
       const element = data.properties[key];
-      listD.push({
-        key: key,
-        value: integerFc(element, keyname.substring(keyname.length - 3, keyname.length) == "Dto"),
-        description: element.description,
-      });
+      if (keyname.substring(0, 5) == "IPage" && key == "records") {
+
+
+        listD.push({
+          key: key,
+          value: keyname.substring(5),
+          description: element.description,
+        });
+      } else {
+        listD.push({
+          key: key,
+          value: integerFc(element, keyname.substring(keyname.length - 3, keyname.length) == "Dto"),
+          description: element.description,
+        });
+      }
+
+
 
     }
   }
+
   return ` 
-    export interface ${keyname}{
+    class ${keyname}{
     ${listD
       .map(
         (e) => {
-          return ` ${e.description ? `/** ${e?.description} */\n` : ""} ${e.key}?:${e.description?.includes("枚举") ? 'number' : e.value};\n`
+          return ` ${e.description ? `/// ${e?.description} \n` : ""} ${e.description?.includes("枚举") ? 'int' : e.value}? ${e.key};\n`
         }
       )
-      .join("")}
+      .join("")} 
+      
+      Map<String, dynamic> toJson() {
+        final Map<String, dynamic> data = <String, dynamic>{};
+        ${listD
+      .map(
+        (e) => {
+
+          if (['int', "bool", 'String', "dynamic"].includes(e.value)) {
+            return `data['${e.key}'] = ${e.key};`
+          } else if (e.value.substring(0, 4) == "List") {
+
+            if (['List<int>', "List<bool>", 'List<String>'].includes(e.value)) {
+              return `data['${e.key}'] = ${e.key};`
+            } else {
+              return `
+                if (${e.key} != null) {
+                  data['e.key'] =  ${e.key}?.map((v) => v.toJson()).toList();
+                }
+                `
+            }
+          } else {
+
+            return `data['${e.key}'] =  ${e.key}?.toJson();`
+          }
+
+        }
+      )
+      .join("\n")} 
+        return data;
+      }
+
+      ${keyname}(
+        { 
+          ${listD
+      .map(
+        (e) => `this.${e.key}`
+      )
+      .join(",\n")}});
+
+
+
+       
+
+      ${keyname}.fromJson(Map<String, dynamic> json) {
+
+        ${listD
+      .map(
+        (e) => {
+
+          if (['int', "bool", 'String', "dynamic"].includes(e.value)) {
+            return `${e.key}=json['${e.key}'];`
+          } else if (e.value.substring(0, 4) == "List") {
+
+            if (['List<int>', "List<bool>", 'List<String>'].includes(e.value)) {
+
+              let t = e.value.substring(5, e.value.length - 1);
+
+
+              return `${e.key}=json['${e.key}']?.cast<${t}>();`
+            } else {
+              return `
+                
+
+                if (json['${e.key}'] != null) {
+                  ${e.key} = <${e.value}>[];
+                  json['${e.key}'].forEach((v) {
+                    ${e.key}?.add(${e.value}.fromJson(v));
+                    
+                  });
+                }
+                `
+            }
+          } else {
+
+            return `
+            if (json['${e.key}'] != null) {
+              ${e.key} = ${e.value}.fromJson(json['${e.key}']);
+            }`
+          }
+
+        }
+      )
+      .join("\n")}
+         
+      }
+
     }`;
 };
 
 const integerFc = (element, isDot) => {
 
-  const type = element.type;
+  let type = element.type;
   const format = element.format;
   const items = element.items;
   const refstr = element['$ref']
 
 
+
   if (element.enum) {
-    return isDot ? "number" : "MsgType"
+    type = isDot ? "int" : "MsgType"
   }
 
   if (['int', 'integer'].includes(type)) {
-    return format == "int64" ? "string" : "number";
+    type = format == "int64" ? "String" : "int";
   }
-  if (type == "file") return "File"
+  if (type == "file") type = "File"
 
   if (type == "array" && items) {
 
     let fx = "string";
 
     if (['int', 'integer'].includes(items.type)) {
-      fx = items.format == "int64" ? "string" : "number";
+      fx = items.format == "int64" ? "String" : "int";
     }
     if (items["$ref"]) {
       const ref = (items["$ref"]).split("/")
-      return `${ref[ref.length - 1]}[]`
+      type = `List<${ref[ref.length - 1]}>`
     }
 
-    return `string[]`
+    type = `List<String>`
   }
   if (type == "array" && !items) {
-    return "string[]"
+    type = "List<String>"
   }
 
   if (["long"].includes(type)) {
-    return "string"
+    type = "String"
   }
 
   if (refstr) {
     const ref = refstr.split("/")
     if (ref[ref.length - 1] == "LocalTime") {
-      return "string"
+      type = "String"
     }
-    return `${ref[ref.length - 1]}`
+    type = `${ref[ref.length - 1]}`
+  }
+  if (type == "object") {
+
+    type = "dynamic"
+  }
+
+
+  if (type == "string" || type == "LocalTime") {
+    type = "String";
+  }
+  if (type == "boolean" || type == "Boolean") {
+    type = "bool";
+  }
+
+  if (type == "number") {
+    type = "int";
   }
   return type;
 };
 
-
-function titleCase(str) {
-  return str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase();
-
-}

@@ -1,13 +1,14 @@
 /*
  * @Date: 2022-10-19 11:07:26
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2022-12-01 16:51:58
- * @FilePath: /kll_admin_react/swagger/analyze.js
+ * @LastEditTime: 2023-10-07 17:54:54
+ * @FilePath: /swaggerapits/src/analyze.js
  */
 import { spliceApiFunc, spliceDefinitionsType } from "./splice.js";
-import flutterSplice from "./splice.flutter.js";
+import { spliceApiFunc as FspliceApiFunc, spliceDefinitionsType as FspliceDefinitionsType } from "./splice.flutter.js";
 
 import fs from "fs-extra";
+import { log } from "console";
 
 export const analyzeJson = (jsondata, pathUrl, config) => {
 
@@ -20,12 +21,16 @@ export const analyzeJson = (jsondata, pathUrl, config) => {
       if (!fileName) {
         fileName = key.split("/")[1];
       }
-      if (config?.language == 'flutter') {
 
-        page += flutterSplice.spliceApiFunc(key, element, config.deprecated);
-      } else {
-        page += spliceApiFunc(key, element, config.deprecated);
+      if (![...(config?.filter ?? [])].includes(key)) {
+        if (config?.language == 'flutter') {
+
+          page += FspliceApiFunc(key, element, config.deprecated);
+        } else {
+          page += spliceApiFunc(key, element, config.deprecated);
+        }
       }
+
 
     }
   }
@@ -33,17 +38,28 @@ export const analyzeJson = (jsondata, pathUrl, config) => {
 
     if (Object.hasOwnProperty.call(jsondata.components.schemas, key)) {
       const element = jsondata.components.schemas[key];
+      // console.log("key", key)
+      // console.log("key", key);
       if (key.substring(1, 2).charCodeAt() > 65 && (key.substring(1, 2).charCodeAt() < 90)) {
 
-      } else if (key.substring(0, 5) != "IPage" && !["LocalTime"].includes(key)) {
+        // console.log("key", key.substring(1, 2));
+        // console.log("key", key.substring(1, 2).charCodeAt());
+        if (key.substring(0, 5) == "IPage") {
+          // console.log("key1", key, element)
+          page += FspliceDefinitionsType(key, element);
+        }
+      } else if (!["LocalTime"].includes(key)) {
+
         if (config?.language == 'flutter') {
 
-          page += flutterSplice.spliceDefinitionsType(key, element);
+          page += FspliceDefinitionsType(key, element);
         } else {
           page += spliceDefinitionsType(key, element);
         }
 
 
+      } else {
+        // console.log("key", key);
       }
     }
   }
@@ -53,19 +69,10 @@ export const analyzeJson = (jsondata, pathUrl, config) => {
 
 const saveFile = async (pageStr, fileName, pathUrl, config) => {
   let url = `${pathUrl}${fileName}`;
-  let fileSuffix = 'ts';
-  let page = `
-  import { ${(config?.import_types ?? []).join(",")} } from "${config?.type_file ?? '@/types/index'}";\n
-  import { server, ${(config?.import_other_server ?? []).join(",")}} from "${config?.server_file ?? '@/utils/axios/request'}"; \n
-   ${pageStr} 
-  `;
-  if (config?.language == 'flutter') {
-    fileSuffix = 'dart';
-
-    page = ` ${config?.header} \n
-     ${pageStr} 
-    `;
-  }
+  let fileSuffix = config?.language == 'flutter' ? 'dart' : 'ts';
+  let page = `${config?.header.join("\n")} \n
+              ${pageStr} 
+              `;
 
 
   try {
