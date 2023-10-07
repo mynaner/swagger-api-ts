@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-07 17:44:09
+ * @LastEditTime: 2023-10-07 21:48:38
  * @FilePath: /swaggerapits/README.md
 -->
 
@@ -109,3 +109,7 @@ spliceApiResultType 方法的 data.content 可能为空
   "filter": ["/common/oss/ali"]
 }
 ```
+
+### 1.1.1
+
+> bug 修复

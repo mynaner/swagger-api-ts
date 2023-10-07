@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-10-19 11:07:26
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-07 17:54:54
+ * @LastEditTime: 2023-10-07 21:47:58
  * @FilePath: /swaggerapits/src/analyze.js
  */
 import { spliceApiFunc, spliceDefinitionsType } from "./splice.js";
@@ -44,7 +44,7 @@ export const analyzeJson = (jsondata, pathUrl, config) => {
 
         // console.log("key", key.substring(1, 2));
         // console.log("key", key.substring(1, 2).charCodeAt());
-        if (key.substring(0, 5) == "IPage") {
+        if (key.substring(0, 5) == "IPage" && config?.language == 'flutter') {
           // console.log("key1", key, element)
           page += FspliceDefinitionsType(key, element);
         }
