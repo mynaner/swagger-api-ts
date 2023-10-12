@@ -1,20 +1,19 @@
 /*
  * @Date: 2022-10-19 11:07:26
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-07 21:47:58
+ * @LastEditTime: 2023-10-12 16:48:55
  * @FilePath: /swaggerapits/src/analyze.js
  */
 import { spliceApiFunc, spliceDefinitionsType } from "./splice.js";
 import { spliceApiFunc as FspliceApiFunc, spliceDefinitionsType as FspliceDefinitionsType } from "./splice.flutter.js";
 
 import fs from "fs-extra";
-import { log } from "console";
 
 export const analyzeJson = (jsondata, pathUrl, config) => {
-
   if (!jsondata.paths) return;
   let fileName;
   let page = "";
+
   for (const key in jsondata.paths) {
     if (Object.hasOwnProperty.call(jsondata.paths, key)) {
       const element = jsondata.paths[key];
@@ -23,12 +22,16 @@ export const analyzeJson = (jsondata, pathUrl, config) => {
       }
 
       if (![...(config?.filter ?? [])].includes(key)) {
-        if (config?.language == 'flutter') {
 
-          page += FspliceApiFunc(key, element, config.deprecated);
-        } else {
-          page += spliceApiFunc(key, element, config.deprecated);
+        switch (config?.language) {
+          case "flutter":
+            page += FspliceApiFunc(key, element, config.deprecated);
+            break;
+          default:
+            page += spliceApiFunc(key, element, config.deprecated);
+            break;
         }
+
       }
 
 
@@ -44,22 +47,21 @@ export const analyzeJson = (jsondata, pathUrl, config) => {
 
         // console.log("key", key.substring(1, 2));
         // console.log("key", key.substring(1, 2).charCodeAt());
-        if (key.substring(0, 5) == "IPage" && config?.language == 'flutter') {
-          // console.log("key1", key, element)
-          page += FspliceDefinitionsType(key, element);
-        }
+        // if (key.substring(0, 5) == "IPage" && config?.language == 'flutter') {
+        //   // console.log("key1", key, element)
+        //   page += FspliceDefinitionsType(key, element);
+        // }
       } else if (!["LocalTime"].includes(key)) {
 
-        if (config?.language == 'flutter') {
-
-          page += FspliceDefinitionsType(key, element);
-        } else {
-          page += spliceDefinitionsType(key, element);
+        switch (config?.language) {
+          case "flutter":
+            page += FspliceDefinitionsType(key, element);
+            break;
+          default:
+            page += spliceDefinitionsType(key, element);
+            break;
         }
-
-
       } else {
-        // console.log("key", key);
       }
     }
   }

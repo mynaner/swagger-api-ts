@@ -1,6 +1,7 @@
 
 
 
+
 function getCamelCase(str) {
   let arr = str.split('_');
   return arr.map((item, index) => {
@@ -23,21 +24,17 @@ function getCamelCase(str) {
  * @param {string} data data参数
  * @returns 
  */
-const templatefn = (name, url, dioMethod = "get", resultType, urlParams, params, data) => {
-
-
-
-
-
+const templatefn = (name, summary, url, dioMethod = "get", resultType, urlParams, params, data) => {
   /// 
   let listParams = "";
   let dioData = data;
   let dioParam = "";
+
   let diourlParam = "";
 
   if (typeof params == "string") {
-    dioParam = "params.toJson()";
-    listParams = `required ${params} params,`
+    dioParam = "...params.toJson()";
+    listParams += `required ${params} params,`
   }
 
 
@@ -45,21 +42,22 @@ const templatefn = (name, url, dioMethod = "get", resultType, urlParams, params,
     listParams += urlParams.map(e => {
       return e.reverse().join("? ");
     }).join(",");
-    urlParams = `{${urlParams.map(e => `"${e[1]}":${e[1]}`).join(",")}}`;
+
+    diourlParam = `${dioParam}${dioParam.length > 0 ? "," : ''}${urlParams.map(e => `"${e[1]}":${e[1]}`).join(",")}`;
     // dioData = data.map(e => `"${e[0]}":${e[1]}`).join(",");
+  } else {
+    diourlParam = dioParam;
   }
 
   if (data) {
-    if (urlParams.length != 0 || typeof params == "string") {
+    if (diourlParam.length != 0 || dioParam.length != 0) {
       listParams += ","
     }
     listParams += `required ${data} data`
   }
 
-
   const rfromJson = () => {
     if (resultType) {
-
       if (['int', "bool", 'String', "dynamic"].includes(resultType)) {
         return;
       } else if (resultType.substring(0, 4) == "List") {
@@ -75,6 +73,10 @@ const templatefn = (name, url, dioMethod = "get", resultType, urlParams, params,
               return list;
             `
         }
+      } else if (resultType.substring(0, 6) == "IPage<") {
+
+        return `return ${resultType}.fromJson(data,${resultType.substring(6, resultType.length - 1)}.fromJson);`
+
       } else {
         return `return ${resultType}.fromJson(data);`
       }
@@ -87,10 +89,11 @@ const templatefn = (name, url, dioMethod = "get", resultType, urlParams, params,
      ${rfromJson()}
   },`
 
-  // params
-  return `Future<${resultType ? resultType + "?" : 'bool'}> ${getCamelCase(name)}(${listParams.length > 0 ? `{ ${listParams}}` : ""}) async {
+  return `
+  /// ${summary}
+  Future<${resultType ? resultType + "?" : 'bool'}> ${getCamelCase(name)}(${listParams.length > 0 ? `{ ${listParams}}` : ""}) async {
     var res = await DioUtil.instance.request<${resultType ?? "void"}>("${url}",
-        method: DioMethod.${dioMethod} ${dioParam.length ? `,params:${dioParam}` : `${urlParams.length ? `,params:${urlParams}` : ''}`}${dioData ? ',data: data.toJson()' : ''},
+        method: DioMethod.${dioMethod} ,params:{${diourlParam}} ${dioData ? ',data: data.toJson()' : ''},
         ${rfromJson() ? fromJsonStr : ''}
        
         );
@@ -98,7 +101,7 @@ return res.${resultType ? 'result' : 'success'};
   }\n`
 }
 
-
+// ${dioParam.length ? `,params:${dioParam}` : `${diourlParam.length ? `,params:${diourlParam}` : ''}`}
 export const spliceApiFunc = (url, data, deprecated = false) => {
   let pageApiFunc = "";
   for (const key in data) {
@@ -128,6 +131,7 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
 
   const params = schemaParamsType(data)
 
+
   if (!deprecated && data.deprecated) {
     return ""
   }
@@ -138,7 +142,12 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
   const vo = params.find(e => e.name == "vo");
   const plist = params.filter(e => !["dot", "vo"].includes(e.name))?.map(e => [e.name, e.type]);
 
-  return templatefn(funcName, apiUrl.replace(/\${/g, "${"), type, resultType, plist, vo?.type, dot?.type);
+  /// 分页
+  if (resultType?.substring(0, 5) === "IPage") {
+    plist.push(["pageNum", "int"])
+    plist.push(["pageSize", "int"])
+  }
+  return templatefn(funcName, data?.summary, apiUrl.replace(/\${/g, "${"), type, resultType, plist, dot?.type, vo?.type,);
 };
 
 /**
@@ -244,7 +253,7 @@ export const spliceApiResultType = (data) => {
   }
 
   if (types.substring(1, 6) == "IPage") {
-    return `IPage${types.substring(6)}`;
+    return `IPage<${types.substring(6)}>`;
   }
 
   if (types.substring(1) == "Boolean") {
@@ -257,9 +266,11 @@ export const spliceApiResultType = (data) => {
 export const spliceDefinitionsType = (keyname, data) => {
   const listD = [];
 
+
   for (const key in data.properties) {
     if (Object.hasOwnProperty.call(data.properties, key)) {
       const element = data.properties[key];
+
       if (keyname.substring(0, 5) == "IPage" && key == "records") {
 
 
@@ -281,6 +292,7 @@ export const spliceDefinitionsType = (keyname, data) => {
     }
   }
 
+
   return ` 
     class ${keyname}{
     ${listD
@@ -300,7 +312,6 @@ export const spliceDefinitionsType = (keyname, data) => {
           if (['int', "bool", 'String', "dynamic"].includes(e.value)) {
             return `data['${e.key}'] = ${e.key};`
           } else if (e.value.substring(0, 4) == "List") {
-
             if (['List<int>', "List<bool>", 'List<String>'].includes(e.value)) {
               return `data['${e.key}'] = ${e.key};`
             } else {
@@ -342,22 +353,17 @@ export const spliceDefinitionsType = (keyname, data) => {
           if (['int', "bool", 'String', "dynamic"].includes(e.value)) {
             return `${e.key}=json['${e.key}'];`
           } else if (e.value.substring(0, 4) == "List") {
-
             if (['List<int>', "List<bool>", 'List<String>'].includes(e.value)) {
 
               let t = e.value.substring(5, e.value.length - 1);
-
-
               return `${e.key}=json['${e.key}']?.cast<${t}>();`
             } else {
-              return `
-                
-
+              let t = e.value.substring(5, e.value.length - 1);
+              return ` 
                 if (json['${e.key}'] != null) {
-                  ${e.key} = <${e.value}>[];
+                  ${e.key} =[];
                   json['${e.key}'].forEach((v) {
-                    ${e.key}?.add(${e.value}.fromJson(v));
-                    
+                    ${e.key}?.add(${t}.fromJson(v)); 
                   });
                 }
                 `
@@ -399,7 +405,7 @@ const integerFc = (element, isDot) => {
 
   if (type == "array" && items) {
 
-    let fx = "string";
+    let fx = "String";
 
     if (['int', 'integer'].includes(items.type)) {
       fx = items.format == "int64" ? "String" : "int";
@@ -407,9 +413,11 @@ const integerFc = (element, isDot) => {
     if (items["$ref"]) {
       const ref = (items["$ref"]).split("/")
       type = `List<${ref[ref.length - 1]}>`
+    } else {
+      type = `List<${fx}>`
     }
 
-    type = `List<String>`
+
   }
   if (type == "array" && !items) {
     type = "List<String>"

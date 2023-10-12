@@ -1,9 +1,13 @@
 {
-    "url": "http://tcc.yzt66.com:9999",
-    "suffix": "admin",
-    "path": "src/api/park",
+    "url": "http://tcc.host",
+    "suffix": "/patrol",
+    "output": "lib/api",
+    "language": "flutter",
     "header": [
-        "import { IPage, Paging, MsgType } from '@/types/index';",
-        "import { server } from '@/utils/axios/request';"
+        "import 'package:zhtc_tcc_patrol/tools/dio_util/dio_util.dart';",
+        "import 'package:zhtc_tcc_patrol/app/global/common_model.dart';"
+    ],
+    "filter": [
+        "/common/oss/ali"
     ]
 }

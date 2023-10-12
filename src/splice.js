@@ -2,7 +2,7 @@
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-09-25 10:11:55
+ * @LastEditTime: 2023-10-12 11:20:16
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data, deprecated = false) => {
@@ -37,8 +37,10 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
   }
 
   /// 判断是否是导出接口 
-  const resultType = (funcName.toLowerCase().includes("export") || data.summary?.includes("导出")) ? "ArrayBuffer" : spliceApiResultType(data.responses["200"]);
+  const resultType = (funcName.substring(funcName.length - 6).toLowerCase().includes("export") || data.summary?.includes("导出")) ? "ArrayBuffer" : spliceApiResultType(data.responses["200"]);
 
+
+  const isPaging = resultType?.substring(0, 5) == "IPage";
 
   const paramsList = params;
 
@@ -51,7 +53,8 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
       if (isExtends) {
         isExtends = "extends " + isExtends
       }
-      if (data.summary?.includes("分页")) {
+
+      if (isPaging) {
         if (isExtends) {
           isExtends = isExtends + ",Paging"
         } else {
@@ -68,7 +71,7 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
       }`
 
     } else {
-      if (data.summary?.includes("分页")) {
+      if (isPaging) {
         return `export interface ${funcName.split("_").map(e => titleCase(e)).join("")} extends Paging{}`
       }
 
@@ -96,7 +99,7 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
 
   const axiosConfig = () => {
 
-    if (params.length == 0 && data.summary?.includes("分页")) {
+    if (params.length == 0 && isPaging) {
       return ' {params}';
     }
     if (!params.length) return "";
@@ -114,7 +117,7 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
 
   const paramsD = () => {
 
-    if (params.length == 0 && !data.summary?.includes("分页")) return "";
+    if (params.length == 0 && !isPaging) return "";
 
     let str = ""
     const d = params.find(e => e.name == "vo");
@@ -122,7 +125,7 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
     if (d) {
       str += `data:${d.type},`
     }
-    if (p.length || data.summary?.includes("分页")) {
+    if (p.length || isPaging) {
 
       str += `params:${funcName.split("_").map(e => titleCase(e)).join("")}`
     }
@@ -144,10 +147,7 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
    * @return {*}
    */
   export const ${funcName} = async(${paramsD()}) => {
-
     ${havFileStr}
-    
-
   const res = await server.${type.toUpperCase()
     }${resultType ? `<${resultType}>` : ""} (\`${apiUrl.replace(/\${/g, "${params.")}\`,${axiosConfig()} );
 
@@ -328,7 +328,7 @@ const integerFc = (element, isDot) => {
       return `${ref[ref.length - 1]}[]`
     }
 
-    return `string[]`
+    return `${fx}[]`
   }
   if (type == "array" && !items) {
     return "string[]"

@@ -1,10 +1,11 @@
 {
     "url": "http://tcc.yzt66.com:9999",
-    "suffix": "share-app",
-    "path": "src/api",
+    "suffix": "/share-app",
+    "output": "src/api",
     "language": "flutter",
     "header": [
-        "import 'package:kll_patrol/tools/dio_util/dio_util.dart';"
+        "import 'package:kll_patrol/tools/dio_util/dio_util.dart';",
+        "import '../../../types/common_model.dart'; "
     ],
     "filter": [
         "/wx/user-info"
