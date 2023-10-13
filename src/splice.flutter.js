@@ -200,7 +200,10 @@ export const spliceApiResultType = (data) => {
     if (data.content['*/*'].schema?.type == "object") {
       return "any";
     }
-    const schema = data.content['*/*'].schema.items['$ref']?.split("/")
+    const schema = data.content['*/*'].schema.items['$ref']?.split("/") ?? data.content['*/*'].schema.items
+    if (schema.format == "byte") {
+      return "ArrayBuffer"
+    }
     const types = schema[schema.length - 1]
     if (data.content['*/*'].schema?.type == "array") {
       return `List<${types}>`;

@@ -1,8 +1,9 @@
+import { log } from "console";
 
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-12 11:20:16
+ * @LastEditTime: 2023-10-13 14:24:53
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data, deprecated = false) => {
@@ -35,7 +36,6 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
   if (!deprecated && data.deprecated) {
     return ""
   }
-
   /// 判断是否是导出接口 
   const resultType = (funcName.substring(funcName.length - 6).toLowerCase().includes("export") || data.summary?.includes("导出")) ? "ArrayBuffer" : spliceApiResultType(data.responses["200"]);
 
@@ -111,7 +111,7 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
     let str = [];
     if (d) str.push("data")
     if (p.length) str.push("params")
-    if (data.summary?.includes("excel导出")) str.push("responseType: 'arraybuffer'")
+    if (resultType == "ArrayBuffer") str.push("responseType: 'arraybuffer'")
     return `{${str.join(',')}}`;
   }
 
@@ -212,7 +212,10 @@ export const spliceApiResultType = (data) => {
     if (data.content['*/*'].schema?.type == "object") {
       return "any";
     }
-    const schema = data.content['*/*'].schema.items['$ref']?.split("/")
+    const schema = data.content['*/*'].schema.items['$ref']?.split("/") ?? data.content['*/*'].schema.items
+    if (schema.format == "byte") {
+      return "ArrayBuffer"
+    }
     const types = schema[schema.length - 1]
     if (data.content['*/*'].schema?.type == "array") {
       return `${types}[]`;
