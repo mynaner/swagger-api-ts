@@ -56,6 +56,8 @@ const templatefn = (name, summary, url, dioMethod = "get", resultType, urlParams
     listParams += `required ${data} data`
   }
 
+
+
   const rfromJson = () => {
     if (resultType) {
       if (['int', "bool", 'String', "dynamic"].includes(resultType)) {
@@ -89,15 +91,42 @@ const templatefn = (name, summary, url, dioMethod = "get", resultType, urlParams
      ${rfromJson()}
   },`
 
+  let isFile = false;
+
+
+  let fileStr = ""
+
+
+
+  if (urlParams.find(e => e[0] == "XFile")) {
+    console.log(diourlParam);
+    isFile = true
+
+    fileStr = `
+    FormData formData = FormData.fromMap({ 
+      ${diourlParam.replace(`"file":file`, ` "file":file != null ? await MultipartFile.fromFile(file.path) : null,`)}
+      ${params ? "...params.toJson()" : ''}
+      ${dioData ? "...data.toJson()" : ''} 
+    });
+    `
+    diourlParam = "";
+  }
+
+  let isResultList = false;
+  if (resultType?.substring(0, 4) === "List") {
+    isResultList = true;
+
+  }
   return `
   /// ${summary}
-  Future<${resultType ? resultType + "?" : 'bool'}> ${getCamelCase(name)}(${listParams.length > 0 ? `{ ${listParams}}` : ""}) async {
+  Future<${resultType ? resultType + (isResultList ? '' : "?") : 'bool'}> ${getCamelCase(name)}(${listParams.length > 0 ? `{ ${listParams}}` : ""}) async {
+    ${fileStr}
     var res = await DioUtil.instance.request<${resultType ?? "void"}>("${url}",
-        method: DioMethod.${dioMethod} ,params:{${diourlParam}} ${dioData ? ',data: data.toJson()' : ''},
+        method: DioMethod.${dioMethod} ,params:{${diourlParam}} ${isFile ? ',data: formData' : dioData ? ',data:data.toJson()' : ''},
         ${rfromJson() ? fromJsonStr : ''}
        
         );
-return res.${resultType ? 'result' : 'success'};
+return res.${resultType ? 'result' : 'success'} ${isResultList ? '??[]' : ''};
   }\n`
 }
 
@@ -126,7 +155,7 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
     } `;
 
 
-  const apiUrl = url.replace(/\{/g, "${");
+  const apiUrl = url.replace(/\{/g, "$").replace(/\}/g, "");
 
 
   const params = schemaParamsType(data)
@@ -138,6 +167,9 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
 
   /// 判断是否是导出接口 
   const resultType = (funcName.toLowerCase().includes("export") || data.summary?.includes("导出")) ? "ArrayBuffer" : spliceApiResultType(data.responses["200"]);
+
+
+
   const dot = params.find(e => e.name == "dot");
   const vo = params.find(e => e.name == "vo");
   const plist = params.filter(e => !["dot", "vo"].includes(e.name))?.map(e => [e.name, e.type]);
@@ -157,8 +189,9 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
  */
 export const schemaParamsType = (data) => {
   const params = [];
-  data.parameters?.forEach(element => {
 
+
+  data.parameters?.forEach(element => {
     if (element.schema['$ref']) {
       const schema = element.schema['$ref'].split("/");
       params.push({ name: "dot", type: schema[schema.length - 1] })
@@ -177,12 +210,13 @@ export const schemaParamsType = (data) => {
     } else {
       params.push({
         name: "file",
-        type: "File"
+        type: "XFile"
       })
     }
 
 
   }
+
   return params
 };
 
@@ -206,6 +240,7 @@ export const spliceApiResultType = (data) => {
     }
     const types = schema[schema.length - 1]
     if (data.content['*/*'].schema?.type == "array") {
+
       return `List<${types}>`;
     }
   }
@@ -249,9 +284,10 @@ export const spliceApiResultType = (data) => {
   }
   /// 返回 List 参数的
   if (types.substring(1, 5) == "List") {
-    if (types.substring(5) == 'Long') {
+    if (['Long', "LocalDate"].includes(types.substring(5))) {
       return "List<String>";
     }
+
     return `List<${types.substring(5)}>`;
   }
 
@@ -283,6 +319,10 @@ export const spliceDefinitionsType = (keyname, data) => {
           description: element.description,
         });
       } else {
+        if (element?.enum?.length == 2) {
+          // console.log(element);
+          // console.log(keyname, key);
+        }
         listD.push({
           key: key,
           value: integerFc(element, keyname.substring(keyname.length - 3, keyname.length) == "Dto"),
@@ -389,7 +429,6 @@ export const spliceDefinitionsType = (keyname, data) => {
 };
 
 const integerFc = (element, isDot) => {
-
   let type = element.type;
   const format = element.format;
   const items = element.items;
@@ -398,6 +437,10 @@ const integerFc = (element, isDot) => {
 
 
   if (element.enum) {
+
+    if (!isDot && element.enum.length == 2) {
+      // console.log(element);
+    }
     type = isDot ? "int" : "MsgType"
   }
 
@@ -452,6 +495,13 @@ const integerFc = (element, isDot) => {
 
   if (type == "number") {
     type = "int";
+  }
+
+
+  // console.log(format);
+  // console.log(type);
+  if (format == "binary") {
+    type = "XFile"
   }
   return type;
 };

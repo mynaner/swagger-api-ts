@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-12 16:53:59
+ * @LastEditTime: 2023-10-18 14:45:36
  * @FilePath: /swaggerapits/README.md
 -->
 
@@ -12,7 +12,7 @@
 ```
 npm pack
 
-sudo npm install swagger-api-ts-1.1.2.tgz -g
+sudo npm install swagger-api-ts-1.1.3.tgz -g
 ```
 
 ### 命令参数
@@ -133,6 +133,32 @@ spliceApiResultType 方法的 data.content 可能为空
     "import 'package:zhtc_blue/app/data/models/common_model.dart';"
   ],
   /// 过滤掉不需要的借口,或者在其他地方已经实现了
+  "filter": ["/common/oss/ali"]
+}
+```
+
+### 1.1.3
+
+> 修复 flutter bug
+
+### 1.1.4
+
+> 修复 flutter bug
+> flutter 加入 对象 file 对象的处理
+
+```json
+{
+  "url": "", // 接口地址
+  "suffix": "", // 接口后缀
+  "output": "src/api", // 输出地址 相对路径
+  "language": "flutter", /// flutter | js  默认 js
+  "deprecated": false, /// 是否加载弃用接口
+  // 代码头部 数组 一般加载需要导入的东西
+  "header": [
+    "import 'package:zhtc_blue/tools/dio_util/dio_util.dart';",
+    "import 'package:zhtc_blue/app/data/models/common_model.dart';"
+  ],
+  /// 过滤掉不需要的借口,或者在其他地方已经实现了的
   "filter": ["/common/oss/ali"]
 }
 ```

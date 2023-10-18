@@ -3,7 +3,7 @@ import { log } from "console";
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-13 14:24:53
+ * @LastEditTime: 2023-10-18 14:39:57
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data, deprecated = false) => {

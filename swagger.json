@@ -1,13 +1,10 @@
 {
-    "url": "http://tcc.host",
-    "suffix": "/patrol",
+    "url": "",
+    "suffix": "/api-patrol",
     "output": "lib/api",
     "language": "flutter",
     "header": [
-        "import 'package:zhtc_tcc_patrol/tools/dio_util/dio_util.dart';",
-        "import 'package:zhtc_tcc_patrol/app/global/common_model.dart';"
-    ],
-    "filter": [
-        "/common/oss/ali"
+        "import 'package:zhtc_blue/tools/dio_util/dio_util.dart';",
+        "import 'package:zhtc_blue/app/data/models/common_model.dart';"
     ]
 }
