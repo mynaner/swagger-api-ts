@@ -49,10 +49,10 @@ return res.success ;
   }
 
   /// 上传拍照文件
-  Future<String?> postSignUpload ({ required XFile file}) async {
+  Future<String?> postSignUpload ({ XFile? file}) async {
     
     FormData formData = FormData.fromMap({ 
-       "file": await MultipartFile.fromFile(file.path),
+       "file":file != null ? await MultipartFile.fromFile(file.path) : null,
       
        
     });
@@ -121,10 +121,10 @@ return res.success ;
   }
 
   /// 特殊车牌审核拍照
-  Future<String?> postProcessSpecialCarPhoto ({ String? imei,required XFile file}) async {
+  Future<String?> postProcessSpecialCarPhoto ({ String? imei,XFile? file}) async {
     
     FormData formData = FormData.fromMap({ 
-      "imei":imei, "file": await MultipartFile.fromFile(file.path),
+      "imei":imei, "file":file != null ? await MultipartFile.fromFile(file.path) : null,
       
        
     });
@@ -171,10 +171,10 @@ return res.success ;
   }
 
   /// 拍照
-  Future<PlateLicenseVo?> postPplsTakePhoto ({ required XFile file,required TakePhotoDto data}) async {
+  Future<PlateLicenseVo?> postPplsTakePhoto ({ XFile? file,required TakePhotoDto data}) async {
     
     FormData formData = FormData.fromMap({ 
-       "file": await MultipartFile.fromFile(file.path),
+       "file":file != null ? await MultipartFile.fromFile(file.path) : null,
       
       ...data.toJson() 
     });
@@ -190,10 +190,10 @@ return res.result ;
   }
 
   /// 补拍照片
-  Future<String?> postPplsTakeExtraPic ({ required ExtraPicturesDto params,required XFile file}) async {
+  Future<String?> postPplsTakeExtraPic ({ required ExtraPicturesDto params,XFile? file}) async {
     
     FormData formData = FormData.fromMap({ 
-      ...params.toJson(), "file": await MultipartFile.fromFile(file.path),
+      ...params.toJson(), "file":file != null ? await MultipartFile.fromFile(file.path) : null,
       ...params.toJson()
        
     });
@@ -242,10 +242,10 @@ return res.success ;
   }
 
   /// 拍照完成
-  Future<bool> postMessagesDeviceLowBatteryProcess ({ required XFile file}) async {
+  Future<bool> postMessagesDeviceLowBatteryProcess ({ String? id,XFile? file}) async {
     
     FormData formData = FormData.fromMap({ 
-       "file": await MultipartFile.fromFile(file.path),
+      "id":id, "file":file != null ? await MultipartFile.fromFile(file.path) : null,
       
        
     });
@@ -259,10 +259,10 @@ return res.success ;
   }
 
   /// 完成处理
-  Future<bool> postMessagesDeviceFaultProcess ({ String? id,String? processResult,bool? wrong,required XFile file}) async {
+  Future<bool> postMessagesDeviceFaultProcess ({ String? id,String? processResult,bool? wrong,XFile? file}) async {
     
     FormData formData = FormData.fromMap({ 
-      "id":id,"processResult":processResult,"wrong":wrong, "file": await MultipartFile.fromFile(file.path),
+      "id":id,"processResult":processResult,"wrong":wrong, "file":file != null ? await MultipartFile.fromFile(file.path) : null,
       
        
     });
@@ -333,10 +333,10 @@ return res.result ;
   }
 
   /// 阿里云
-  Future<String?> postCommonOssAli ({ String? path,required XFile file}) async {
+  Future<String?> postCommonOssAli ({ String? path,XFile? file}) async {
     
     FormData formData = FormData.fromMap({ 
-      "path":path, "file": await MultipartFile.fromFile(file.path),
+      "path":path, "file":file != null ? await MultipartFile.fromFile(file.path) : null,
       
        
     });
@@ -1511,31 +1511,6 @@ this.status});
 
         id=json['id'];
 status=json['status'];
-         
-      }
-
-    } 
-    class DeviceLowBatteryProcessDto{
-      String? id;
- 
-      
-      Map<String, dynamic> toJson() {
-        final Map<String, dynamic> data = <String, dynamic>{};
-        data['id'] = id; 
-        return data;
-      }
-
-      DeviceLowBatteryProcessDto(
-        { 
-          this.id});
-
-
-
-       
-
-      DeviceLowBatteryProcessDto.fromJson(Map<String, dynamic> json) {
-
-        id=json['id'];
          
       }
 

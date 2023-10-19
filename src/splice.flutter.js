@@ -74,6 +74,10 @@ const templatefn = (name, summary, url, dioMethod = "get", resultType, urlParams
               }
               return list;
             `
+        } else {
+          return `
+          return data?.cast<${t}>();
+         `
         }
       } else if (resultType.substring(0, 6) == "IPage<") {
 
@@ -99,7 +103,6 @@ const templatefn = (name, summary, url, dioMethod = "get", resultType, urlParams
 
 
   if (urlParams.find(e => e[0] == "XFile")) {
-    console.log(diourlParam);
     isFile = true
 
     fileStr = `
@@ -319,10 +322,6 @@ export const spliceDefinitionsType = (keyname, data) => {
           description: element.description,
         });
       } else {
-        if (element?.enum?.length == 2) {
-          // console.log(element);
-          // console.log(keyname, key);
-        }
         listD.push({
           key: key,
           value: integerFc(element, keyname.substring(keyname.length - 3, keyname.length) == "Dto"),
@@ -352,7 +351,7 @@ export const spliceDefinitionsType = (keyname, data) => {
       .map(
         (e) => {
 
-          if (['int', "bool", 'String', "dynamic"].includes(e.value)) {
+          if (['int', "bool", "double", 'String', "dynamic"].includes(e.value)) {
             return `data['${e.key}'] = ${e.key};`
           } else if (e.value.substring(0, 4) == "List") {
             if (['List<int>', "List<bool>", 'List<String>'].includes(e.value)) {
@@ -393,7 +392,7 @@ export const spliceDefinitionsType = (keyname, data) => {
       .map(
         (e) => {
 
-          if (['int', "bool", 'String', "dynamic"].includes(e.value)) {
+          if (['int', "bool", "double", 'String', "dynamic"].includes(e.value)) {
             return `${e.key}=json['${e.key}'];`
           } else if (e.value.substring(0, 4) == "List") {
             if (['List<int>', "List<bool>", 'List<String>'].includes(e.value)) {
@@ -435,12 +434,7 @@ const integerFc = (element, isDot) => {
   const refstr = element['$ref']
 
 
-
   if (element.enum) {
-
-    if (!isDot && element.enum.length == 2) {
-      // console.log(element);
-    }
     type = isDot ? "int" : "MsgType"
   }
 
@@ -494,12 +488,16 @@ const integerFc = (element, isDot) => {
   }
 
   if (type == "number") {
-    type = "int";
+
+    if (format == "double") {
+      type = "double";
+    } else {
+      type = "int";
+    }
+
   }
 
 
-  // console.log(format);
-  // console.log(type);
   if (format == "binary") {
     type = "XFile"
   }
