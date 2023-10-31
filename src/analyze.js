@@ -1,19 +1,23 @@
 /*
  * @Date: 2022-10-19 11:07:26
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-12 16:48:55
+ * @LastEditTime: 2023-10-31 16:44:32
  * @FilePath: /swaggerapits/src/analyze.js
  */
 import { spliceApiFunc, spliceDefinitionsType } from "./splice.js";
-import { spliceApiFunc as FspliceApiFunc, spliceDefinitionsType as FspliceDefinitionsType } from "./splice.flutter.js";
+import {
+  spliceApiFunc as FspliceApiFunc,
+  spliceDefinitionsType as FspliceDefinitionsType,
+} from "./splice.flutter.js";
 
 import fs from "fs-extra";
+import { Tools } from "./tools.js";
 
-export const analyzeJson = (jsondata, pathUrl, config) => {
+export const analyzeJson = (jsondata, pathUrl) => {
   if (!jsondata.paths) return;
   let fileName;
   let page = "";
-
+  const config = Tools.getConfig();
   for (const key in jsondata.paths) {
     if (Object.hasOwnProperty.call(jsondata.paths, key)) {
       const element = jsondata.paths[key];
@@ -22,37 +26,37 @@ export const analyzeJson = (jsondata, pathUrl, config) => {
       }
 
       if (![...(config?.filter ?? [])].includes(key)) {
-
         switch (config?.language) {
           case "flutter":
-            page += FspliceApiFunc(key, element, config.deprecated);
+            page += FspliceApiFunc(key, element);
             break;
           default:
-            page += spliceApiFunc(key, element, config.deprecated);
+            page += spliceApiFunc(key, element);
             break;
         }
-
       }
-
-
     }
   }
   for (const key in jsondata.components.schemas) {
-
     if (Object.hasOwnProperty.call(jsondata.components.schemas, key)) {
       const element = jsondata.components.schemas[key];
+
+
+
       // console.log("key", key)
       // console.log("key", key);
-      if (key.substring(1, 2).charCodeAt() > 65 && (key.substring(1, 2).charCodeAt() < 90)) {
-
+      if (
+        key.substring(1, 2).charCodeAt(0) > 65 &&
+        key.substring(1, 2).charCodeAt(0) < 90
+      ) {
         // console.log("key", key.substring(1, 2));
         // console.log("key", key.substring(1, 2).charCodeAt());
         // if (key.substring(0, 5) == "IPage" && config?.language == 'flutter') {
         //   // console.log("key1", key, element)
         //   page += FspliceDefinitionsType(key, element);
         // }
-      } else if (!["LocalTime"].includes(key)) {
 
+      } else if (!["LocalTime"].includes(key)) {
         switch (config?.language) {
           case "flutter":
             page += FspliceDefinitionsType(key, element);
@@ -66,29 +70,29 @@ export const analyzeJson = (jsondata, pathUrl, config) => {
     }
   }
 
-  saveFile(page, "index", pathUrl, config);
+  saveFile(page, "index", pathUrl);
 };
 
-const saveFile = async (pageStr, fileName, pathUrl, config) => {
+const saveFile = async (pageStr, fileName, pathUrl) => {
+  const config = Tools.getConfig();
   let url = `${pathUrl}${fileName}`;
-  let fileSuffix = config?.language == 'flutter' ? 'dart' : 'ts';
+  let fileSuffix = config?.language == "flutter" ? "dart" : "ts";
   let page = `${config?.header.join("\n")} \n
               ${pageStr} 
               `;
 
-
   try {
-    const res = await fs.exists(url + `/index.${fileSuffix}`)
+    const res = await fs.exists(url + `/index.${fileSuffix}`);
+    console.log(res);
     if (res) {
-      fs.appendFile(`${pathUrl}${fileName}/index.${fileSuffix}`, pageStr)
+      await fs.appendFile(`${pathUrl}${fileName}/index.${fileSuffix}`, pageStr);
     } else {
-      fs.emptyDirSync(`${pathUrl}${fileName}`);
-      fs.writeFileSync(`${pathUrl}${fileName}/index.${fileSuffix}`, page);
+      await fs.emptyDirSync(`${pathUrl}${fileName}`);
+      await fs.writeFileSync(`${pathUrl}${fileName}/index.${fileSuffix}`, page);
     }
   } catch (e) {
     console.error(e);
   }
-
 
   console.log(`已生成文件:${pathUrl}${fileName}/index.${fileSuffix}`);
 };

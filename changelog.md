@@ -1,9 +1,14 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-18 14:55:24
+ * @LastEditTime: 2023-10-31 16:47:30
  * @FilePath: /swaggerapits/changelog.md
 -->
+
+### 1.1.5
+
+> 修复 ts Map 类型进行处理
+> 针对 DztccCarType 枚举类型特殊处理 (暂时)
 
 ### 1.1.4
 

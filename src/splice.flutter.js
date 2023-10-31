@@ -1,4 +1,4 @@
-
+import { Tools } from "./tools.js";
 
 
 
@@ -134,21 +134,23 @@ return res.${resultType ? 'result' : 'success'} ${isResultList ? '??[]' : ''};
 }
 
 // ${dioParam.length ? `,params:${dioParam}` : `${diourlParam.length ? `,params:${diourlParam}` : ''}`}
-export const spliceApiFunc = (url, data, deprecated = false) => {
+export const spliceApiFunc = (url, data) => {
   let pageApiFunc = "";
   for (const key in data) {
 
     if (Object.hasOwnProperty.call(data, key)) {
       const element = data[key];
 
-      pageApiFunc += spliceApiFuncResult(url, key, element, deprecated);
+      pageApiFunc += spliceApiFuncResult(url, key, element);
     }
   }
   return pageApiFunc;
 };
 
 
-const spliceApiFuncResult = (url, type, data, deprecated) => {
+const spliceApiFuncResult = (url, type, data) => {
+
+
   const funcName = `${type}${url
     .replace(/\//g, "_")
     .replace(/\-/g, "_")
@@ -163,8 +165,8 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
 
   const params = schemaParamsType(data)
 
-
-  if (!deprecated && data.deprecated) {
+  const config = Tools.getConfig();
+  if (!config.deprecated && data.deprecated) {
     return ""
   }
 
@@ -301,6 +303,11 @@ export const spliceApiResultType = (data) => {
   if (types.substring(1) == "Boolean") {
     return "bool"
   }
+  if (types.substring(1) == "Text") {
+    console.log(types);
+  }
+
+
   return types.substring(1);
 };
 
@@ -433,7 +440,6 @@ const integerFc = (element, isDot) => {
   const items = element.items;
   const refstr = element['$ref']
 
-
   if (element.enum) {
     type = isDot ? "int" : "MsgType"
   }
@@ -452,8 +458,14 @@ const integerFc = (element, isDot) => {
     }
     if (items["$ref"]) {
       const ref = (items["$ref"]).split("/")
+
+      const t = ref[ref.length - 1];
+
+      // console.log(type, ref);
+
       type = `List<${ref[ref.length - 1]}>`
     } else {
+
       type = `List<${fx}>`
     }
 
@@ -501,6 +513,8 @@ const integerFc = (element, isDot) => {
   if (format == "binary") {
     type = "XFile"
   }
+
+
   return type;
 };
 

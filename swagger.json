@@ -1,10 +1,9 @@
 {
-    "url": "",
-    "suffix": "/api-patrol",
-    "output": "lib/api",
-    "language": "flutter",
+    "url": "http://da-zhou.host",
+    "suffix": "/api-admin",
+    "output": "lib/api/admin",
     "header": [
-        "import 'package:zhtc_blue/tools/dio_util/dio_util.dart';",
-        "import 'package:zhtc_blue/app/data/models/common_model.dart';"
+        "import { IPage, Paging, MsgType } from '@/types/index';",
+        "import { server } from '@/utils/axios/request';"
     ]
 }

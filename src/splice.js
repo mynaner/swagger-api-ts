@@ -1,26 +1,30 @@
-import { log } from "console";
+import { type } from "os";
+import { Tools } from "./tools.js";
+
 
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-18 14:39:57
+ * @LastEditTime: 2023-10-31 16:25:01
  * @FilePath: /swaggerapits/src/splice.js
  */
-export const spliceApiFunc = (url, data, deprecated = false) => {
+export const spliceApiFunc = (url, data,) => {
   let pageApiFunc = "";
   for (const key in data) {
 
     if (Object.hasOwnProperty.call(data, key)) {
       const element = data[key];
 
-      pageApiFunc += spliceApiFuncResult(url, key, element, deprecated);
+      pageApiFunc += spliceApiFuncResult(url, key, element,);
     }
   }
   return pageApiFunc;
 };
 
 
-const spliceApiFuncResult = (url, type, data, deprecated) => {
+const spliceApiFuncResult = (url, type, data,) => {
+
+
   const funcName = `${type}${url
     .replace(/\//g, "_")
     .replace(/\-/g, "_")
@@ -32,13 +36,14 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
 
 
   const params = schemaParamsType(data)
-
-  if (!deprecated && data.deprecated) {
+  const config = Tools.getConfig();
+  if (!config.deprecated && data.deprecated) {
     return ""
   }
+
+
   /// 判断是否是导出接口 
   const resultType = (funcName.substring(funcName.length - 6).toLowerCase().includes("export") || data.summary?.includes("导出")) ? "ArrayBuffer" : spliceApiResultType(data.responses["200"]);
-
 
   const isPaging = resultType?.substring(0, 5) == "IPage";
 
@@ -110,7 +115,7 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
 
     let str = [];
     if (d) str.push("data")
-    if (p.length) str.push("params")
+    if (p.length || isPaging) str.push("params")
     if (resultType == "ArrayBuffer") str.push("responseType: 'arraybuffer'")
     return `{${str.join(',')}}`;
   }
@@ -123,15 +128,14 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
     const d = params.find(e => e.name == "vo");
     const p = paramsList.filter(e => e.name != "vo");
     if (d) {
-      str += `data:${d.type},`
+      str += `data?:${d.type},`
     }
     if (p.length || isPaging) {
 
-      str += `params:${funcName.split("_").map(e => titleCase(e)).join("")}`
+      str += `params?:${funcName.split("_").map(e => titleCase(e)).join("")}`
     }
     return str;
   }
-
   return `
    ${paramsInterface()}
   /** 
@@ -149,7 +153,7 @@ const spliceApiFuncResult = (url, type, data, deprecated) => {
   export const ${funcName} = async(${paramsD()}) => {
     ${havFileStr}
   const res = await server.${type.toUpperCase()
-    }${resultType ? `<${resultType}>` : ""} (\`${apiUrl.replace(/\${/g, "${params.")}\`,${axiosConfig()} );
+    }${resultType ? `<${resultType}>` : ""} (\`${apiUrl.replace(/\${/g, "${params?.")}\`,${axiosConfig()} );
 
         ${resultType === 'ArrayBuffer' ? `
         if (res instanceof ArrayBuffer) {
@@ -206,20 +210,29 @@ export const schemaParamsType = (data) => {
  */
 export const spliceApiResultType = (data) => {
   if (!data.content) return;
+
+
   const schema = data.content['*/*'].schema['$ref']?.split("/")
 
   if (data.content['*/*'].schema?.type) {
+
     if (data.content['*/*'].schema?.type == "object") {
       return "any";
     }
     const schema = data.content['*/*'].schema.items['$ref']?.split("/") ?? data.content['*/*'].schema.items
+
+
+
     if (schema.format == "byte") {
       return "ArrayBuffer"
     }
     const types = schema[schema.length - 1]
     if (data.content['*/*'].schema?.type == "array") {
+
       return `${types}[]`;
     }
+
+
   }
 
   const types = schema[schema.length - 1]
@@ -238,18 +251,20 @@ export const spliceApiResultType = (data) => {
   if (types.substring(1, 10) == "MapString") {
     const str = types.substring(10);
     if (str.substring(0, 4) == "List") {
-      return `MapString<${str.substring(4)}[]>`
+      return `{[key:string]:${str.substring(4)}[]}`
     }
 
-    return `MapString<${types.substring(10)}>`
+    return `{[key:string]:${str}}`
   }
 
 
   if (types.substring(1, 4) == "Map") {
 
+
+    return `{[key:string]:any}`
   }
   if (types.substring(1, 13) == "MapLocalDate") {
-    return `MapString<${types.substring(13)}>`
+    return `{[key:string]:${types.substring(13)}}`
   }
 
   /// 没有返回参数的
@@ -264,12 +279,20 @@ export const spliceApiResultType = (data) => {
     if (types.substring(5) == 'Long') {
       return "string[]";
     }
+
+    if ("DztccCarType" == types.substring(5)) {
+      return "MsgType[]"
+    }
     return `${types.substring(5)}[]`;
   }
 
   if (types.substring(1, 6) == "IPage") {
     return `IPage<${types.substring(6)}>`;
   }
+  if (types.substring(1) == "SetString") {
+    return "string[]";
+  }
+
 
 
   return types.substring(1);
@@ -282,6 +305,7 @@ export const spliceDefinitionsType = (keyname, data) => {
   for (const key in data.properties) {
     if (Object.hasOwnProperty.call(data.properties, key)) {
       const element = data.properties[key];
+
       listD.push({
         key: key,
         value: integerFc(element, keyname.substring(keyname.length - 3, keyname.length) == "Dto"),
@@ -304,12 +328,13 @@ export const spliceDefinitionsType = (keyname, data) => {
 
 const integerFc = (element, isDot) => {
 
+
   const type = element.type;
   const format = element.format;
   const items = element.items;
   const refstr = element['$ref']
 
-
+  // console.log(element);
   if (element.enum) {
     return isDot ? "number" : "MsgType"
   }
