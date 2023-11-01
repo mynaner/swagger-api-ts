@@ -1,9 +1,13 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-31 16:47:30
+ * @LastEditTime: 2023-11-01 09:45:43
  * @FilePath: /swaggerapits/changelog.md
 -->
+
+### 1.1.51
+
+> bug 修复
 
 ### 1.1.5
 
