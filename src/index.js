@@ -29,15 +29,16 @@ http.get(
       } else if (json.url) {
         getOhterUrls(json.url);
       } else {
-        console.log(json);
         throw "没有地址";
       }
+      let fileSuffix = config?.language == "flutter" ? "dart" : "ts";
+      console.log(`已生成文件:${pathUrl}index/index.${fileSuffix}`);
     });
   }
 );
 
 const getOhterUrls = (url) => {
-  console.log(Base_url + url);
+  console.log("加载配置文件" + Base_url + url);
   http.get(Base_url + url, function (res) {
     // 分段返回的 自己拼接
     let html = "";

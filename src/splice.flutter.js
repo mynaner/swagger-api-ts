@@ -303,9 +303,9 @@ export const spliceApiResultType = (data) => {
   if (types.substring(1) == "Boolean") {
     return "bool"
   }
-  if (types.substring(1) == "Text") {
-    console.log(types);
-  }
+  // if (types.substring(1) == "Text") {
+  //   console.log(types);
+  // }
 
 
   return types.substring(1);

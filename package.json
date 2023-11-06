@@ -1,6 +1,6 @@
 {
   "name": "swagger-api-ts",
-  "version": "1.1.51",
+  "version": "1.1.52",
   "type": "module",
   "description": "",
   "main": "index.ts",

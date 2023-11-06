@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-10-19 11:07:26
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-31 16:44:32
+ * @LastEditTime: 2023-11-06 10:07:02
  * @FilePath: /swaggerapits/src/analyze.js
  */
 import { spliceApiFunc, spliceDefinitionsType } from "./splice.js";
@@ -83,7 +83,7 @@ const saveFile = async (pageStr, fileName, pathUrl) => {
 
   try {
     const res = await fs.exists(url + `/index.${fileSuffix}`);
-    console.log(res);
+
     if (res) {
       await fs.appendFile(`${pathUrl}${fileName}/index.${fileSuffix}`, pageStr);
     } else {
@@ -94,5 +94,5 @@ const saveFile = async (pageStr, fileName, pathUrl) => {
     console.error(e);
   }
 
-  console.log(`已生成文件:${pathUrl}${fileName}/index.${fileSuffix}`);
+
 };
