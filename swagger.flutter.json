@@ -1,10 +1,12 @@
 {
-    "url": "",
-    "suffix": "/api-patrol",
-    "output": "lib/api",
+    "url": "http://da-zhou.host",
+    "suffix": "/api-pda",
+    "output": "lib/api/admin",
     "language": "flutter",
     "header": [
-        "import 'package:zhtc_blue/tools/dio_util/dio_util.dart';",
-        "import 'package:zhtc_blue/app/data/models/common_model.dart';"
+        "import 'package:dio/dio.dart';",
+        "import 'package:image_picker/image_picker.dart';",
+        "import 'package:zhtc_pda_app/app/data/models/common_model.dart';",
+        "import 'package:zhtc_pda_app/tools/dio_util/dio_util.dart';"
     ]
 }

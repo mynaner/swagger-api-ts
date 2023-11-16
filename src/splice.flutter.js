@@ -101,17 +101,41 @@ const templatefn = (name, summary, url, dioMethod = "get", resultType, urlParams
   let fileStr = ""
 
 
-
-  if (urlParams.find(e => e[0] == "XFile")) {
+  const up = urlParams.find(e => e[0] == "XFile" || e[0] == "List<XFile>");
+  if (up) {
     isFile = true
+    console.log(diourlParam);
 
+
+    let dp = "null";
+    if (up[0] == "XFile") {
+      dp = `
+      MultipartFile? fd;
+      if(file!=null){
+        fd = await MultipartFile.fromFile(${up[1]}.path);
+        } 
+      `
+    } else if (up[0] == "List<XFile>") {
+      dp = `
+      List<MultipartFile> fd = [];
+
+      for (var element in ${up[1]} ?? []) {
+        fd.add(await MultipartFile.fromFile(element.path));
+      }
+      `
+    }
+    console.log(dp);
+    console.log("------");
     fileStr = `
+    ${dp}
     FormData formData = FormData.fromMap({ 
-      ${diourlParam.replace(`"file":file`, ` "file":file != null ? await MultipartFile.fromFile(file.path) : null,`)}
+      "${up[1]}":fd,
       ${params ? "...params.toJson()" : ''}
       ${dioData ? "...data.toJson()" : ''} 
     });
     `
+    // console.log(fileStr);
+    console.log(listParams);
     diourlParam = "";
   }
 
@@ -195,16 +219,20 @@ const spliceApiFuncResult = (url, type, data) => {
 export const schemaParamsType = (data) => {
   const params = [];
 
-
   data.parameters?.forEach(element => {
+
+
     if (element.schema['$ref']) {
       const schema = element.schema['$ref'].split("/");
       params.push({ name: "dot", type: schema[schema.length - 1] })
+
     } else {
       params.push({
         name: element.name,
-        type: integerFc({ type: element.schema.type, format: element.schema.format }, true)
+        type: integerFc({ type: element.schema.type, format: element?.schema?.format ?? element?.schema?.items?.format }, true)
       })
+
+
     }
   });
   if (data.requestBody) {
@@ -436,9 +464,11 @@ export const spliceDefinitionsType = (keyname, data) => {
 
 const integerFc = (element, isDot) => {
   let type = element.type;
+
   const format = element.format;
   const items = element.items;
   const refstr = element['$ref']
+
 
   if (element.enum) {
     type = isDot ? "int" : "MsgType"
@@ -472,8 +502,10 @@ const integerFc = (element, isDot) => {
 
   }
   if (type == "array" && !items) {
+
     type = "List<String>"
   }
+
 
   if (["long"].includes(type)) {
     type = "String"
@@ -511,9 +543,13 @@ const integerFc = (element, isDot) => {
 
 
   if (format == "binary") {
-    type = "XFile"
-  }
+    if (type == "List<String>") {
+      type = "List<XFile>"
+    } else {
+      type = "XFile"
+    }
 
+  }
 
   return type;
 };

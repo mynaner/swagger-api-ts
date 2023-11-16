@@ -1,11 +1,12 @@
 import { type } from "os";
 import { Tools } from "./tools.js";
+import { log } from "console";
 
 
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-10-31 16:25:01
+ * @LastEditTime: 2023-11-13 09:01:57
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
@@ -238,6 +239,8 @@ export const spliceApiResultType = (data) => {
   const types = schema[schema.length - 1]
 
 
+
+
   if (types[0] != "R") {
     return types
   }
@@ -294,26 +297,27 @@ export const spliceApiResultType = (data) => {
   }
 
 
-
   return types.substring(1);
 };
 
 // ${typOjb[key].map((e) => `${e.key}:${e.value};\n`).join("")}
 export const spliceDefinitionsType = (keyname, data) => {
   const listD = [];
-
+  // console.log(keyname);
   for (const key in data.properties) {
     if (Object.hasOwnProperty.call(data.properties, key)) {
       const element = data.properties[key];
-
       listD.push({
         key: key,
-        value: integerFc(element, keyname.substring(keyname.length - 3, keyname.length) == "Dto"),
+        value: integerFc(element, keyname.substring(keyname.length - 3) == "Dto"),
         description: element.description,
       });
 
     }
   }
+
+
+
   return ` 
     export interface ${keyname}{
     ${listD
@@ -328,13 +332,21 @@ export const spliceDefinitionsType = (keyname, data) => {
 
 const integerFc = (element, isDot) => {
 
-
   const type = element.type;
   const format = element.format;
   const items = element.items;
   const refstr = element['$ref']
 
-  // console.log(element);
+  if (element.additionalProperties) {
+
+    let type = integerFc(element.additionalProperties);
+
+    if (element.additionalProperties?.properties?.andIncrement) {
+      type = 'number'
+    }
+    return `{[key:string]:${type}}`;
+  }
+
   if (element.enum) {
     return isDot ? "number" : "MsgType"
   }
@@ -371,8 +383,11 @@ const integerFc = (element, isDot) => {
     if (ref[ref.length - 1] == "LocalTime") {
       return "string"
     }
+
     return `${ref[ref.length - 1]}`
   }
+
+
   return type;
 };
 

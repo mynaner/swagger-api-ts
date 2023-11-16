@@ -1,9 +1,13 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-11-06 10:15:26
+ * @LastEditTime: 2023-11-07 10:14:46
  * @FilePath: /swaggerapits/changelog.md
 -->
+
+### 1.1.53
+
+> 新增 flutter 多文件上传的支持
 
 ### 1.1.52
 

@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-11-06 10:15:48
+ * @LastEditTime: 2023-11-07 10:24:35
  * @FilePath: /swaggerapits/README.md
 -->
 
@@ -16,7 +16,7 @@
 ### 本地发布
 
 ```
-npm pack && sudo npm install swagger-api-ts-1.1.52.tgz -g
+npm pack && sudo npm install swagger-api-ts-1.1.53.tgz -g
 ```
 
 ### 命令参数
