@@ -6,7 +6,7 @@ import { log } from "console";
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-11-13 09:01:57
+ * @LastEditTime: 2023-11-16 16:27:40
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
@@ -246,7 +246,7 @@ export const spliceApiResultType = (data) => {
   }
 
 
-  if (types.substring(1, 5) == "Long") {
+  if (types.substring(1) == "Long" || types.substring(1) == "String") {
     return "string"
   }
 
@@ -279,7 +279,7 @@ export const spliceApiResultType = (data) => {
   }
   /// 返回 List 参数的
   if (types.substring(1, 5) == "List") {
-    if (types.substring(5) == 'Long') {
+    if (types.substring(5) == 'Long' || types.substring(5) == 'String') {
       return "string[]";
     }
 

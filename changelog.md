@@ -1,9 +1,13 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-11-07 10:14:46
+ * @LastEditTime: 2023-11-16 16:30:43
  * @FilePath: /swaggerapits/changelog.md
 -->
+
+### 1.1.54
+
+> 修复 ts bug 部分 String 未转化为 string
 
 ### 1.1.53
 

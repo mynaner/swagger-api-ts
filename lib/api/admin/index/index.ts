@@ -2,6 +2,457 @@ import { IPage, Paging, MsgType } from '@/types/index';
 import { server } from '@/utils/axios/request'; 
 
               
+   export interface GetCouponmodel  extends Paging {
+        name?:string;
+      
+      }
+  /** 
+   * @description:  分页查询停车券
+   * @param {GetCouponmodel} params? 
+   * @return {*}
+   */
+  export const get_couponModel = async(params?:GetCouponmodel) => {
+    
+  const res = await server.GET<IPage<CouponModelVo>> (`/couponModel`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface PutCouponmodel  extends CouponModelDto {
+        
+      
+      }
+  /** 
+   * @description:  修改停车券模板
+   * @param {CouponModelDto} data?,  
+   * @return {*}
+   */
+  export const put_couponModel = async(data?:CouponModelDto,) => {
+    
+  const res = await server.PUT<Boolean> (`/couponModel`,{data} );
+
+        return res?.result; 
+        }
+    
+   export interface PostCouponmodel  extends CouponModelDto {
+        
+      
+      }
+  /** 
+   * @description:  添加停车券模板
+   * @param {CouponModelDto} data?,  
+   * @return {*}
+   */
+  export const post_couponModel = async(data?:CouponModelDto,) => {
+    
+  const res = await server.POST (`/couponModel`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostCouponRecordsexport  extends SearchCouponRecordDto {
+        
+      
+      }
+  /** 
+   * @description:  赠券记录
+   * @param {PostCouponRecordsexport} params? 
+   * @return {*}
+   */
+  export const post_coupon_recordsExport = async(params?:PostCouponRecordsexport) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/coupon/recordsExport`,{params,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostCouponIssue  extends CouponIssueDto {
+        
+      
+      }
+  /** 
+   * @description:  赠送优惠券
+   * @param {CouponIssueDto} data?,  
+   * @return {*}
+   */
+  export const post_coupon_issue = async(data?:CouponIssueDto,) => {
+    
+  const res = await server.POST (`/coupon/issue`,{data} );
+
+        return res?.success; 
+        }
+    
+   
+  /** 
+   * @description:  查询全部停车券模板
+     
+   * @return {*}
+   */
+  export const get_couponModel_list = async() => {
+    
+  const res = await server.GET<CouponModelVo[]> (`/couponModel/list`, );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetCouponUsers  extends SearchCouponUserDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  赠送用户列表
+   * @param {GetCouponUsers} params? 
+   * @return {*}
+   */
+  export const get_coupon_users = async(params?:GetCouponUsers) => {
+    
+  const res = await server.GET<IPage<CouponUserVo>> (`/coupon/users`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetCouponRecords  extends SearchCouponRecordDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  赠券记录
+   * @param {GetCouponRecords} params? 
+   * @return {*}
+   */
+  export const get_coupon_records = async(params?:GetCouponRecords) => {
+    
+  const res = await server.GET<IPage<CouponRecordVo>> (`/coupon/records`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface DeleteCouponmodelId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除停车券模板
+   * @param {DeleteCouponmodelId} params? 
+   * @return {*}
+   */
+  export const delete_couponModel_id = async(params?:DeleteCouponmodelId) => {
+    
+  const res = await server.DELETE (`/couponModel/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+     
+    export interface CouponModelDto{
+     /** id */
+ id?:string;
+ /** 名称 */
+ name?:string;
+ /** 说明 */
+ remark?:string;
+ /** 优惠类型 */
+ type?:number;
+
+    } 
+    export interface SearchCouponRecordDto{
+     /** 开始日期 */
+ beginDate?:string;
+ /** 结束日期 */
+ endDate?:string;
+ /** 手机号 */
+ phone?:string;
+
+    } 
+    export interface CouponIssueDto{
+     /** app用户id */
+ appUserId?:string;
+ /** 限制开始日期 */
+ beginDate?:string;
+ /** 限制结束日期 */
+ endDate?:string;
+ /** 模板id */
+ modelId?:string;
+ /** 优惠券金额 */
+ money?:number;
+  remark?:string;
+
+    } 
+    export interface CouponModelVo{
+      id?:string;
+ /** 优惠券名称 */
+ name?:string;
+ /** 添加时间 */
+ createdAt?:string;
+ /** 发放数量 */
+ issueNum?:string;
+ /** 说明 */
+ remark?:string;
+ /** 优惠券类型 */
+ type?:MsgType;
+
+    } 
+    export interface SearchCouponUserDto{
+     /** 扫码日期 */
+ bindPhoneAt?:string;
+ /** 扫码有效分钟数 */
+ minutes?:number;
+ /** 手机号 */
+ phone?:string;
+
+    } 
+    export interface CouponUserVo{
+      appUserId?:string;
+  newUser?:boolean;
+ /** 手机号 */
+ phone?:string;
+ /** 注册时间 */
+ createdAt?:string;
+ /** 扫码时间 */
+ bindPhoneAt?:string;
+ /** 优惠券数量 */
+ couponNum?:string;
+
+    } 
+    export interface CouponRecordVo{
+     /** 手机号 */
+ phone?:string;
+ /** 赠券时间 */
+ createdAt?:string;
+ /** 优惠券名称 */
+ name?:string;
+ /** 金额，元 */
+ money?:number;
+ /** 赠券开始时间 */
+ beginDate?:string;
+ /** 赠券结束时间 */
+ endDate?:string;
+  validDateStr?:string;
+ /** 备注 */
+ remark?:string;
+ /** 操作人 */
+ operater?:string;
+ /** 模板类型 */
+ modelType?:MsgType;
+
+    } 
+              
+   export interface PostCommonOssAli   {
+        file?:string;path?:string;
+      
+      }
+  /** 
+   * @description:  阿里云
+   * @param {PostCommonOssAli} params? 
+   * @return {*}
+   */
+  export const post_common_oss_ali = async(params?:PostCommonOssAli) => {
+    
+  const res = await server.POST<string> (`/common/oss/ali`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetCommonSms   {
+        type?:string;length?:number;
+      
+      }
+  /** 
+   * @description:  获取验证码
+   * @param {GetCommonSms} params? 
+   * @return {*}
+   */
+  export const get_common_sms = async(params?:GetCommonSms) => {
+    
+  const res = await server.GET (`/common/sms`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface GetChartZhifu  extends TimeLocalDate {
+        
+      
+      }
+  /** 
+   * @description:  支付数据
+   * @param {GetChartZhifu} params? 
+   * @return {*}
+   */
+  export const get_chart_zhifu = async(params?:GetChartZhifu) => {
+    
+  const res = await server.GET<ChartZhifu> (`/chart/zhifu`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetChartTopUp  extends TimeLocalDate {
+        
+      
+      }
+  /** 
+   * @description:  充值数据
+   * @param {GetChartTopUp} params? 
+   * @return {*}
+   */
+  export const get_chart_top_up = async(params?:GetChartTopUp) => {
+    
+  const res = await server.GET<ChartTopUp> (`/chart/top-up`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetChartTime   {
+        day?:number;
+      
+      }
+  /** 
+   * @description:  停车时长 day 天数
+   * @param {GetChartTime} params? 
+   * @return {*}
+   */
+  export const get_chart_time = async(params?:GetChartTime) => {
+    
+  const res = await server.GET<ChartTc> (`/chart/time`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetChartPlaceZhouzhuan   {
+        day?:number;
+      
+      }
+  /** 
+   * @description:  停车周转率 day 天数
+   * @param {GetChartPlaceZhouzhuan} params? 
+   * @return {*}
+   */
+  export const get_chart_place_zhouzhuan = async(params?:GetChartPlaceZhouzhuan) => {
+    
+  const res = await server.GET<ChartZhouZhuan[]> (`/chart/place-zhouzhuan`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetChartPlaceRate  extends TimeLocalDate {
+        
+      
+      }
+  /** 
+   * @description:  停车利用率
+   * @param {GetChartPlaceRate} params? 
+   * @return {*}
+   */
+  export const get_chart_place_rate = async(params?:GetChartPlaceRate) => {
+    
+  const res = await server.GET<ChartPlaceRate[]> (`/chart/place-rate`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetChartMoney  extends TimeLocalDate {
+        
+      
+      }
+  /** 
+   * @description:  财务数据
+   * @param {GetChartMoney} params? 
+   * @return {*}
+   */
+  export const get_chart_money = async(params?:GetChartMoney) => {
+    
+  const res = await server.GET<ChartMoneyVo> (`/chart/money`,{params} );
+
+        return res?.result; 
+        }
+     
+    export interface TimeLocalDate{
+      date?:string;
+
+    } 
+    export interface ChartZhifu{
+      wechat?:number;
+  ali?:number;
+ /** 余额 */
+ wallet?:number;
+ /** 现金 */
+ cash?:number;
+
+    } 
+    export interface ChartTopUp{
+      wechat?:number;
+  ali?:number;
+  app?:number;
+
+    } 
+    export interface ChartTc{
+      count1?:number;
+  count2?:number;
+  count3?:number;
+  count4?:number;
+  count5?:number;
+
+    } 
+    export interface ChartZhouZhuan{
+      time?:string;
+  rate?:number;
+
+    } 
+    export interface ChartPlaceRate{
+      time?:number;
+  rate?:number;
+
+    } 
+    export interface ChartMoneyItem{
+      date?:string;
+ /** 原始收入 */
+ originalIncome?:number;
+ /** 应收 */
+ generalIncome?:number;
+ /** 实际到账 */
+ actualIncome?:number;
+ /** 已收 */
+ received?:number;
+ /** 欠费 */
+ arrears?:number;
+ /** 代收 */
+ takeReceived?:number;
+  balancePay?:number;
+
+    } 
+    export interface ChartMoneyVo{
+     /** 原始收入 */
+ originalIncome?:number;
+  original1?:number;
+  original2?:number;
+ /** 应收 */
+ generalIncome?:number;
+  general1?:number;
+  general2?:number;
+ /** 实际到账 */
+ actualIncome?:number;
+  actual1?:number;
+  actual2?:number;
+ /** 已收 */
+ received?:number;
+  received1?:number;
+  received2?:number;
+ /** 欠费 */
+ arrears?:number;
+  arrears1?:number;
+  arrears2?:number;
+ /** 代收 */
+ takeReceived?:number;
+  takeReceived1?:number;
+  takeReceived2?:number;
+  balancePay?:number;
+  items?:ChartMoneyItem[];
+
+    }
    
   /** 
    * @description:  临时需求
@@ -223,8 +674,7 @@ import { server } from '@/utils/axios/request';
       lotId?:string;
   used?:number;
 
-    } 
-              
+    }
    export interface GetAppsPdaApk extends Paging{}
   /** 
    * @description:  PDA的版本历史-带分页
@@ -307,126 +757,245 @@ import { server } from '@/utils/axios/request';
   createdAt?:string;
 
     }
-   export interface GetInvoices  extends InvoiceSearch,Paging {
+   export interface GetChargingShops  extends ChargingShopSearchDto,Paging {
         
       
       }
   /** 
-   * @description:  发票列表
-   * @param {GetInvoices} params? 
+   * @description:  充电站-带分页
+   * @param {GetChargingShops} params? 
    * @return {*}
    */
-  export const get_invoices = async(params?:GetInvoices) => {
+  export const get_charging_shops = async(params?:GetChargingShops) => {
     
-  const res = await server.GET<IPage<Invoice>> (`/invoices`,{params} );
+  const res = await server.GET<IPage<ChargingShopVo>> (`/charging-shops`,{params} );
 
         return res?.result; 
         }
     
-   export interface PostInvoices  extends InvoiceDto {
+   export interface PutChargingShops  extends ChargingShopDto {
         
       
       }
   /** 
-   * @description:  开票
-   * @param {InvoiceDto} data?,  
+   * @description:  更新充电站
+   * @param {ChargingShopDto} data?,  
    * @return {*}
    */
-  export const post_invoices = async(data?:InvoiceDto,) => {
+  export const put_charging_shops = async(data?:ChargingShopDto,) => {
     
-  const res = await server.POST (`/invoices`,{data} );
+  const res = await server.PUT (`/charging-shops`,{data} );
 
         return res?.success; 
         }
     
-   export interface PostInvoicesIdRed   {
+   export interface PostChargingShops  extends ChargingShopDto {
+        
+      
+      }
+  /** 
+   * @description:  添加充电站
+   * @param {ChargingShopDto} data?,  
+   * @return {*}
+   */
+  export const post_charging_shops = async(data?:ChargingShopDto,) => {
+    
+  const res = await server.POST (`/charging-shops`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface GetChargingPoints  extends ChargingPointSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  充电桩-带分页
+   * @param {GetChargingPoints} params? 
+   * @return {*}
+   */
+  export const get_charging_points = async(params?:GetChargingPoints) => {
+    
+  const res = await server.GET<IPage<ChargingPointVo>> (`/charging-points`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface PutChargingPoints  extends ChargingPointDto {
+        
+      
+      }
+  /** 
+   * @description:  更新充电桩
+   * @param {ChargingPointDto} data?,  
+   * @return {*}
+   */
+  export const put_charging_points = async(data?:ChargingPointDto,) => {
+    
+  const res = await server.PUT (`/charging-points`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostChargingPoints  extends ChargingPointDto {
+        
+      
+      }
+  /** 
+   * @description:  添加充电桩
+   * @param {ChargingPointDto} data?,  
+   * @return {*}
+   */
+  export const post_charging_points = async(data?:ChargingPointDto,) => {
+    
+  const res = await server.POST (`/charging-points`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface GetChargingShopsIdPoints   {
         id?:string;
       
       }
   /** 
-   * @description:  发票红冲
-   * @param {PostInvoicesIdRed} params? 
+   * @description:  某充电站下所有充电桩
+   * @param {GetChargingShopsIdPoints} params? 
    * @return {*}
    */
-  export const post_invoices_id_red = async(params?:PostInvoicesIdRed) => {
+  export const get_charging_shops_id_points = async(params?:GetChargingShopsIdPoints) => {
     
-  const res = await server.POST (`/invoices/${params?.id}/red`,{params} );
+  const res = await server.GET<ChargingPoint[]> (`/charging-shops/${params?.id}/points`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface DeleteChargingShopsId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除充电站
+   * @param {DeleteChargingShopsId} params? 
+   * @return {*}
+   */
+  export const delete_charging_shops_id = async(params?:DeleteChargingShopsId) => {
+    
+  const res = await server.DELETE (`/charging-shops/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteChargingPointsId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除充电桩
+   * @param {DeleteChargingPointsId} params? 
+   * @return {*}
+   */
+  export const delete_charging_points_id = async(params?:DeleteChargingPointsId) => {
+    
+  const res = await server.DELETE (`/charging-points/${params?.id}`,{params} );
 
         return res?.success; 
         }
      
-    export interface InvoiceDto{
-     /** 方式一:订单ID */
- orderIds?:string[];
- /** 方式二: 车牌号 通常只用于客服接口开发 */
- plateNumber?:string;
- /** 1个人 2企业 */
- type?:number;
- /** 个人姓名或企业名称 */
- name?:string;
- /** 邮件 */
- email?:string;
- /** 税号 企业的时候必填 */
- taxNum?:string;
- /** 公司地址 */
- companyAddress?:string;
- /** 公司电话 */
- companyPhone?:string;
- /** 银行名称 */
- bankName?:string;
- /** 银行账户 */
- bankAccount?:string;
- /** 备注 */
- remark?:string;
- /** 开票验证码 */
- code?:string;
- /** 开票类型 1路边 2停车场 3路边包月 4停车场包月 默认1 */
- remoteType?:number;
- /** 开具发票种类。81：电子发票（增值税专用发票）82：电子发票（普通发票） */
- invoiceIssueKindCode?:string;
- /** 接口开票-开始日期 */
- from?:string;
- /** 接口开票-截至日期 */
- to?:string;
-
-    } 
-    export interface InvoiceSearch{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
- /** 购买方 */
- buyer?:string;
- /** 开票地址 */
- email?:string;
-
-    } 
-    export interface Invoice{
+    export interface ChargingShopDto{
       id?:string;
-  appUserId?:string;
-  money?:number;
-  email?:string;
-  titleJson?:InvoiceTitleJson;
-  type?:number;
-  blue?:string;
-  blueNotice?:string;
-  red?:string;
-  redNotice?:string;
-  status?:MsgType;
-  pdfUrl?:string;
+ /** 名称 */
+ name?:string;
+ /** 编号 */
+ number?:string;
+ /** 区域 */
+ area?:string;
+ /** 地址 */
+ address?:string;
+ /** 运营商 */
+ operator?:string;
+ /** 状态 */
+ status?:string;
+
+    } 
+    export interface ChargingPointDto{
+      id?:string;
+ /** 充电站ID */
+ shopId?:string;
+ /** 名称 */
+ name?:string;
+ /** 编号 */
+ number?:string;
+ /** 状态 */
+ status?:boolean;
+
+    } 
+    export interface ChargingShopSearchDto{
+     /** 名称 */
+ name?:string;
+ /** 编号 */
+ number?:string;
+ /** 区域 */
+ area?:string;
+ /** 地质 */
+ address?:string;
+ /** 运营商 */
+ operator?:string;
+ /** 状态 */
+ status?:boolean;
+
+    } 
+    export interface ChargingShopVo{
+      id?:string;
+  createdAt?:string;
+  updatedAt?:string;
+ /** 名称 */
+ name?:string;
+ /** 编号 */
+ number?:string;
+ /** 区域 */
+ area?:string;
+ /** 地址 */
+ address?:string;
+ /** 运营商 */
+ operator?:string;
+  total?:number;
+  status?:boolean;
+
+    } 
+    export interface ChargingPoint{
+      id?:string;
+  shopId?:string;
+  name?:string;
+  number?:string;
+  status?:boolean;
   createdAt?:string;
   updatedAt?:string;
   deleted?:boolean;
 
     } 
-    export interface InvoiceTitleJson{
-      type?:number;
-  name?:string;
-  taxNum?:string;
-  companyAddress?:string;
-  companyPhone?:string;
-  bankName?:string;
-  bankAccount?:string;
+    export interface ChargingPointSearchDto{
+     /** 充电站ID */
+ shopId?:string;
+ /** 名称 */
+ name?:string;
+ /** 编号 */
+ number?:string;
+ /** 状态 */
+ status?:boolean;
+
+    } 
+    export interface ChargingPointVo{
+      id?:string;
+  createdAt?:string;
+  updatedAt?:string;
+ /** 充电站ID */
+ shopId?:string;
+ /** 名称 */
+ name?:string;
+ /** 编号 */
+ number?:string;
+ /** 状态 */
+ status?:boolean;
 
     }
    export interface PutAdPositionStatusId   {
@@ -641,6 +1210,153 @@ import { server } from '@/utils/axios/request';
  /** 有效结束 */
  endAt?:string;
   sort?:number;
+
+    }
+   export interface PutSystemProfileResetpass  extends UserPasswordDto {
+        
+      
+      }
+  /** 
+   * @description:  用户更新密码
+   * @param {UserPasswordDto} data?,  
+   * @return {*}
+   */
+  export const put_system_profile_resetPass = async(data?:UserPasswordDto,) => {
+    
+  const res = await server.PUT (`/system/profile/resetPass`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostSystemResetloginpass  extends ResetLoginPassDto {
+        
+      
+      }
+  /** 
+   * @description:  修改登录密码
+   * @param {ResetLoginPassDto} data?,  
+   * @return {*}
+   */
+  export const post_system_resetLoginPass = async(data?:ResetLoginPassDto,) => {
+    
+  const res = await server.POST (`/system/resetLoginPass`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostSystemLogin  extends AdminLoginDto {
+        
+      
+      }
+  /** 
+   * @description:  登录
+   * @param {AdminLoginDto} data?,  
+   * @return {*}
+   */
+  export const post_system_login = async(data?:AdminLoginDto,) => {
+    
+  const res = await server.POST<LoginResult> (`/system/login`,{data} );
+
+        return res?.result; 
+        }
+    
+   export interface GetSystemSms   {
+        phone?:string;
+      
+      }
+  /** 
+   * @description:  获取验证码
+   * @param {GetSystemSms} params? 
+   * @return {*}
+   */
+  export const get_system_sms = async(params?:GetSystemSms) => {
+    
+  const res = await server.GET (`/system/sms`,{params} );
+
+        return res?.success; 
+        }
+    
+   
+  /** 
+   * @description:  用户菜单和权限
+     
+   * @return {*}
+   */
+  export const get_system_profile_menus = async() => {
+    
+  const res = await server.GET<MenuButtons> (`/system/profile/menus`, );
+
+        return res?.result; 
+        }
+     
+    export interface UserPasswordDto{
+     /** 原始密码 */
+ oldPassword?:string;
+ /** 新密码 */
+ password?:string;
+ /** 确认的新密码 */
+ confirmPassword?:string;
+
+    } 
+    export interface ResetLoginPassDto{
+     /** 用户名或手机号 */
+ username?:string;
+ /** 旧密码 */
+ password?:string;
+ /** 新密码 */
+ newPassword?:string;
+
+    } 
+    export interface AdminLoginDto{
+     /** 用户名或手机号 */
+ username?:string;
+ /** 密码 */
+ password?:string;
+ /** 验证码 */
+ code?:string;
+
+    } 
+    export interface LoginResult{
+     /** 登录后的token,后续请求带上Authorization 请求头 */
+ token?:string;
+ /** 姓名 */
+ name?:string;
+ /** 登录名 */
+ username?:string;
+ /** 头像 */
+ avatar?:string;
+ /** 电话号码 */
+ phone?:string;
+ /** 创建时间 */
+ createdAt?:string;
+ /** 部门 */
+ depName?:string;
+ /** 用户角色列表 */
+ roles?:string[];
+ /** 城市 */
+ city?:string;
+ /** 经度 */
+ longitude?:number;
+ /** 纬度 */
+ latitude?:number;
+ /** 是否激活 */
+ active?:boolean;
+
+    } 
+    export interface MenuButtons{
+      menus?:MenuTree[];
+  buttons?:string[];
+
+    } 
+    export interface MenuTree{
+     /** 名称 */
+ name?:string;
+ /** 地址 */
+ url?:string;
+ /** 图标 */
+ icon?:string;
+ /** 子菜单 */
+ children?:MenuTree[];
 
     }
    export interface PostMsgPplWarnExport  extends PplWarnSearchDto {
@@ -912,183 +1628,223 @@ import { server } from '@/utils/axios/request';
  xhdl?:string;
 
     }
-   export interface GetChartZhifu  extends TimeLocalDate {
+   export interface GetInvoices  extends InvoiceSearch,Paging {
         
       
       }
   /** 
-   * @description:  支付数据
-   * @param {GetChartZhifu} params? 
+   * @description:  发票列表
+   * @param {GetInvoices} params? 
    * @return {*}
    */
-  export const get_chart_zhifu = async(params?:GetChartZhifu) => {
+  export const get_invoices = async(params?:GetInvoices) => {
     
-  const res = await server.GET<ChartZhifu> (`/chart/zhifu`,{params} );
+  const res = await server.GET<IPage<Invoice>> (`/invoices`,{params} );
 
         return res?.result; 
         }
     
-   export interface GetChartTopUp  extends TimeLocalDate {
+   export interface PostInvoices  extends InvoiceDto {
         
       
       }
   /** 
-   * @description:  充值数据
-   * @param {GetChartTopUp} params? 
+   * @description:  开票
+   * @param {InvoiceDto} data?,  
    * @return {*}
    */
-  export const get_chart_top_up = async(params?:GetChartTopUp) => {
+  export const post_invoices = async(data?:InvoiceDto,) => {
     
-  const res = await server.GET<ChartTopUp> (`/chart/top-up`,{params} );
+  const res = await server.POST (`/invoices`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostInvoicesIdRed   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  发票红冲
+   * @param {PostInvoicesIdRed} params? 
+   * @return {*}
+   */
+  export const post_invoices_id_red = async(params?:PostInvoicesIdRed) => {
+    
+  const res = await server.POST (`/invoices/${params?.id}/red`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface GetInvoicesOrders  extends InvoiceOrderSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  可开票订单
+   * @param {GetInvoicesOrders} params? 
+   * @return {*}
+   */
+  export const get_invoices_orders = async(params?:GetInvoicesOrders) => {
+    
+  const res = await server.GET<IPage<RoadSideOrder>> (`/invoices/orders`,{params} );
 
         return res?.result; 
         }
     
-   export interface GetChartTime   {
-        day?:number;
-      
-      }
-  /** 
-   * @description:  停车时长 day 天数
-   * @param {GetChartTime} params? 
-   * @return {*}
-   */
-  export const get_chart_time = async(params?:GetChartTime) => {
-    
-  const res = await server.GET<ChartTc> (`/chart/time`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetChartPlaceZhouzhuan   {
-        day?:number;
-      
-      }
-  /** 
-   * @description:  停车周转率 day 天数
-   * @param {GetChartPlaceZhouzhuan} params? 
-   * @return {*}
-   */
-  export const get_chart_place_zhouzhuan = async(params?:GetChartPlaceZhouzhuan) => {
-    
-  const res = await server.GET<ChartZhouZhuan[]> (`/chart/place-zhouzhuan`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetChartPlaceRate  extends TimeLocalDate {
+   export interface GetInvoicesAllOrdersMoney  extends InvoiceOrderSearchDto {
         
       
       }
   /** 
-   * @description:  停车利用率
-   * @param {GetChartPlaceRate} params? 
+   * @description:  查询开票订单金额
+   * @param {GetInvoicesAllOrdersMoney} params? 
    * @return {*}
    */
-  export const get_chart_place_rate = async(params?:GetChartPlaceRate) => {
+  export const get_invoices_all_orders_money = async(params?:GetInvoicesAllOrdersMoney) => {
     
-  const res = await server.GET<ChartPlaceRate[]> (`/chart/place-rate`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetChartMoney  extends TimeLocalDate {
-        
-      
-      }
-  /** 
-   * @description:  财务数据
-   * @param {GetChartMoney} params? 
-   * @return {*}
-   */
-  export const get_chart_money = async(params?:GetChartMoney) => {
-    
-  const res = await server.GET<ChartMoneyVo> (`/chart/money`,{params} );
+  const res = await server.GET<number> (`/invoices/all-orders-money`,{params} );
 
         return res?.result; 
         }
      
-    export interface TimeLocalDate{
-      date?:string;
+    export interface InvoiceDto{
+     /** 方式一:订单ID */
+ orderIds?:string[];
+ /** 方式二: 车牌号 通常只用于客服接口开发 */
+ plateNumber?:string;
+ /** 1个人 2企业 */
+ type?:number;
+ /** 个人姓名或企业名称 */
+ name?:string;
+ /** 邮件 */
+ email?:string;
+ /** 税号 企业的时候必填 */
+ taxNum?:string;
+ /** 公司地址 */
+ companyAddress?:string;
+ /** 公司电话 */
+ companyPhone?:string;
+ /** 银行名称 */
+ bankName?:string;
+ /** 银行账户 */
+ bankAccount?:string;
+ /** 备注 */
+ remark?:string;
+ /** 开票验证码 */
+ code?:string;
+ /** 开票类型 1路边 2停车场 3路边包月 4停车场包月 默认1 */
+ remoteType?:number;
+ /** 开具发票种类。81：电子发票（增值税专用发票）82：电子发票（普通发票） */
+ invoiceIssueKindCode?:string;
+ /** 接口开票-开始日期 */
+ from?:string;
+ /** 接口开票-截至日期 */
+ to?:string;
 
     } 
-    export interface ChartZhifu{
-      wechat?:number;
-  ali?:number;
- /** 余额 */
- wallet?:number;
- /** 现金 */
- cash?:number;
+    export interface InvoiceSearch{
+     /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+ /** 购买方 */
+ buyer?:string;
+ /** 开票地址 */
+ email?:string;
 
     } 
-    export interface ChartTopUp{
-      wechat?:number;
-  ali?:number;
-  app?:number;
+    export interface Invoice{
+      id?:string;
+  appUserId?:string;
+  money?:number;
+  email?:string;
+  titleJson?:InvoiceTitleJson;
+  type?:number;
+  blue?:string;
+  blueNotice?:string;
+  red?:string;
+  redNotice?:string;
+  status?:MsgType;
+  pdfUrl?:string;
+  createdAt?:string;
+  updatedAt?:string;
+  deleted?:boolean;
 
     } 
-    export interface ChartTc{
-      count1?:number;
-  count2?:number;
-  count3?:number;
-  count4?:number;
-  count5?:number;
+    export interface InvoiceTitleJson{
+      type?:number;
+  name?:string;
+  taxNum?:string;
+  companyAddress?:string;
+  companyPhone?:string;
+  bankName?:string;
+  bankAccount?:string;
 
     } 
-    export interface ChartZhouZhuan{
-      time?:string;
-  rate?:number;
+    export interface InvoiceOrderSearchDto{
+      appUserId?:string;
+  from?:string;
+  to?:string;
+  plateNumber?:string;
 
     } 
-    export interface ChartPlaceRate{
-      time?:number;
-  rate?:number;
-
-    } 
-    export interface ChartMoneyItem{
-      date?:string;
- /** 原始收入 */
- originalIncome?:number;
- /** 应收 */
- generalIncome?:number;
- /** 实际到账 */
- actualIncome?:number;
- /** 已收 */
- received?:number;
- /** 欠费 */
- arrears?:number;
- /** 代收 */
- takeReceived?:number;
-  balancePay?:number;
-
-    } 
-    export interface ChartMoneyVo{
-     /** 原始收入 */
- originalIncome?:number;
-  original1?:number;
-  original2?:number;
- /** 应收 */
- generalIncome?:number;
-  general1?:number;
-  general2?:number;
- /** 实际到账 */
- actualIncome?:number;
-  actual1?:number;
-  actual2?:number;
- /** 已收 */
- received?:number;
-  received1?:number;
-  received2?:number;
- /** 欠费 */
- arrears?:number;
-  arrears1?:number;
-  arrears2?:number;
- /** 代收 */
- takeReceived?:number;
-  takeReceived1?:number;
-  takeReceived2?:number;
-  balancePay?:number;
-  items?:ChartMoneyItem[];
+    export interface RoadSideOrder{
+     /** 订单ID */
+ id?:string;
+ /** 微信用户ID */
+ appUserId?:string;
+ /** 原始金额(单位:分) */
+ originalMoney?:number;
+ /** 目标金额(单位:分) */
+ targetMoney?:number;
+ /** 实际金额(单位:分) */
+ realMoney?:number;
+ /** 停车开始时间 */
+ startAt?:string;
+ /** 停车结束时间 */
+ endAt?:string;
+ /** 开始信息来源 */
+ beginType?:MsgType;
+ /** 结束信息来源 */
+ endType?:MsgType;
+ /** 停车总时长(分钟) */
+ duringTime?:number;
+ /** 停车图片 */
+ picture?:string;
+ /** 车牌ID */
+ carId?:string;
+ /** 车牌 */
+ plateNumber?:string;
+ /** 区域名称 */
+ areaName?:string;
+ /** 街道名称 */
+ streetName?:string;
+ /** 停车地点 */
+ lotName?:string;
+ /** 车位号 */
+ placeNum?:string;
+ /** 是否支付 */
+ status?:MsgType;
+ /** 支付时间 */
+ payAt?:string;
+ /** 支付方式 */
+ mode?:MsgType;
+ /** 缴费类型 */
+ chargeType?:MsgType;
+ /** 子订单数量 */
+ itemCount?:number;
+ /** 享受优惠数量 */
+ discountCount?:number;
+  discountMoney?:number;
+ /** 补拍照片 */
+ extraPictures?:string[];
+ /** 补拍照片 */
+ rule?:string;
+ /** 设备编号 */
+ deviceSn?:string;
+ /** 是否是代收欠费 */
+ receipt?:boolean;
 
     }
    export interface GetSignRules   {
@@ -1352,3824 +2108,6 @@ import { server } from '@/utils/axios/request';
  patrolMap?:{[key:string]:number};
  /** 值守 0-正常，1-迟到,2-早退 */
  pdaMap?:{[key:string]:number};
-
-    }
-   export interface PutSystemProfileResetpass  extends UserPasswordDto {
-        
-      
-      }
-  /** 
-   * @description:  用户更新密码
-   * @param {UserPasswordDto} data?,  
-   * @return {*}
-   */
-  export const put_system_profile_resetPass = async(data?:UserPasswordDto,) => {
-    
-  const res = await server.PUT (`/system/profile/resetPass`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostSystemResetloginpass  extends ResetLoginPassDto {
-        
-      
-      }
-  /** 
-   * @description:  修改登录密码
-   * @param {ResetLoginPassDto} data?,  
-   * @return {*}
-   */
-  export const post_system_resetLoginPass = async(data?:ResetLoginPassDto,) => {
-    
-  const res = await server.POST (`/system/resetLoginPass`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostSystemLogin  extends AdminLoginDto {
-        
-      
-      }
-  /** 
-   * @description:  登录
-   * @param {AdminLoginDto} data?,  
-   * @return {*}
-   */
-  export const post_system_login = async(data?:AdminLoginDto,) => {
-    
-  const res = await server.POST<LoginResult> (`/system/login`,{data} );
-
-        return res?.result; 
-        }
-    
-   export interface GetSystemSms   {
-        phone?:string;
-      
-      }
-  /** 
-   * @description:  获取验证码
-   * @param {GetSystemSms} params? 
-   * @return {*}
-   */
-  export const get_system_sms = async(params?:GetSystemSms) => {
-    
-  const res = await server.GET (`/system/sms`,{params} );
-
-        return res?.success; 
-        }
-    
-   
-  /** 
-   * @description:  用户菜单和权限
-     
-   * @return {*}
-   */
-  export const get_system_profile_menus = async() => {
-    
-  const res = await server.GET<MenuButtons> (`/system/profile/menus`, );
-
-        return res?.result; 
-        }
-     
-    export interface UserPasswordDto{
-     /** 原始密码 */
- oldPassword?:string;
- /** 新密码 */
- password?:string;
- /** 确认的新密码 */
- confirmPassword?:string;
-
-    } 
-    export interface ResetLoginPassDto{
-     /** 用户名或手机号 */
- username?:string;
- /** 旧密码 */
- password?:string;
- /** 新密码 */
- newPassword?:string;
-
-    } 
-    export interface AdminLoginDto{
-     /** 用户名或手机号 */
- username?:string;
- /** 密码 */
- password?:string;
- /** 验证码 */
- code?:string;
-
-    } 
-    export interface LoginResult{
-     /** 登录后的token,后续请求带上Authorization 请求头 */
- token?:string;
- /** 姓名 */
- name?:string;
- /** 登录名 */
- username?:string;
- /** 头像 */
- avatar?:string;
- /** 电话号码 */
- phone?:string;
- /** 创建时间 */
- createdAt?:string;
- /** 部门 */
- depName?:string;
- /** 用户角色列表 */
- roles?:string[];
- /** 城市 */
- city?:string;
- /** 经度 */
- longitude?:number;
- /** 纬度 */
- latitude?:number;
- /** 是否激活 */
- active?:boolean;
-
-    } 
-    export interface MenuButtons{
-      menus?:MenuTree[];
-  buttons?:string[];
-
-    } 
-    export interface MenuTree{
-     /** 名称 */
- name?:string;
- /** 地址 */
- url?:string;
- /** 图标 */
- icon?:string;
- /** 子菜单 */
- children?:MenuTree[];
-
-    }
-   export interface GetChargingShops  extends ChargingShopSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  充电站-带分页
-   * @param {GetChargingShops} params? 
-   * @return {*}
-   */
-  export const get_charging_shops = async(params?:GetChargingShops) => {
-    
-  const res = await server.GET<IPage<ChargingShopVo>> (`/charging-shops`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface PutChargingShops  extends ChargingShopDto {
-        
-      
-      }
-  /** 
-   * @description:  更新充电站
-   * @param {ChargingShopDto} data?,  
-   * @return {*}
-   */
-  export const put_charging_shops = async(data?:ChargingShopDto,) => {
-    
-  const res = await server.PUT (`/charging-shops`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostChargingShops  extends ChargingShopDto {
-        
-      
-      }
-  /** 
-   * @description:  添加充电站
-   * @param {ChargingShopDto} data?,  
-   * @return {*}
-   */
-  export const post_charging_shops = async(data?:ChargingShopDto,) => {
-    
-  const res = await server.POST (`/charging-shops`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface GetChargingPoints  extends ChargingPointSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  充电桩-带分页
-   * @param {GetChargingPoints} params? 
-   * @return {*}
-   */
-  export const get_charging_points = async(params?:GetChargingPoints) => {
-    
-  const res = await server.GET<IPage<ChargingPointVo>> (`/charging-points`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface PutChargingPoints  extends ChargingPointDto {
-        
-      
-      }
-  /** 
-   * @description:  更新充电桩
-   * @param {ChargingPointDto} data?,  
-   * @return {*}
-   */
-  export const put_charging_points = async(data?:ChargingPointDto,) => {
-    
-  const res = await server.PUT (`/charging-points`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostChargingPoints  extends ChargingPointDto {
-        
-      
-      }
-  /** 
-   * @description:  添加充电桩
-   * @param {ChargingPointDto} data?,  
-   * @return {*}
-   */
-  export const post_charging_points = async(data?:ChargingPointDto,) => {
-    
-  const res = await server.POST (`/charging-points`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface GetChargingShopsIdPoints   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  某充电站下所有充电桩
-   * @param {GetChargingShopsIdPoints} params? 
-   * @return {*}
-   */
-  export const get_charging_shops_id_points = async(params?:GetChargingShopsIdPoints) => {
-    
-  const res = await server.GET<ChargingPoint[]> (`/charging-shops/${params?.id}/points`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface DeleteChargingShopsId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除充电站
-   * @param {DeleteChargingShopsId} params? 
-   * @return {*}
-   */
-  export const delete_charging_shops_id = async(params?:DeleteChargingShopsId) => {
-    
-  const res = await server.DELETE (`/charging-shops/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface DeleteChargingPointsId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除充电桩
-   * @param {DeleteChargingPointsId} params? 
-   * @return {*}
-   */
-  export const delete_charging_points_id = async(params?:DeleteChargingPointsId) => {
-    
-  const res = await server.DELETE (`/charging-points/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-     
-    export interface ChargingShopDto{
-      id?:string;
- /** 名称 */
- name?:string;
- /** 编号 */
- number?:string;
- /** 区域 */
- area?:string;
- /** 地址 */
- address?:string;
- /** 运营商 */
- operator?:string;
- /** 状态 */
- status?:string;
-
-    } 
-    export interface ChargingPointDto{
-      id?:string;
- /** 充电站ID */
- shopId?:string;
- /** 名称 */
- name?:string;
- /** 编号 */
- number?:string;
- /** 状态 */
- status?:boolean;
-
-    } 
-    export interface ChargingShopSearchDto{
-     /** 名称 */
- name?:string;
- /** 编号 */
- number?:string;
- /** 区域 */
- area?:string;
- /** 地质 */
- address?:string;
- /** 运营商 */
- operator?:string;
- /** 状态 */
- status?:boolean;
-
-    } 
-    export interface ChargingShopVo{
-      id?:string;
-  createdAt?:string;
-  updatedAt?:string;
- /** 名称 */
- name?:string;
- /** 编号 */
- number?:string;
- /** 区域 */
- area?:string;
- /** 地址 */
- address?:string;
- /** 运营商 */
- operator?:string;
-  total?:number;
-  status?:boolean;
-
-    } 
-    export interface ChargingPoint{
-      id?:string;
-  shopId?:string;
-  name?:string;
-  number?:string;
-  status?:boolean;
-  createdAt?:string;
-  updatedAt?:string;
-  deleted?:boolean;
-
-    } 
-    export interface ChargingPointSearchDto{
-     /** 充电站ID */
- shopId?:string;
- /** 名称 */
- name?:string;
- /** 编号 */
- number?:string;
- /** 状态 */
- status?:boolean;
-
-    } 
-    export interface ChargingPointVo{
-      id?:string;
-  createdAt?:string;
-  updatedAt?:string;
- /** 充电站ID */
- shopId?:string;
- /** 名称 */
- name?:string;
- /** 编号 */
- number?:string;
- /** 状态 */
- status?:boolean;
-
-    }
-   export interface GetStaffWorkTags   {
-        type?:number;
-      
-      }
-  /** 
-   * @description:  undefined
-   * @param {GetStaffWorkTags} params? 
-   * @return {*}
-   */
-  export const get_staff_work_tags = async(params?:GetStaffWorkTags) => {
-    
-  const res = await server.GET<DeviceWorkTag[]> (`/staff/work-tags`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface PutStaffWorkTags  extends DeviceWorkTagDto {
-        
-      
-      }
-  /** 
-   * @description:  undefined
-   * @param {DeviceWorkTagDto} data?,  
-   * @return {*}
-   */
-  export const put_staff_work_tags = async(data?:DeviceWorkTagDto,) => {
-    
-  const res = await server.PUT (`/staff/work-tags`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffWorkTags  extends DeviceWorkTagDto {
-        
-      
-      }
-  /** 
-   * @description:  undefined
-   * @param {DeviceWorkTagDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_work_tags = async(data?:DeviceWorkTagDto,) => {
-    
-  const res = await server.POST (`/staff/work-tags`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface GetStaffPdaUsers  extends PdaSearchDtoCore,Paging {
-        
-      
-      }
-  /** 
-   * @description:  员工列表-带分页
-   * @param {GetStaffPdaUsers} params? 
-   * @return {*}
-   */
-  export const get_staff_pda_users = async(params?:GetStaffPdaUsers) => {
-    
-  const res = await server.GET<IPage<PdaUserVo>> (`/staff/pda-users`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface PutStaffPdaUsers  extends PdaUserDto {
-        
-      
-      }
-  /** 
-   * @description:  修改员工信息
-   * @param {PdaUserDto} data?,  
-   * @return {*}
-   */
-  export const put_staff_pda_users = async(data?:PdaUserDto,) => {
-    
-  const res = await server.PUT<Boolean> (`/staff/pda-users`,{data} );
-
-        return res?.result; 
-        }
-    
-   export interface PostStaffPdaUsers  extends PdaUserDto {
-        
-      
-      }
-  /** 
-   * @description:  添加员工
-   * @param {PdaUserDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_pda_users = async(data?:PdaUserDto,) => {
-    
-  const res = await server.POST (`/staff/pda-users`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PutStaffPdaUsersPassword  extends StaffResetPasswordDto {
-        
-      
-      }
-  /** 
-   * @description:  修改员工密码
-   * @param {StaffResetPasswordDto} data?,  
-   * @return {*}
-   */
-  export const put_staff_pda_users_password = async(data?:StaffResetPasswordDto,) => {
-    
-  const res = await server.PUT<Boolean> (`/staff/pda-users/password`,{data} );
-
-        return res?.result; 
-        }
-    
-   export interface GetStaffPatrolUsers  extends PatrolUserSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  巡查人员列表
-   * @param {GetStaffPatrolUsers} params? 
-   * @return {*}
-   */
-  export const get_staff_patrol_users = async(params?:GetStaffPatrolUsers) => {
-    
-  const res = await server.GET<IPage<PatrolUserResult>> (`/staff/patrol-users`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface PutStaffPatrolUsers  extends PatrolUserDto {
-        
-      
-      }
-  /** 
-   * @description:  更新巡查人员
-   * @param {PatrolUserDto} data?,  
-   * @return {*}
-   */
-  export const put_staff_patrol_users = async(data?:PatrolUserDto,) => {
-    
-  const res = await server.PUT (`/staff/patrol-users`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffPatrolUsers  extends PatrolUserDto {
-        
-      
-      }
-  /** 
-   * @description:  添加巡查人员
-   * @param {PatrolUserDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_patrol_users = async(data?:PatrolUserDto,) => {
-    
-  const res = await server.POST (`/staff/patrol-users`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PutStaffPatrolUsersPassword  extends StaffResetPasswordDto {
-        
-      
-      }
-  /** 
-   * @description:  修改员工密码
-   * @param {StaffResetPasswordDto} data?,  
-   * @return {*}
-   */
-  export const put_staff_patrol_users_password = async(data?:StaffResetPasswordDto,) => {
-    
-  const res = await server.PUT<Boolean> (`/staff/patrol-users/password`,{data} );
-
-        return res?.result; 
-        }
-    
-   export interface GetStaffPatrolRoles extends Paging{}
-  /** 
-   * @description:  巡查角色列表-带分页
-   * @param {GetStaffPatrolRoles} params? 
-   * @return {*}
-   */
-  export const get_staff_patrol_roles = async(params?:GetStaffPatrolRoles) => {
-    
-  const res = await server.GET<IPage<PatrolRole>> (`/staff/patrol-roles`, {params} );
-
-        return res?.result; 
-        }
-    
-   export interface PutStaffPatrolRoles  extends PatrolRoleDto {
-        
-      
-      }
-  /** 
-   * @description:  更新巡查角色
-   * @param {PatrolRoleDto} data?,  
-   * @return {*}
-   */
-  export const put_staff_patrol_roles = async(data?:PatrolRoleDto,) => {
-    
-  const res = await server.PUT (`/staff/patrol-roles`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffPatrolRoles  extends PatrolRoleDto {
-        
-      
-      }
-  /** 
-   * @description:  添加巡查角色
-   * @param {PatrolRoleDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_patrol_roles = async(data?:PatrolRoleDto,) => {
-    
-  const res = await server.POST (`/staff/patrol-roles`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffWorkExport  extends StaffWorkSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  工作记录-导出
-   * @param {StaffWorkSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_work_export = async(data?:StaffWorkSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/staff/work/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface GetStaffPerformanceScore  extends PdaPerformanceDetailSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  点位绩效扣分总数据
-   * @param {GetStaffPerformanceScore} params? 
-   * @return {*}
-   */
-  export const get_staff_performance_score = async(params?:GetStaffPerformanceScore) => {
-    
-  const res = await server.GET<PdaPerformanceScoreVo> (`/staff/performance/score`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface PostStaffPerformanceScore   {
-        file?:File;
-      [key:string]:any
-      }
-  /** 
-   * @description:  扣分
-   * @param {PostStaffPerformanceScore} params? 
-   * @return {*}
-   */
-  export const post_staff_performance_score = async(params?:PostStaffPerformanceScore) => {
-     
-      const formdata = new FormData();
-      for (const key in params) {
-        if (Object.prototype.hasOwnProperty.call(params, key)) {
-          const element = params[key];
-          formdata.set(key, element);
-        }
-      }
-      
-  const res = await server.POST (`/staff/performance/score`,{data:formdata} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffPerformanceScoreItemsExport  extends PdaPerformanceDetailSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  绩效扣分明细-导出
-   * @param {PdaPerformanceDetailSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_performance_score_items_export = async(data?:PdaPerformanceDetailSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/staff/performance/score/items/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostStaffPerformanceRule  extends PdaPerformanceRuleDto {
-        
-      
-      }
-  /** 
-   * @description:  设置绩效扣分规则
-   * @param {PdaPerformanceRuleDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_performance_rule = async(data?:PdaPerformanceRuleDto,) => {
-    
-  const res = await server.POST (`/staff/performance/rule`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffPerformanceItemsExport  extends PdaPerformanceDetailSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  点位绩效明细-导出
-   * @param {PdaPerformanceDetailSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_performance_items_export = async(data?:PdaPerformanceDetailSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/staff/performance/items/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostStaffPerformanceExport  extends PdaPerformanceSearchDtoCore {
-        
-      
-      }
-  /** 
-   * @description:  总体绩效列表-导出
-   * @param {PdaPerformanceSearchDtoCore} data?,  
-   * @return {*}
-   */
-  export const post_staff_performance_export = async(data?:PdaPerformanceSearchDtoCore,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/staff/performance/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostStaffPerformanceArchive  extends TimeLocalDate {
-        
-      
-      }
-  /** 
-   * @description:  归档某日数据
-   * @param {TimeLocalDate} data?,  
-   * @return {*}
-   */
-  export const post_staff_performance_archive = async(data?:TimeLocalDate,) => {
-    
-  const res = await server.POST (`/staff/performance/archive`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffPerformanceArchiveFromTo  extends TimeDateWithFromTo {
-        
-      
-      }
-  /** 
-   * @description:  归档指定日期开始结束数据
-   * @param {TimeDateWithFromTo} data?,  
-   * @return {*}
-   */
-  export const post_staff_performance_archive_from_to = async(data?:TimeDateWithFromTo,) => {
-    
-  const res = await server.POST (`/staff/performance/archive-from-to`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffPdaUsersIdUnbindlot   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  员工解除绑定停车点
-   * @param {PostStaffPdaUsersIdUnbindlot} params? 
-   * @return {*}
-   */
-  export const post_staff_pda_users_id_unbindLot = async(params?:PostStaffPdaUsersIdUnbindlot) => {
-    
-  const res = await server.POST (`/staff/pda-users/${params?.id}/unbindLot`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffPdaUsersBindlot  extends PdaBindLotDto {
-        
-      
-      }
-  /** 
-   * @description:  员工绑定停车点
-   * @param {PdaBindLotDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_pda_users_bindLot = async(data?:PdaBindLotDto,) => {
-    
-  const res = await server.POST (`/staff/pda-users/bindLot`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffPatrolUsersTrackMap  extends PatrolTrackMapDto {
-        
-      
-      }
-  /** 
-   * @description:  查看地锁巡查的轨迹-地图模式
-   * @param {PatrolTrackMapDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_patrol_users_track_map = async(data?:PatrolTrackMapDto,) => {
-    
-  const res = await server.POST<PatrolTrackMapVo[]> (`/staff/patrol-users/track/map`,{data} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface PostStaffPatrolUsersTrackList  extends PatrolTrackListDto {
-        
-      
-      }
-  /** 
-   * @description:  查看地锁巡查的轨迹-列表模式
-   * @param {PatrolTrackListDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_patrol_users_track_list = async(data?:PatrolTrackListDto,) => {
-    
-  const res = await server.POST<PatrolTrackListVo[]> (`/staff/patrol-users/track/list`,{data} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface PostStaffPatrolUsersBind  extends BindPatrolLot {
-        
-      
-      }
-  /** 
-   * @description:  编辑修改巡查人员和停车点
-   * @param {BindPatrolLot} data?,  
-   * @return {*}
-   */
-  export const post_staff_patrol_users_bind = async(data?:BindPatrolLot,) => {
-    
-  const res = await server.POST (`/staff/patrol-users/bind`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffPatrolUsersBindRole  extends PatrolRoleBindDto {
-        
-      
-      }
-  /** 
-   * @description:  绑定角色
-   * @param {PatrolRoleBindDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_patrol_users_bind_role = async(data?:PatrolRoleBindDto,) => {
-    
-  const res = await server.POST (`/staff/patrol-users/bind-role`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostStaffPatrolUsersBindLotGroup  extends BindPatrolLotGroupDto {
-        
-      
-      }
-  /** 
-   * @description:  绑定点位组
-   * @param {BindPatrolLotGroupDto} data?,  
-   * @return {*}
-   */
-  export const post_staff_patrol_users_bind_lot_group = async(data?:BindPatrolLotGroupDto,) => {
-    
-  const res = await server.POST (`/staff/patrol-users/bind-lot-group`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface GetStaffWork  extends StaffWorkSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  查看工作记录详情-带分页
-   * @param {GetStaffWork} params? 
-   * @return {*}
-   */
-  export const get_staff_work = async(params?:GetStaffWork) => {
-    
-  const res = await server.GET<IPage<WorkIndexRecord>> (`/staff/work`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetStaffWorkTop  extends StaffWorkSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  查看工作记录-上面标签数据
-   * @param {GetStaffWorkTop} params? 
-   * @return {*}
-   */
-  export const get_staff_work_top = async(params?:GetStaffWorkTop) => {
-    
-  const res = await server.GET<WorkIndexTag[]> (`/staff/work/top`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetStaffWorkDetail   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  查询记录上报详情
-   * @param {GetStaffWorkDetail} params? 
-   * @return {*}
-   */
-  export const get_staff_work_detail = async(params?:GetStaffWorkDetail) => {
-    
-  const res = await server.GET<WorkRecordReport> (`/staff/work/detail`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetStaffPerformance  extends PdaPerformanceSearchDtoCore,Paging {
-        
-      
-      }
-  /** 
-   * @description:  总体绩效列表-带分页
-   * @param {GetStaffPerformance} params? 
-   * @return {*}
-   */
-  export const get_staff_performance = async(params?:GetStaffPerformance) => {
-    
-  const res = await server.GET<IPage<PdaPerformanceVo>> (`/staff/performance`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetStaffPerformanceScoreItems  extends PdaPerformanceDetailSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  绩效扣分明细-无分页
-   * @param {GetStaffPerformanceScoreItems} params? 
-   * @return {*}
-   */
-  export const get_staff_performance_score_items = async(params?:GetStaffPerformanceScoreItems) => {
-    
-  const res = await server.GET<PdaPerformanceScoreItemVo[]> (`/staff/performance/score/items`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetStaffPerformanceItems  extends PdaPerformanceDetailSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  点位绩效明细-最多31条数据-无分页
-   * @param {GetStaffPerformanceItems} params? 
-   * @return {*}
-   */
-  export const get_staff_performance_items = async(params?:GetStaffPerformanceItems) => {
-    
-  const res = await server.GET<PdaPerformanceItemVo[]> (`/staff/performance/items`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetStaffPdaUsersIdMsg   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  员工详情-管理信息
-   * @param {GetStaffPdaUsersIdMsg} params? 
-   * @return {*}
-   */
-  export const get_staff_pda_users_id_msg = async(params?:GetStaffPdaUsersIdMsg) => {
-    
-  const res = await server.GET<PdaUserAllDayInfo> (`/staff/pda-users/${params?.id}/msg`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetStaffPdaUsersRecords  extends StaffLoginRecordDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  员工列表-登录记录-带分页
-   * @param {GetStaffPdaUsersRecords} params? 
-   * @return {*}
-   */
-  export const get_staff_pda_users_records = async(params?:GetStaffPdaUsersRecords) => {
-    
-  const res = await server.GET<IPage<StaffLoginRecord>> (`/staff/pda-users/records`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetStaffPdaUsersHistory  extends PdaHistorySearchDto {
-        
-      
-      }
-  /** 
-   * @description:  员工详情-值守记录-没有分页,查询30天内的数据
-   * @param {GetStaffPdaUsersHistory} params? 
-   * @return {*}
-   */
-  export const get_staff_pda_users_history = async(params?:GetStaffPdaUsersHistory) => {
-    
-  const res = await server.GET<PdaUserAccountsRecordVo[]> (`/staff/pda-users/history`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetStaffPdaUsersChart  extends PdaSearchDtoCore {
-        
-      
-      }
-  /** 
-   * @description:  图表
-   * @param {GetStaffPdaUsersChart} params? 
-   * @return {*}
-   */
-  export const get_staff_pda_users_chart = async(params?:GetStaffPdaUsersChart) => {
-    
-  const res = await server.GET<StaffChartVo> (`/staff/pda-users/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetStaffPatrolUsersIdLots   {
-        id?:string;type?:number;
-      
-      }
-  /** 
-   * @description:  查看某巡查人员管理的人员和点位信息
-   * @param {GetStaffPatrolUsersIdLots} params? 
-   * @return {*}
-   */
-  export const get_staff_patrol_users_id_lots = async(params?:GetStaffPatrolUsersIdLots) => {
-    
-  const res = await server.GET<PatrolLots[]> (`/staff/patrol-users/${params?.id}/lots`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetStaffPatrolUsersIdLotids   {
-        id?:string;type?:number;
-      
-      }
-  /** 
-   * @description:  查询巡查人员所管辖的停车点Ids
-   * @param {GetStaffPatrolUsersIdLotids} params? 
-   * @return {*}
-   */
-  export const get_staff_patrol_users_id_lotIds = async(params?:GetStaffPatrolUsersIdLotids) => {
-    
-  const res = await server.GET<string[]> (`/staff/patrol-users/${params?.id}/lotIds`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetStaffPatrolUsersRecords  extends StaffLoginRecordDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  登录记录-带分页
-   * @param {GetStaffPatrolUsersRecords} params? 
-   * @return {*}
-   */
-  export const get_staff_patrol_users_records = async(params?:GetStaffPatrolUsersRecords) => {
-    
-  const res = await server.GET<IPage<StaffLoginRecord>> (`/staff/patrol-users/records`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetStaffPatrolUsersList  extends PatrolUserSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  巡查人员列表-无分页
-   * @param {GetStaffPatrolUsersList} params? 
-   * @return {*}
-   */
-  export const get_staff_patrol_users_list = async(params?:GetStaffPatrolUsersList) => {
-    
-  const res = await server.GET<PatrolUserResult[]> (`/staff/patrol-users/list`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetStaffPatrolUsersChart  extends PatrolUserSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  图表
-   * @param {GetStaffPatrolUsersChart} params? 
-   * @return {*}
-   */
-  export const get_staff_patrol_users_chart = async(params?:GetStaffPatrolUsersChart) => {
-    
-  const res = await server.GET<StaffChartVo> (`/staff/patrol-users/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   
-  /** 
-   * @description:  巡查角色列表-无分页
-     
-   * @return {*}
-   */
-  export const get_staff_patrol_roles_list = async() => {
-    
-  const res = await server.GET<PatrolRole[]> (`/staff/patrol-roles/list`, );
-
-        return res?.result??[]; 
-        }
-    
-   export interface DeleteStaffWorkTagsId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  undefined
-   * @param {DeleteStaffWorkTagsId} params? 
-   * @return {*}
-   */
-  export const delete_staff_work_tags_id = async(params?:DeleteStaffWorkTagsId) => {
-    
-  const res = await server.DELETE (`/staff/work-tags/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface DeleteStaffPdaUsersId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除员工
-   * @param {DeleteStaffPdaUsersId} params? 
-   * @return {*}
-   */
-  export const delete_staff_pda_users_id = async(params?:DeleteStaffPdaUsersId) => {
-    
-  const res = await server.DELETE<Boolean> (`/staff/pda-users/${params?.id}`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface DeleteStaffPatrolUsersId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  退休巡查人员
-   * @param {DeleteStaffPatrolUsersId} params? 
-   * @return {*}
-   */
-  export const delete_staff_patrol_users_id = async(params?:DeleteStaffPatrolUsersId) => {
-    
-  const res = await server.DELETE (`/staff/patrol-users/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface DeleteStaffPatrolRolesId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除巡查角色
-   * @param {DeleteStaffPatrolRolesId} params? 
-   * @return {*}
-   */
-  export const delete_staff_patrol_roles_id = async(params?:DeleteStaffPatrolRolesId) => {
-    
-  const res = await server.DELETE (`/staff/patrol-roles/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-     
-    export interface DeviceWorkTagDto{
-      id?:string;
-  name?:string;
- /** 0-巡查工作，1-技术工作 */
- type?:number;
-
-    } 
-    export interface PdaUserDto{
-     /** id */
- id?:string;
- /** 员工编号 */
- jobNum?:string;
- /** 用户真实姓名 */
- name?:string;
- /** 电话号码 */
- phone?:string;
- /** 身份证号 */
- idCard?:string;
- /** 照片文件 */
- file?:string;
- /** 是否是残疾人 */
- special?:boolean;
-
-    } 
-    export interface StaffResetPasswordDto{
-     /** id */
- id?:string;
- /** 密码 */
- password?:string;
-
-    } 
-    export interface PatrolUserDto{
-     /** id */
- id?:string;
- /** 员工编号 */
- jobNum?:string;
- /** 用户真实姓名 */
- name?:string;
- /** 电话号码 */
- phone?:string;
- /** 身份证号 */
- idCard?:string;
- /** 照片文件 */
- file?:string;
- /** 1 地磁 2地锁 10混合 */
- type?:number;
-
-    } 
-    export interface PatrolRoleDto{
-      id?:string;
- /** 角色名称 */
- name?:string;
- /** 角色权限字符串 */
- permissions?:string[];
- /** 序号 */
- sort?:number;
- /** 是否是技术角色 */
- tech?:boolean;
-
-    } 
-    export interface StaffWorkSearchDto{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
- /** 标签ID */
- tagId?:string;
- /** 上报人姓名 */
- name?:string;
-  areaId?:string;
-  streetId?:string;
-  lotId?:string;
- /** 0-上报，1-处理 */
- type?:number;
- /** 处理状态，0-未处理，1-已处理 */
- status?:number;
- /** 处理结果，0-失败，1-成功 */
- result?:number;
-
-    } 
-    export interface PdaPerformanceDownScoreDto{
-      lotId?:string;
-  level1?:string;
-  level2?:string;
-  score?:number;
-  remarks?:string;
-
-    } 
-    export interface PdaPerformanceDetailSearchDto{
-     /** 点位ID */
- lotId?:string;
- /** 年月 */
- yearMonth?:string;
-
-    } 
-    export interface PdaPerformanceRuleDto{
-     /** 规则 */
- rule?:string;
-
-    } 
-    export interface PdaPerformanceSearchDtoCore{
-     /** 点位列表 */
- lotIds?:string[];
- /** 区域 */
- areaId?:string;
- /** 街道 */
- streetId?:string;
- /** 点位 */
- lotId?:string;
- /** 0全部 1地磁 2地锁 */
- type?:number;
- /** 人员类型 */
- laborType?:number;
- /** 点位期数 */
- periods?:string[];
- /** 年月 */
- yearMonth?:string;
-  isExport?:boolean;
-
-    } 
-    export interface TimeLocalDate{
-      date?:string;
-
-    } 
-    export interface TimeDateWithFromTo{
-     /** 具体日期 */
- date?:string;
- /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
-  fromTime?:string;
-  toTime?:string;
-
-    } 
-    export interface PdaBindLotDto{
-     /** 值守人员ID */
- pdaUserId?:string;
- /** 停车点ID */
- lotId?:string;
-
-    } 
-    export interface PatrolTrackMapDto{
-     /** 人员id */
- id?:string;
- /** 日期,默认当天 */
- date?:string;
-  from?:string;
-  to?:string;
-
-    } 
-    export interface PatrolTrackMapVo{
-     /** 经度 */
- longitude?:number;
- /** 纬度 */
- latitude?:number;
-
-    } 
-    export interface PatrolTrackListDto{
-     /** 人员id */
- id?:string;
- /** 范围开始 */
- from?:string;
- /** 范围结束 */
- to?:string;
-
-    } 
-    export interface PatrolTrackListVo{
-     /** 姓名 */
- name?:string;
- /** 初始拍照时间 */
- firstPicTime?:string;
- /** 最后拍照时间 */
- lastPicTime?:string;
- /** 拍照单数 */
- orderNum?:number;
- /** 点位名 */
- address?:string;
-  os?:string[];
-
-    } 
-    export interface BindPatrolLot{
-     /** 巡查人员ID */
- patrolId?:string;
- /** 停车点ID列表 */
- lotIds?:string[];
-
-    } 
-    export interface PatrolRoleBindDto{
-     /** 巡查人员ID */
- patrolId?:string;
- /** 巡查角色ID */
- roleId?:string;
-
-    } 
-    export interface BindPatrolLotGroupDto{
-      patrolId?:string;
- /** 为空时清除绑定 */
- groupId?:string;
-
-    } 
-    export interface WorkIndexRecord{
-      id?:string;
-  name?:string;
-  lotName?:string;
-  placeNum?:string;
-  deviceSn?:string;
-  tags?:string;
-  urls?:string[];
-  createdAt?:string;
- /** 0-上报，1-处理 */
- type?:number;
- /** 处理状态，0-未处理，1-已处理 */
- status?:number;
- /** 处理结果，0-失败，1-成功 */
- result?:number;
-  remark?:string;
-
-    } 
-    export interface WorkIndexTag{
-      name?:string;
-  total?:number;
-
-    } 
-    export interface WorkRecordReport{
-      lotName?:string;
-  placeNum?:string;
-  tagNames?:string;
- /** 处理状态，0-未处理，1-已处理 */
- status?:number;
-  name?:string;
-  createdAt?:string;
- /** 处理记录 */
- detailList?:WorkRecordReportDetail[];
-
-    } 
-    export interface WorkRecordReportDetail{
-      createdAt?:string;
-  processId?:string;
-  processUser?:string;
-  processPhone?:string;
-  pictures?:string[];
-  remark?:string;
- /** 处理结果，0-失败，1-成功 */
- status?:number;
-  detailId?:string;
-
-    } 
-    export interface DeviceWorkTag{
-      id?:string;
-  name?:string;
-  system?:boolean;
-  type?:number;
-  createdAt?:string;
-  deleted?:boolean;
-
-    } 
-    export interface PdaPerformanceVo{
-      id?:string;
-  lotId?:string;
-  laborType?:MsgType;
- /** 值守街道 */
- address?:string;
- /** 收费员 */
- name?:string;
- /** 应收 */
- income?:number;
- /** 已收 */
- received?:number;
- /** 代收 */
- takeReceived?:number;
- /** 电子收费 */
- onlineReceived?:number;
- /** 周转率 */
- zzRate?:number;
- /** 补贴基数 */
- allowanceBase?:number;
- /** 总车位数 */
- totalPlace?:number;
- /** 车位补贴 */
- allowance?:number;
- /** 收费率 */
- chargeRate?:string;
- /** 电子收费率 */
- onlineChargeRate?:string;
- /** 拍照率 */
- photoRate?:string;
- /** 绩效总分 */
- chargeScore?:number;
- /** 拍照率(得分) */
- photoScore?:number;
- /** 投诉 */
- complaintScore?:number;
- /** 行为规范(得分) */
- behaviourScore?:number;
- /** 自身安全(得分) */
- safeScore?:number;
- /** 分数 */
- score?:number;
-
-    } 
-    export interface PdaPerformanceScoreVo{
-      id?:string;
-  score?:number;
-  chargeScore?:number;
-  photoScore?:number;
-  complaintScore?:number;
-  complaintCount?:number;
-  behaviourScore?:number;
-  behaviourCount?:number;
-  safeScore?:number;
-  safeCount?:number;
-  otherScore?:number;
-  otherCount?:number;
-
-    } 
-    export interface PdaPerformanceScoreItemVo{
-      id?:string;
-  level1?:string;
-  level2?:string;
-  score?:number;
-  operator?:string;
-  url?:string;
-  remarks?:string;
-  createdAt?:string;
-
-    } 
-    export interface PdaPerformanceItemVo{
-      id?:string;
- /** 收费员姓名 */
- pdaUserName?:string;
- /** 日期 */
- date?:string;
-  income?:number;
-  received?:number;
-  takeReceived?:number;
-  onlineReceived?:number;
-  arrears?:number;
-  zzRate?:number;
-  allowance?:number;
-  chargeRate?:string;
-  onlineChargeRate?:string;
-  photoRate?:string;
-
-    } 
-    export interface PdaSearchDtoCore{
-     /** 点位列表 */
- lotIds?:string[];
- /** 区域 */
- areaId?:string;
- /** 街道 */
- streetId?:string;
- /** 点位 */
- lotId?:string;
- /** 0全部 1地磁 2地锁 */
- type?:number;
- /** 人员类型 */
- laborType?:number;
- /** 点位期数 */
- periods?:string[];
- /** 姓名,模糊搜索 */
- name?:string;
- /** 电话,模糊搜索 */
- phone?:string;
- /** 是否是残疾人 */
- special?:boolean;
-  version?:string;
-
-    } 
-    export interface PdaUserVo{
-     /** ID */
- id?:string;
- /** 工号 */
- jobNum?:string;
- /** 姓名 */
- name?:string;
- /** 性别 1:男  2:女 */
- sex?:MsgType;
- /** 年龄 */
- age?:number;
- /** 联系方式 */
- phone?:string;
- /** 身份证号 */
- idCard?:string;
- /** 值守区域 */
- areaName?:string;
- /** 值守街道 */
- streetName?:string;
- /** 值守点名 */
- lotName?:string;
- /** 停车位总数 */
- total?:string;
- /** 头像 */
- avatar?:string;
- /** 版本号 */
- version?:string;
- /** 设备号 */
- imei?:string;
- /** 支付类型 1小程序 2原生微信 */
- payType?:number;
- /** 是否开启小票 */
- ticket?:boolean;
- /** 是否是残疾人 */
- special?:boolean;
-  workStatus?:MsgType;
-
-    } 
-    export interface PdaUserAllDayInfo{
-     /** 区域名称 */
- areaName?:string;
- /** 街道名称 */
- streetName?:string;
- /** 停车点名称 */
- lotName?:string;
- /** 总应收入 */
- generalIncome?:number;
- /** 总实收入 */
- received?:number;
-
-    } 
-    export interface StaffLoginRecordDto{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
- /** 用户ID */
- userId?:string;
-
-    } 
-    export interface StaffLoginRecord{
-      imei?:string;
-  version?:string;
-  createdAt?:string;
-
-    } 
-    export interface PdaHistorySearchDto{
-     /** 值守人员ID */
- pdaUserId?:string;
-
-    } 
-    export interface PdaUserAccountsRecordVo{
-     /** 日期 */
- accountsDate?:string;
- /** 区域名称 */
- areaName?:string;
- /** 街道名称 */
- streetName?:string;
- /** 停车点名称 */
- lotName?:string;
- /** 应收金额,单位分 */
- generalIncome?:number;
- /** 实收金额(累计待交账),单位分 */
- received?:number;
-
-    } 
-    export interface StaffChartVo{
-     /** 0-未填写，1-男，2-女 */
- genderMap?:{[key:string]:number};
- /** 0-50岁以下，1-50岁以上 */
- ageMap?:{[key:string]:number};
- /** 0-离职，1-在职 */
- statusMap?:{[key:string]:number};
-
-    } 
-    export interface PatrolUserSearchDto{
-     /** 姓名-全模糊查询 */
- name?:string;
- /** 工作状态 1在职 0离职 */
- workStatus?:number;
- /** 巡查人员类型 1地磁 2地锁 10多类型 */
- type?:number;
- /** 点位ID */
- lotId?:string;
-  version?:string;
-
-    } 
-    export interface PatrolUserResult{
-      id?:string;
-  jobNum?:string;
-  name?:string;
-  sex?:MsgType;
-  age?:number;
-  phone?:string;
-  avatar?:string;
-  workStatus?:MsgType;
-  lotGroupName?:string;
-  lotGroupId?:string;
-  lotNum?:number;
-  manageNum?:number;
-  type?:MsgType;
-  role?:string;
- /** 版本号 */
- version?:string;
- /** 设备号 */
- imei?:string;
-
-    } 
-    export interface PatrolLots{
-      lotName?:string;
-  pdaUserName?:string;
-  pdaUserPhone?:string;
-  total?:number;
-
-    } 
-    export interface PatrolRole{
-      id?:string;
-  name?:string;
-  permissions?:string[];
-  sort?:number;
-  createdAt?:string;
-  updatedAt?:string;
-
-    }
-   export interface GetTccYdps  extends YdpSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  诱导屏-带分页
-   * @param {GetTccYdps} params? 
-   * @return {*}
-   */
-  export const get_tcc_ydps = async(params?:GetTccYdps) => {
-    
-  const res = await server.GET<IPage<YdpVo>> (`/tcc/ydps`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface PutTccYdps  extends YdpDto {
-        
-      
-      }
-  /** 
-   * @description:  更新诱导屏
-   * @param {YdpDto} data?,  
-   * @return {*}
-   */
-  export const put_tcc_ydps = async(data?:YdpDto,) => {
-    
-  const res = await server.PUT (`/tcc/ydps`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostTccYdps  extends YdpDto {
-        
-      
-      }
-  /** 
-   * @description:  添加诱导屏
-   * @param {YdpDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_ydps = async(data?:YdpDto,) => {
-    
-  const res = await server.POST (`/tcc/ydps`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface GetTccYdpsCards   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  诱导屏下已有卡
-   * @param {GetTccYdpsCards} params? 
-   * @return {*}
-   */
-  export const get_tcc_ydps_cards = async(params?:GetTccYdpsCards) => {
-    
-  const res = await server.GET<YdpCardRgplVo[]> (`/tcc/ydps/cards`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface PutTccYdpsCards  extends YdpCardDto {
-        
-      
-      }
-  /** 
-   * @description:  编辑卡号
-   * @param {YdpCardDto} data?,  
-   * @return {*}
-   */
-  export const put_tcc_ydps_cards = async(data?:YdpCardDto,) => {
-    
-  const res = await server.PUT (`/tcc/ydps/cards`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostTccYdpsCards  extends YdpCardDto {
-        
-      
-      }
-  /** 
-   * @description:  添加卡号
-   * @param {YdpCardDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_ydps_cards = async(data?:YdpCardDto,) => {
-    
-  const res = await server.POST (`/tcc/ydps/cards`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface GetTccVoiceText extends Paging{}
-  /** 
-   * @description:  查询-分页
-   * @param {GetTccVoiceText} params? 
-   * @return {*}
-   */
-  export const get_tcc_voice_text = async(params?:GetTccVoiceText) => {
-    
-  const res = await server.GET<IPage<DztccVoiceText>> (`/tcc/voice-text`, {params} );
-
-        return res?.result; 
-        }
-    
-   export interface PutTccVoiceText  extends DztccVoiceText {
-        
-      
-      }
-  /** 
-   * @description:  修改
-   * @param {DztccVoiceText} data?,  
-   * @return {*}
-   */
-  export const put_tcc_voice_text = async(data?:DztccVoiceText,) => {
-    
-  const res = await server.PUT (`/tcc/voice-text`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface GetTccMerchants  extends DztccMerchantSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  停车场商户-带分页
-   * @param {GetTccMerchants} params? 
-   * @return {*}
-   */
-  export const get_tcc_merchants = async(params?:GetTccMerchants) => {
-    
-  const res = await server.GET<IPage<DztccMerchantVo>> (`/tcc/merchants`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface PutTccMerchants  extends DztccMerchantDto {
-        
-      
-      }
-  /** 
-   * @description:  更新停车场商户
-   * @param {DztccMerchantDto} data?,  
-   * @return {*}
-   */
-  export const put_tcc_merchants = async(data?:DztccMerchantDto,) => {
-    
-  const res = await server.PUT (`/tcc/merchants`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostTccMerchants  extends DztccMerchantDto {
-        
-      
-      }
-  /** 
-   * @description:  添加停车场商户
-   * @param {DztccMerchantDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_merchants = async(data?:DztccMerchantDto,) => {
-    
-  const res = await server.POST (`/tcc/merchants`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PutTccCarsSpecial  extends SpecialCarDto {
-        
-      
-      }
-  /** 
-   * @description:  特殊车辆-编辑
-   * @param {SpecialCarDto} data?,  
-   * @return {*}
-   */
-  export const put_tcc_cars_special = async(data?:SpecialCarDto,) => {
-    
-  const res = await server.PUT (`/tcc/cars/special`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostTccCarsSpecial  extends SpecialCarDto {
-        
-      
-      }
-  /** 
-   * @description:  特殊车辆-新增
-   * @param {SpecialCarDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_cars_special = async(data?:SpecialCarDto,) => {
-    
-  const res = await server.POST (`/tcc/cars/special`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PutTccBasicInfoChannel  extends ChannelDto {
-        
-      
-      }
-  /** 
-   * @description:  编辑通道
-   * @param {ChannelDto} data?,  
-   * @return {*}
-   */
-  export const put_tcc_basic_info_channel = async(data?:ChannelDto,) => {
-    
-  const res = await server.PUT (`/tcc/basic-info/channel`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostTccBasicInfoChannel  extends ChannelDto {
-        
-      
-      }
-  /** 
-   * @description:  添加通道
-   * @param {ChannelDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_basic_info_channel = async(data?:ChannelDto,) => {
-    
-  const res = await server.POST (`/tcc/basic-info/channel`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostTccOrdersExport  extends HistorySearchDto {
-        
-      
-      }
-  /** 
-   * @description:  历史停车-导出
-   * @param {HistorySearchDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_orders_export = async(data?:HistorySearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/tcc/orders/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostTccMonthlyUpdMonthBatch  extends UpdMonthBatchDto {
-        
-      
-      }
-  /** 
-   * @description:  批量管理包月状态
-   * @param {UpdMonthBatchDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_monthly_upd_month_batch = async(data?:UpdMonthBatchDto,) => {
-    
-  const res = await server.POST (`/tcc/monthly/upd-month-batch`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostTccMonthlyRemoveApply  extends RemoveApplyDto {
-        
-      
-      }
-  /** 
-   * @description:  移除申请
-   * @param {RemoveApplyDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_monthly_remove_apply = async(data?:RemoveApplyDto,) => {
-    
-  const res = await server.POST (`/tcc/monthly/remove-apply`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostTccMonthlyMonthUpd  extends UpdMonthDto {
-        
-      
-      }
-  /** 
-   * @description:  更新停车场包月信息
-   * @param {UpdMonthDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_monthly_month_upd = async(data?:UpdMonthDto,) => {
-    
-  const res = await server.POST (`/tcc/monthly/month-upd`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostTccMonthlyMonthApply  extends QueryApplyDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  申请列表
-   * @param {QueryApplyDto} data?,* @param {PostTccMonthlyMonthApply} params? 
-   * @return {*}
-   */
-  export const post_tcc_monthly_month_apply = async(data?:QueryApplyDto,params?:PostTccMonthlyMonthApply) => {
-    
-  const res = await server.POST<IPage<ApplyVo>> (`/tcc/monthly/month-apply`,{data,params} );
-
-        return res?.result; 
-        }
-    
-   export interface PostTccMerchantsRechargeExport  extends LogSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  充值记录-导出
-   * @param {LogSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_merchants_recharge_export = async(data?:LogSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/tcc/merchants/recharge/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostTccMerchantsPaymentExport  extends LogSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  缴费记录-导出
-   * @param {LogSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_merchants_payment_export = async(data?:LogSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/tcc/merchants/payment/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostTccMerchantsExport  extends DztccMerchantSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  停车场商户-excel导出
-   * @param {DztccMerchantSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_merchants_export = async(data?:DztccMerchantSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/tcc/merchants/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostTccFinancialTemporaryExport  extends FinancialSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  临停财务-导出
-   * @param {FinancialSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_financial_temporary_export = async(data?:FinancialSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/tcc/financial/temporary/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostTccFinancialMonthRechargeExport  extends FinancialSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  月卡充值数据-导出
-   * @param {FinancialSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_financial_month_recharge_export = async(data?:FinancialSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/tcc/financial/month-recharge/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostTccFinancialAllExport  extends FinancialSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  财务总计-导出
-   * @param {FinancialSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_financial_all_export = async(data?:FinancialSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/tcc/financial/all/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostTccCarsExport  extends TccCarSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  车辆管理-导出
-   * @param {TccCarSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_cars_export = async(data?:TccCarSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/tcc/cars/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostTccBasicInfoParkidQrcode   {
-        parkId?:string;
-      
-      }
-  /** 
-   * @description:  二维码导出
-   * @param {PostTccBasicInfoParkidQrcode} params? 
-   * @return {*}
-   */
-  export const post_tcc_basic_info_parkId_qrcode = async(params?:PostTccBasicInfoParkidQrcode) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/tcc/basic-info/${params?.parkId}/qrcode`,{params,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostTccBasicInfoSyncMcId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  同步信息(月租,通道)
-   * @param {PostTccBasicInfoSyncMcId} params? 
-   * @return {*}
-   */
-  export const post_tcc_basic_info_sync_mc_id = async(params?:PostTccBasicInfoSyncMcId) => {
-    
-  const res = await server.POST (`/tcc/basic-info/sync-mc/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface GetTccBasicInfoRuleId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  停车场收费规则
-   * @param {GetTccBasicInfoRuleId} params? 
-   * @return {*}
-   */
-  export const get_tcc_basic_info_rule_id = async(params?:GetTccBasicInfoRuleId) => {
-    
-  const res = await server.GET<Rule> (`/tcc/basic-info/rule/${params?.id}`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface PostTccBasicInfoRuleId  extends Rule {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  保存停车场收费规则
-   * @param {Rule} data?,* @param {PostTccBasicInfoRuleId} params? 
-   * @return {*}
-   */
-  export const post_tcc_basic_info_rule_id = async(data?:Rule,params?:PostTccBasicInfoRuleId) => {
-    
-  const res = await server.POST (`/tcc/basic-info/rule/${params?.id}`,{data,params} );
-
-        return res?.success; 
-        }
-    
-   export interface PostTccBasicInfoParkUpd  extends UpdBasicInfoDto {
-        
-      
-      }
-  /** 
-   * @description:  手动更新停车场
-   * @param {UpdBasicInfoDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_basic_info_park_upd = async(data?:UpdBasicInfoDto,) => {
-    
-  const res = await server.POST (`/tcc/basic-info/park-upd`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostTccBasicInfoParkAdd  extends ParkAddDto {
-        
-      
-      }
-  /** 
-   * @description:  新增停车场
-   * @param {ParkAddDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_basic_info_park_add = async(data?:ParkAddDto,) => {
-    
-  const res = await server.POST<Boolean> (`/tcc/basic-info/park-add`,{data} );
-
-        return res?.result; 
-        }
-    
-   export interface PostTccBasicInfoMembers  extends QueryMemberDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  会员信息-分页
-   * @param {QueryMemberDto} data?,* @param {PostTccBasicInfoMembers} params? 
-   * @return {*}
-   */
-  export const post_tcc_basic_info_members = async(data?:QueryMemberDto,params?:PostTccBasicInfoMembers) => {
-    
-  const res = await server.POST<IPage<MemberVo>> (`/tcc/basic-info/members`,{data,params} );
-
-        return res?.result; 
-        }
-    
-   export interface PostTccBasicInfoMembersExport  extends QueryMemberDto {
-        
-      
-      }
-  /** 
-   * @description:  会员信息-导出
-   * @param {QueryMemberDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_basic_info_members_export = async(data?:QueryMemberDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/tcc/basic-info/members/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostTccBasicInfoMember  extends DztccMemberDto {
-        
-      
-      }
-  /** 
-   * @description:  会员信息-添加会员
-   * @param {DztccMemberDto} data?,  
-   * @return {*}
-   */
-  export const post_tcc_basic_info_member = async(data?:DztccMemberDto,) => {
-    
-  const res = await server.POST (`/tcc/basic-info/member`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface GetTccYdpsList   {
-        name?:string;
-      
-      }
-  /** 
-   * @description:  诱导屏无分页
-   * @param {GetTccYdpsList} params? 
-   * @return {*}
-   */
-  export const get_tcc_ydps_list = async(params?:GetTccYdpsList) => {
-    
-  const res = await server.GET<DztccYdp[]> (`/tcc/ydps/list`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetTccStatisticsZz   {
-        days?:number;
-      
-      }
-  /** 
-   * @description:  停车周转率
-   * @param {GetTccStatisticsZz} params? 
-   * @return {*}
-   */
-  export const get_tcc_statistics_zz = async(params?:GetTccStatisticsZz) => {
-    
-  const res = await server.GET<TccGraph[]> (`/tcc/statistics/zz`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetTccStatisticsUse   {
-        date?:string;
-      
-      }
-  /** 
-   * @description:  停车利用率,1-进场，2-出场
-   * @param {GetTccStatisticsUse} params? 
-   * @return {*}
-   */
-  export const get_tcc_statistics_use = async(params?:GetTccStatisticsUse) => {
-    
-  const res = await server.GET<TccGraph[]> (`/tcc/statistics/use`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetTccStatisticsTime   {
-        days?:number;
-      
-      }
-  /** 
-   * @description:  时长分析
-   * @param {GetTccStatisticsTime} params? 
-   * @return {*}
-   */
-  export const get_tcc_statistics_time = async(params?:GetTccStatisticsTime) => {
-    
-  const res = await server.GET<TccTimeStatistics> (`/tcc/statistics/time`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccStatisticsPay   {
-        date?:string;
-      
-      }
-  /** 
-   * @description:  支付占比-收入类型
-   * @param {GetTccStatisticsPay} params? 
-   * @return {*}
-   */
-  export const get_tcc_statistics_pay = async(params?:GetTccStatisticsPay) => {
-    
-  const res = await server.GET<TccPayStatistics> (`/tcc/statistics/pay`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccStatisticsIncome   {
-        date?:string;
-      
-      }
-  /** 
-   * @description:  收费趋势分析
-   * @param {GetTccStatisticsIncome} params? 
-   * @return {*}
-   */
-  export const get_tcc_statistics_income = async(params?:GetTccStatisticsIncome) => {
-    
-  const res = await server.GET<TccIncomeStatistics> (`/tcc/statistics/income`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccOrders  extends HistorySearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  历史停车-带分页
-   * @param {GetTccOrders} params? 
-   * @return {*}
-   */
-  export const get_tcc_orders = async(params?:GetTccOrders) => {
-    
-  const res = await server.GET<IPage<DztccOrderVo>> (`/tcc/orders`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccOrderId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  订单详情
-   * @param {GetTccOrderId} params? 
-   * @return {*}
-   */
-  export const get_tcc_order_id = async(params?:GetTccOrderId) => {
-    
-  const res = await server.GET<DztccOrderVo> (`/tcc/order/${params?.id}`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccOnline  extends OnlineSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  正在停车-带分页
-   * @param {GetTccOnline} params? 
-   * @return {*}
-   */
-  export const get_tcc_online = async(params?:GetTccOnline) => {
-    
-  const res = await server.GET<IPage<DztccParkingVo>> (`/tcc/online`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccOnlineChart  extends OnlineSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  当前停车-图表
-   * @param {GetTccOnlineChart} params? 
-   * @return {*}
-   */
-  export const get_tcc_online_chart = async(params?:GetTccOnlineChart) => {
-    
-  const res = await server.GET<OnlineChartVo> (`/tcc/online/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccMonthlyOpenCharge   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  开通缴费
-   * @param {GetTccMonthlyOpenCharge} params? 
-   * @return {*}
-   */
-  export const get_tcc_monthly_open_charge = async(params?:GetTccMonthlyOpenCharge) => {
-    
-  const res = await server.GET (`/tcc/monthly/open-charge`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface GetTccMerchantsRecharge  extends LogSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  充值记录-分页
-   * @param {GetTccMerchantsRecharge} params? 
-   * @return {*}
-   */
-  export const get_tcc_merchants_recharge = async(params?:GetTccMerchantsRecharge) => {
-    
-  const res = await server.GET<IPage<RechargeVo>> (`/tcc/merchants/recharge`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccMerchantsRechargeChart  extends LogSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  充值记录-图表
-   * @param {GetTccMerchantsRechargeChart} params? 
-   * @return {*}
-   */
-  export const get_tcc_merchants_recharge_chart = async(params?:GetTccMerchantsRechargeChart) => {
-    
-  const res = await server.GET<RechargeChartVo[]> (`/tcc/merchants/recharge/chart`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetTccMerchantsPayment  extends LogSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  缴费记录-分页
-   * @param {GetTccMerchantsPayment} params? 
-   * @return {*}
-   */
-  export const get_tcc_merchants_payment = async(params?:GetTccMerchantsPayment) => {
-    
-  const res = await server.GET<IPage<PaymentVo>> (`/tcc/merchants/payment`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccHistoryChart  extends HistorySearchDto {
-        
-      
-      }
-  /** 
-   * @description:  历史数据-图表
-   * @param {GetTccHistoryChart} params? 
-   * @return {*}
-   */
-  export const get_tcc_history_chart = async(params?:GetTccHistoryChart) => {
-    
-  const res = await server.GET<HistoryChartVo> (`/tcc/history/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccFinancialTemporary  extends FinancialSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  临停财务-带分页
-   * @param {GetTccFinancialTemporary} params? 
-   * @return {*}
-   */
-  export const get_tcc_financial_temporary = async(params?:GetTccFinancialTemporary) => {
-    
-  const res = await server.GET<IPage<TccTemporaryVo>> (`/tcc/financial/temporary`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccFinancialTemporaryChart  extends FinancialSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  临停财务-图表
-   * @param {GetTccFinancialTemporaryChart} params? 
-   * @return {*}
-   */
-  export const get_tcc_financial_temporary_chart = async(params?:GetTccFinancialTemporaryChart) => {
-    
-  const res = await server.GET<TccTemporaryChart> (`/tcc/financial/temporary/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccFinancialMonthRecharge  extends FinancialSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  月卡充值数据-带分页
-   * @param {GetTccFinancialMonthRecharge} params? 
-   * @return {*}
-   */
-  export const get_tcc_financial_month_recharge = async(params?:GetTccFinancialMonthRecharge) => {
-    
-  const res = await server.GET<IPage<TccccMonthlyLogVo>> (`/tcc/financial/month-recharge`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccFinancialAll  extends FinancialSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  财务总计-带分页
-   * @param {GetTccFinancialAll} params? 
-   * @return {*}
-   */
-  export const get_tcc_financial_all = async(params?:GetTccFinancialAll) => {
-    
-  const res = await server.GET<IPage<TccFinancialVo>> (`/tcc/financial/all`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccFinancialAllChart  extends FinancialSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  财务总计-图表
-   * @param {GetTccFinancialAllChart} params? 
-   * @return {*}
-   */
-  export const get_tcc_financial_all_chart = async(params?:GetTccFinancialAllChart) => {
-    
-  const res = await server.GET<TccFinancialChart> (`/tcc/financial/all/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccDatacenterPlaceStatistics   {
-        parkId?:string;
-      
-      }
-  /** 
-   * @description:  右上-泊位分析
-   * @param {GetTccDatacenterPlaceStatistics} params? 
-   * @return {*}
-   */
-  export const get_tcc_dataCenter_place_statistics = async(params?:GetTccDatacenterPlaceStatistics) => {
-    
-  const res = await server.GET<TccPlaceStatics> (`/tcc/dataCenter/place-statistics`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccDatacenterParkStatistics   {
-        parkId?:string;
-      
-      }
-  /** 
-   * @description:  左上-车辆出入趋势图
-   * @param {GetTccDatacenterParkStatistics} params? 
-   * @return {*}
-   */
-  export const get_tcc_dataCenter_park_statistics = async(params?:GetTccDatacenterParkStatistics) => {
-    
-  const res = await server.GET<DataCenterInOutStatistics> (`/tcc/dataCenter/park-statistics`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccDatacenterOutStatistics   {
-        parkId?:string;
-      
-      }
-  /** 
-   * @description:  左下-出车数据分析
-   * @param {GetTccDatacenterOutStatistics} params? 
-   * @return {*}
-   */
-  export const get_tcc_dataCenter_out_statistics = async(params?:GetTccDatacenterOutStatistics) => {
-    
-  const res = await server.GET<TccOutStatics> (`/tcc/dataCenter/out-statistics`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccDatacenterOrderRank   {
-        parkId?:string;
-      
-      }
-  /** 
-   * @description:  停车场订单排行
-   * @param {GetTccDatacenterOrderRank} params? 
-   * @return {*}
-   */
-  export const get_tcc_dataCenter_order_rank = async(params?:GetTccDatacenterOrderRank) => {
-    
-  const res = await server.GET<TccOrderRank[]> (`/tcc/dataCenter/order-rank`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetTccDatacenterMoneyStatistics   {
-        parkId?:string;
-      
-      }
-  /** 
-   * @description:  中间-金额/订单数据
-   * @param {GetTccDatacenterMoneyStatistics} params? 
-   * @return {*}
-   */
-  export const get_tcc_dataCenter_money_statistics = async(params?:GetTccDatacenterMoneyStatistics) => {
-    
-  const res = await server.GET<TccMoneyStatics> (`/tcc/dataCenter/money-statistics`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccDatacenterInStatistics   {
-        parkId?:string;
-      
-      }
-  /** 
-   * @description:  右下-车辆入场分析
-   * @param {GetTccDatacenterInStatistics} params? 
-   * @return {*}
-   */
-  export const get_tcc_dataCenter_in_statistics = async(params?:GetTccDatacenterInStatistics) => {
-    
-  const res = await server.GET<TccInStatics> (`/tcc/dataCenter/in-statistics`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccCars  extends TccCarSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  车辆管理-带分页
-   * @param {GetTccCars} params? 
-   * @return {*}
-   */
-  export const get_tcc_cars = async(params?:GetTccCars) => {
-    
-  const res = await server.GET<IPage<TccCarVo>> (`/tcc/cars`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccCarsSpecials  extends SpecialCarSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  特殊车辆查询-分页
-   * @param {GetTccCarsSpecials} params? 
-   * @return {*}
-   */
-  export const get_tcc_cars_specials = async(params?:GetTccCarsSpecials) => {
-    
-  const res = await server.GET<IPage<SpecialCarVo>> (`/tcc/cars/specials`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccCarsSpecialId  extends Paging {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  特殊车辆-删除
-   * @param {GetTccCarsSpecialId} params? 
-   * @return {*}
-   */
-  export const get_tcc_cars_special_id = async(params?:GetTccCarsSpecialId) => {
-    
-  const res = await server.GET<IPage<SpecialCarVo>> (`/tcc/cars/special/${params?.id}`,{params} );
-
-        return res?.result; 
-        }
-    
-   
-  /** 
-   * @description:  停车场列表
-     
-   * @return {*}
-   */
-  export const get_tcc_basic_info_parks = async() => {
-    
-  const res = await server.GET<BasicInfoVo[]> (`/tcc/basic-info/parks`, );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetTccBasicInfoParkParkid   {
-        parkId?:string;
-      
-      }
-  /** 
-   * @description:  停车场综合信息
-   * @param {GetTccBasicInfoParkParkid} params? 
-   * @return {*}
-   */
-  export const get_tcc_basic_info_park_parkId = async(params?:GetTccBasicInfoParkParkid) => {
-    
-  const res = await server.GET<ParkInfoVo> (`/tcc/basic-info/park/${params?.parkId}`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccBasicInfoMemberMonthId   {
-        id?:string;month?:number;
-      
-      }
-  /** 
-   * @description:  会员信息-添加会员包月
-   * @param {GetTccBasicInfoMemberMonthId} params? 
-   * @return {*}
-   */
-  export const get_tcc_basic_info_member_month_id = async(params?:GetTccBasicInfoMemberMonthId) => {
-    
-  const res = await server.GET (`/tcc/basic-info/member/month/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface GetTccBasicInfoMemberChart  extends QueryMemberDto {
-        
-      
-      }
-  /** 
-   * @description:  会员信息-图表
-   * @param {GetTccBasicInfoMemberChart} params? 
-   * @return {*}
-   */
-  export const get_tcc_basic_info_member_chart = async(params?:GetTccBasicInfoMemberChart) => {
-    
-  const res = await server.GET<MemberChart> (`/tcc/basic-info/member/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetTccBasicInfoChannelsId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  通道信息
-   * @param {GetTccBasicInfoChannelsId} params? 
-   * @return {*}
-   */
-  export const get_tcc_basic_info_channels_id = async(params?:GetTccBasicInfoChannelsId) => {
-    
-  const res = await server.GET<ChannelVo[]> (`/tcc/basic-info/channels/${params?.id}`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   
-  /** 
-   * @description:  车辆类型
-     
-   * @return {*}
-   */
-  export const get_tcc_basic_info_car_types = async() => {
-    
-  const res = await server.GET<MsgType[]> (`/tcc/basic-info/car-types`, );
-
-        return res?.result??[]; 
-        }
-    
-   export interface DeleteTccYdpsId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除诱导屏
-   * @param {DeleteTccYdpsId} params? 
-   * @return {*}
-   */
-  export const delete_tcc_ydps_id = async(params?:DeleteTccYdpsId) => {
-    
-  const res = await server.DELETE (`/tcc/ydps/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface DeleteTccYdpsCardsId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除卡号
-   * @param {DeleteTccYdpsCardsId} params? 
-   * @return {*}
-   */
-  export const delete_tcc_ydps_cards_id = async(params?:DeleteTccYdpsCardsId) => {
-    
-  const res = await server.DELETE (`/tcc/ydps/cards/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface DeleteTccMerchantsId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除停车场商户
-   * @param {DeleteTccMerchantsId} params? 
-   * @return {*}
-   */
-  export const delete_tcc_merchants_id = async(params?:DeleteTccMerchantsId) => {
-    
-  const res = await server.DELETE (`/tcc/merchants/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface DeleteTccBasicInfoChannelId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除通道
-   * @param {DeleteTccBasicInfoChannelId} params? 
-   * @return {*}
-   */
-  export const delete_tcc_basic_info_channel_id = async(params?:DeleteTccBasicInfoChannelId) => {
-    
-  const res = await server.DELETE (`/tcc/basic-info/channel/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-     
-    export interface YdpDto{
-      id?:string;
-  name?:string;
-  level?:number;
-  url?:string;
-
-    } 
-    export interface YdpCardDto{
-      id?:string;
- /** 诱导屏ID */
- ydpId?:string;
- /** 停车场ID */
- parkId?:string;
- /** 编号 */
- number?:string;
- /** 宽 */
- width?:number;
- /** 高 */
- height?:number;
- /** 类型 1 总车位 2 剩余车位 3总车位+剩余车位 */
- type?:number;
-
-    } 
-    export interface DztccVoiceText{
-      id?:string;
-  type?:MsgType;
-  inText?:string;
-  inVoice?:string;
-  outText?:string;
-  outVoice?:string;
-  createdAt?:string;
-
-    } 
-    export interface DztccMerchantDto{
-      id?:string;
- /** 商户名称 */
- name?:string;
- /** 联系人 */
- contactName?:string;
- /** 联系电话 */
- contactPhone?:string;
- /** 关联停车场 */
- parkId?:string;
-
-    } 
-    export interface SpecialCarDto{
-      id?:string;
-  parkId?:string;
-  plateNo?:string;
-  remark?:string;
- /** 车辆类型  0-白名单  1-黑名单 */
- carType?:number;
-
-    } 
-    export interface ChannelDto{
-      id?:string;
-  parkId?:string;
-  exId?:string;
-  name?:string;
-  inlet?:boolean;
-  voiceNo?:string;
-
-    } 
-    export interface HistorySearchDto{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
- /** 停车场id(必填) */
- parkId?:string;
- /** 车牌号码,右模糊 */
- plateNumber?:string;
- /** 订单号 */
- id?:string;
-
-    } 
-    export interface UpdMonthBatchDto{
-     /** 停车场 */
- ids?:string[];
- /** 是否开启包月 */
- monthEnabled?:boolean;
-
-    } 
-    export interface RemoveApplyDto{
-      id?:string;
- /** 原因 -1-其它，0-未支付，1-没有包月需求 */
- reason?:number;
- /** 备注 */
- remark?:string;
-
-    } 
-    export interface TccMonthlyMoney{
-      month?:number;
-  money?:number;
-  discountMoney?:number;
-
-    } 
-    export interface UpdMonthDto{
-     /** 停车场识别码 */
- id?:string;
- /** 包月名额数，为空不限制名额 */
- monthTotal?:number;
- /** 包月金额 */
- monthMoneyActual?:TccMonthlyMoney[];
- /** 折扣截止日期 */
- discountEndDate?:string;
-
-    } 
-    export interface QueryApplyDto{
-     /** 停车场id */
- parkId?:string;
- /** 0-申请列表，1-移除列表 */
- status?:number;
-
-    } 
-    export interface ApplyVo{
-      id?:string;
- /** 车场名字 */
- parkName?:string;
- /** 姓名 */
- ownerName?:string;
- /** 车牌 */
- plateNo?:string;
- /** 颜色 */
- color?:string;
- /** 联系电话 */
- ownerPhone?:string;
- /** 地址 */
- ownerAddress?:string;
- /** 申请时间 */
- createdAt?:string;
- /** 申请状态 */
- status?:MsgType;
- /** 移除原因 */
- reason?:MsgType;
- /** 备注 */
- remark?:string;
-
-    } 
-    export interface LogSearchDto{
-     /** 起始月 yyyy-mm */
- from?:string;
- /** 结束月 yyyy-mm */
- to?:string;
-  start?:string;
-  end?:string;
-
-    } 
-    export interface DztccMerchantSearchDto{
-     /** 商户名称 */
- name?:string;
- /** 联系人 */
- contactName?:string;
- /** 联系电话 */
- contactPhone?:string;
- /** 关联停车场 */
- parkId?:string;
-
-    } 
-    export interface FinancialSearchDto{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
- /** 停车场id(非必填) */
- parkId?:string;
-
-    } 
-    export interface TccCarSearchDto{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
- /** 停车场ID */
- parkId?:string;
- /** 手机号 */
- phone?:string;
- /** 车牌 */
- plateNo?:string;
-
-    } 
-    export interface Rule{
-     /** 免费停车时长(单位:分钟) */
- freeMin?:number;
- /** 最大计费金额周期（单位：小时） */
- maxPriceHour?:number;
- /** 每计费周期最大金额（单位：分） */
- maxPrice?:number;
-  computeBegin?:string;
-  computeEnd?:string;
- /** 起步价时间 单位：小时 */
- startHour?:number;
- /** 起步价 单位：分 */
- startPrice?:number;
- /** 标准计费周期 单位：小时 */
- hour?:number;
- /** 标准计费价格  单位：分 */
- price?:number;
-
-    } 
-    export interface GeoPoint{
-     /** 经度 */
- lon?:number;
- /** 纬度 */
- lat?:number;
-
-    } 
-    export interface UpdBasicInfoDto{
-      id?:string;
-  name?:string;
-  total?:number;
-  fixedTotal?:number;
-  point?:GeoPoint;
-  address?:string;
- /** 管理方 */
- manager?:string;
- /** 联系人 */
- contactMan?:string;
- /** 联系人电话 */
- contactPhone?:string;
- /** 收费规则文本描述 */
- ruleText?:string;
- /** 0-公开，1-私有 */
- type?:number;
-
-    } 
-    export interface ParkAddDto{
-     /** 停车场id */
- parkId?:string;
- /** 厂商 */
- factory?:number;
-  name?:string;
-  total?:number;
-  fixedTotal?:number;
-  point?:GeoPoint;
-  address?:string;
-  manager?:string;
-  contactMan?:string;
-  contactPhone?:string;
-  ruleText?:string;
- /** 0-公开，1-私有 */
- type?:number;
-
-    } 
-    export interface QueryMemberDto{
-     /** 停车场ID */
- parkId?:string;
- /** 车主名 */
- ownerName?:string;
- /** 手机号码 */
- ownerPhone?:string;
- /** 车牌号码 */
- plateNo?:string;
- /** 卡片类型 */
- carType?:number;
- /** 是否过期 */
- overdue?:boolean;
-  pageNum?:number;
-  pageSize?:number;
-
-    } 
-    export interface MemberVo{
-      id?:string;
- /** 车场名称 */
- parkName?:string;
- /** 卡片类型 */
- carType?:MsgType;
- /** 母车标识 */
- motherFlag?:boolean;
- /** 车牌号 */
- plateNo?:string;
- /** 车位类型 */
- spaceType?:MsgType;
- /** 建卡时间 */
- createTime?:string;
- /** 启用时间 */
- enableTime?:string;
- /** 到期时间 */
- expireTime?:string;
- /** 是否过期 */
- overdue?:boolean;
- /** 车辆是否被锁定 */
- lockFlag?:boolean;
- /** 锁定时间 */
- lockTime?:string;
- /** 黑名单标识 */
- blacklistFlag?:boolean;
- /** 会员名称 */
- ownerName?:string;
- /** 会员手机号码 */
- ownerPhone?:string;
-
-    } 
-    export interface DztccMemberDto{
-      parkId?:string;
-  plateNo?:string;
-  name?:string;
-
-    } 
-    export interface YdpSearchDto{
-      parkId?:string;
-  ydpId?:string;
-  level?:number;
-
-    } 
-    export interface YdpVo{
-      id?:string;
-  name?:string;
-  rgpls?:string;
-  level?:number;
-  url?:string;
-
-    } 
-    export interface DztccYdp{
-      id?:string;
-  name?:string;
-  level?:number;
-  url?:string;
-  createdAt?:string;
-  updatedAt?:string;
-  deleted?:boolean;
-
-    } 
-    export interface YdpCardRgplVo{
-      parkId?:string;
-  rgplName?:string;
-  cards?:YdpCardVo[];
-
-    } 
-    export interface YdpCardVo{
-      id?:string;
-  ydpId?:string;
-  parkId?:string;
-  parkName?:string;
-  number?:string;
-  width?:number;
-  height?:number;
-  type?:number;
-
-    } 
-    export interface TccGraph{
-     /** x轴坐标 */
- key?:string;
- /** y轴数据1 */
- value1?:number;
- /** y轴数据2 */
- value2?:number;
-
-    } 
-    export interface TccTimeStatistics{
-     /** 0-15分钟 */
- zero?:number;
- /** 15-60分钟 */
- one?:number;
- /** 1-2小时 */
- two?:number;
- /** 2-4小时 */
- three?:number;
- /** 4小时以上 */
- four?:number;
-
-    } 
-    export interface TccPayStatistics{
-     /** 支付占比-微信支付 */
- wechat?:number;
- /** 支付占比-支付宝支付 */
- ali?:number;
- /** 现金 */
- cash?:number;
- /** 收入类型-临停 */
- temp?:number;
- /** 收入类型-包月 */
- month?:number;
- /** 收入类型-商户 */
- merchant?:number;
-
-    } 
-    export interface TccIncomeInner{
-      date?:string;
- /** 已收 */
- income?:number;
- /** 订单笔数 */
- orderNum?:number;
- /** 临停 */
- temp?:number;
- /** 包月 */
- month?:number;
- /** 上一天已收 */
- lastIncome?:number;
- /** 上一天订单笔数 */
- lastOrderNum?:number;
- /** 上一天临停 */
- lastTemp?:number;
- /** 上一天包月 */
- lastMonth?:number;
-
-    } 
-    export interface TccIncomeStatistics{
-      left?:TccIncomeInner;
- /** 右侧曲线图 */
- right?:TccIncomeInner[];
-
-    } 
-    export interface DztccOrderVo{
-      id?:string;
- /** 车牌号 */
- plateNo?:string;
- /** 停车场 */
- parkName?:string;
- /** 通行证类型 */
- carType?:MsgType;
- /** 入场时间 */
- enterTime?:string;
- /** 入场照片 */
- enterPic?:string;
- /** 车辆类型 1：小车，2：大车，3：超大车 */
- vehicleType?:MsgType;
- /** 出场时间 */
- exitTime?:string;
- /** 出场照片 */
- exitPic?:string;
- /** 总金额 */
- totalAmount?:number;
- /** 免费金额 */
- freeAmount?:number;
- /** 支付金额 */
- paidAmount?:number;
- /** 停车时长:秒 */
- parkingSeconds?:number;
- /**  支付方式 0：现金,1：场中支付（中央缴费、微信）,2：第三方代收,3：ATM,10 余额 */
- payType?:number;
-
-    } 
-    export interface OnlineSearchDto{
-     /** 停车场id(必填) */
- parkId?:string;
- /** 车牌号码,右模糊 */
- plateNumber?:string;
- /** 订单号 */
- id?:string;
-  from?:string;
-  fromTime?:string;
-
-    } 
-    export interface DztccParkingVo{
-      id?:string;
- /** 车牌号 */
- plateNo?:string;
-  parkId?:string;
- /** 停车场 */
- parkName?:string;
- /** 通行证类型 */
- carType?:MsgType;
- /** 入场时间 */
- enterTime?:string;
- /** 入场照片 */
- enterPic?:string;
- /** 车辆类型 1：小车，2：大车，3：超大车 */
- vehicleType?:MsgType;
-  createdAt?:string;
-
-    } 
-    export interface OnlineChartVo{
-      total?:number;
-  parkNameMap?:{[key:string]:string};
-  sumMap?:{[key:string]:number};
-  timeMap?:{[key:string]:number};
-
-    } 
-    export interface DztccMerchantVo{
-      id?:string;
-  createdAt?:string;
- /** 商户名称 */
- name?:string;
- /** 联系人 */
- contactName?:string;
- /** 联系电话 */
- contactPhone?:string;
- /** 关联停车场 */
- parkId?:string;
-  parkName?:string;
- /** 商户余额 */
- amount?:number;
-
-    } 
-    export interface RechargeVo{
-      id?:string;
- /** 商户名 */
- merchantName?:string;
- /** 原始金额 */
- originalMoney?:number;
- /** 支付金额 */
- realMoney?:number;
-  createdAt?:string;
-  tccName?:string;
-
-    } 
-    export interface RechargeChartVo{
-     /** 日期/月份 */
- date?:string;
- /** 金额 */
- money?:number;
-
-    } 
-    export interface PaymentVo{
-      id?:string;
- /** 商户名称 */
- merchantName?:string;
- /** 车牌 */
- plateNo?:string;
- /** 金额 分 */
- money?:number;
-  tccName?:string;
-  createdAt?:string;
- /** 关联订单id */
- linkId?:string;
-
-    } 
-    export interface HistoryChartVo{
-     /** 总订单数 */
- total?:number;
- /** 总停车时长,分钟数 */
- parkTime?:number;
- /** 停车时长分析, 1. 0~15分钟 2. 15~60分钟 3. 1~2小时 4. 2~4 小时 5. 4小时以上 */
- timeMap?:{[key:string]:number};
- /** 收费分析, 1. 免费 2. 欠费 3. 付费 */
- payCountMap?:{[key:string]:number};
- /** 支付类型, 4：现金,1：场中支付（中央缴费、微信）,2：第三方代收,3：ATM,5 余额 */
- payTypeMap?:{[key:string]:number};
- /** 牌照类型, 1. 新能源车 2. 普通车 */
- plateTypeMap?:{[key:string]:number};
- /** 车牌统计 */
- plateCountMap?:{[key:string]:number};
-
-    } 
-    export interface TccTemporaryVo{
-      date?:string;
- /** 应收 */
- income?:number;
- /** 已收 */
- received?:number;
- /** 欠费 */
- arrears?:number;
- /** 优惠 */
- discount?:number;
- /** 微信 */
- wechat?:number;
- /** 支付宝 */
- ali?:number;
- /** 余额 */
- wallet?:number;
- /** 现金 */
- cash?:number;
-
-    } 
-    export interface TccTemporaryChart{
-     /** 收入类型 现金 */
- cash?:number;
- /** 收入类型 微信 */
- wechat?:number;
- /** 收入类型 支付宝 */
- ali?:number;
- /** 总收入柱状图 */
- right?:TccTemporaryVo[];
-
-    } 
-    export interface TccccMonthlyLogVo{
-      date?:string;
- /** 停车场名字 */
- parkName?:string;
- /** 车牌号 */
- plateNo?:string;
- /** 充值金额分 */
- moneyNum?:number;
- /** 周期 0:天,1:周，2:月,3:年 */
- unit?:number;
- /** 数量 */
- period?:number;
- /** 有效时间 */
- validTime?:string;
- /** 退款金额 */
- refundMoney?:number;
- /** 退款时间 */
- refundTime?:string;
-
-    } 
-    export interface TccFinancialVo{
-      date?:string;
- /** 总分 */
- total?:number;
- /** 临停财务分 */
- temporary?:number;
- /** 月租分 */
- recharge?:number;
- /** 商户充值分 */
- topUp?:number;
- /** 退款金额分 */
- refundMoney?:number;
-
-    } 
-    export interface TccFinancialChart{
-     /** 收入类型 月租 */
- month?:number;
- /** 收入类型 临停 */
- temp?:number;
- /** 收入类型 充值 */
- topUp?:number;
- /** 总收入柱状图 */
- right?:TccFinancialVo[];
-
-    } 
-    export interface TccPlaceStatics{
-     /** 总停车场 */
- totalTcc?:number;
- /** 周转率 */
- turnoverRate?:string;
- /** 占有率 */
- usedRate?:string;
- /** 总泊位数 */
- total?:number;
-
-    } 
-    export interface DataCenterInOutStatistics{
-     /** 进车列表-前端直接用 */
- inCount?:number[];
- /** 出车列表-前端直接用 */
- outCount?:number[];
-  xaxis?:string[];
-
-    } 
-    export interface TccOutStatics{
-      normal?:TccOutStaticsInner;
-  error?:TccOutStaticsInner;
-  free?:TccOutStaticsInner;
-
-    } 
-    export interface TccOutStaticsInner{
-      total?:number;
-  money?:number;
-
-    } 
-    export interface TccOrderRank{
-      parkName?:string;
-  orderCount?:number;
-
-    } 
-    export interface TccMoneyStatics{
-     /** 总车位数 */
- place?:number;
- /** 占用车位数 */
- usePlace?:number;
- /** 可用车位数 */
- validPlace?:number;
- /** 已产生的订单总数 */
- orderTotal?:number;
- /** 实收金额 单位：分 */
- real?:number;
- /** 未收金额 */
- not?:number;
- /** 折扣金额 */
- free?:number;
- /** 现金 */
- cash?:number;
- /** 手机支付 */
- mobile?:number;
- /** 月卡支付 */
- month?:number;
-
-    } 
-    export interface TccInStatics{
-     /** 总数 */
- total?:number;
- /** 临时车 */
- temp?:number;
- /** 月租车 */
- month?:number;
- /** 免费车 */
- free?:number;
- /** 储值车 */
- value?:number;
-
-    } 
-    export interface TccCarVo{
-     /** 车牌 */
- plateNo?:string;
- /** 手机号 */
- phone?:string;
-  carType?:MsgType;
-  parkTime?:number;
-  paid?:number;
-
-    } 
-    export interface SpecialCarSearchDto{
-      parkId?:string;
-  plateNo?:string;
- /** 车辆类型  0-白名单  1-黑名单 */
- carType?:number;
-
-    } 
-    export interface SpecialCarVo{
-      id?:string;
-  parkId?:string;
-  parkName?:string;
-  plateNo?:string;
-  carType?:MsgType;
-  remark?:string;
-
-    } 
-    export interface BasicInfoVo{
-     /** id */
- id?:string;
- /** 名称 */
- name?:string;
- /** 厂商 */
- factory?:MsgType;
- /** 停车场总车位数 */
- total?:number;
- /** 固定车位总数 */
- fixedTotal?:number;
-  point?:GeoPoint;
- /** 地址 */
- address?:string;
- /** 管理方 */
- manager?:string;
- /** 联系人 */
- contactMan?:string;
- /** 联系人电话 */
- contactPhone?:string;
- /** 收费规则文本描述 */
- ruleText?:string;
- /** 剩余车位数 */
- available?:number;
- /** 剩余临时车位数 */
- tempAvailable?:number;
- /** 剩余固定车位数 */
- fixedAvailable?:number;
- /** 预定车位总数 */
- orderTotal?:number;
- /** 已使用预定车位数 */
- orderOccupy?:number;
- /** 最后更新时间 */
- updateTime?:string;
- /** 是否在线,true false */
- online?:boolean;
- /** 上线时间 */
- uptime?:string;
- /** 下线时间 */
- downtime?:string;
- /** 在线时长单位：秒 */
- onlineSeconds?:string;
- /** 现有包月车数量 */
- monthNum?:number;
- /** 包月上限 */
- monthTotal?:number;
- /** 包月价格 */
- monthMoney?:number;
- /** 包月价格-分月 */
- monthMoneyActual?:TccMonthlyMoney[];
- /** 优惠是否开启 */
- discountEnabled?:boolean;
- /** 优惠截至日期 */
- discountEndDate?:string;
- /** 包月状态 */
- monthEnabled?:boolean;
- /** 停车场类型 */
- type?:MsgType;
- /** 二维码 */
- qrCode?:string;
-
-    } 
-    export interface ChannelVo{
-     /** 通道id */
- id?:string;
- /** 通道名称 */
- name?:string;
- /** 通行方向是否是入口 */
- inlet?:boolean;
- /** 二维码 */
- qrcode?:string;
-
-    } 
-    export interface ChargeRule{
-      passportTypeName?:string;
-  areaNames?:string[];
-  carTypeName?:string;
-  chargeType?:number;
-  timesMoney?:number;
-  timesFreeTime?:number;
-  maxOneTimePay?:number;
-  maxOneDayPay?:number;
-  timeSegments?:TimeSegment[];
-
-    } 
-    export interface ParkInfoVo{
-      basic?:BasicInfoVo;
- /** 通道信息 */
- channels?:ChannelVo[];
- /** 计费规则 */
- rules?:ChargeRule[];
-
-    } 
-    export interface TimeMoney{
-      time?:number;
-  money?:number;
-
-    } 
-    export interface TimeSegment{
-      startTime?:string;
-  endTime?:string;
-  chargeStrategy?:number;
-  freeTime?:number;
-  firstTime?:number;
-  firstMoney?:number;
-  intervalTime?:number;
-  intervalMoney?:number;
-  oneTimeMoney?:number;
-  oneSegmentMaxMoney?:number;
-  timeMoneyList?:TimeMoney[];
-
-    } 
-    export interface MemberChart{
-     /** 月卡车数量 */
- month?:number;
- /** 临时数量 */
- temp?:number;
- /** 贵宾车数量 */
- vip?:number;
- /** 已过期数量 */
- expire?:number;
- /** 未过期数量 */
- valid?:number;
- /** 月租排行 */
- rankList?:MemberChartInner[];
-
-    } 
-    export interface MemberChartInner{
-      tccName?:string;
-  count?:number;
 
     }
    export interface GetDatacenterToplist   {
@@ -5482,18 +2420,18 @@ import { server } from '@/utils/axios/request';
  walletPay?:number;
 
     }
-   export interface PostRoadSidePplOnlineExport  extends OnlineSearchDto {
+   export interface PostCarsExport  extends CarsSearchDto {
         
       
       }
   /** 
-   * @description:  当前停车数据-excel导出
-   * @param {OnlineSearchDto} data?,  
+   * @description:  车辆列表-excel导出
+   * @param {CarsSearchDto} data?,  
    * @return {*}
    */
-  export const post_road_side_ppl_online_export = async(data?:OnlineSearchDto,) => {
+  export const post_cars_export = async(data?:CarsSearchDto,) => {
     
-  const res = await server.POST<ArrayBuffer> (`/road-side/ppl/online/export`,{data,responseType: 'arraybuffer'} );
+  const res = await server.POST<ArrayBuffer> (`/cars/export`,{data,responseType: 'arraybuffer'} );
 
         
         if (res instanceof ArrayBuffer) {
@@ -5504,18 +2442,18 @@ import { server } from '@/utils/axios/request';
         
         }
     
-   export interface PostRoadSidePplHistoryExport  extends OrderSearchDto {
+   export interface PostCarsExportoverdue  extends CarsSearchDto {
         
       
       }
   /** 
-   * @description:  历史数据-excel导出
-   * @param {OrderSearchDto} data?,  
+   * @description:  车辆列表明细-excel导出
+   * @param {CarsSearchDto} data?,  
    * @return {*}
    */
-  export const post_road_side_ppl_history_export = async(data?:OrderSearchDto,) => {
+  export const post_cars_exportOverDue = async(data?:CarsSearchDto,) => {
     
-  const res = await server.POST<ArrayBuffer> (`/road-side/ppl/history/export`,{data,responseType: 'arraybuffer'} );
+  const res = await server.POST<ArrayBuffer> (`/cars/exportOverDue`,{data,responseType: 'arraybuffer'} );
 
         
         if (res instanceof ArrayBuffer) {
@@ -5526,18 +2464,18 @@ import { server } from '@/utils/axios/request';
         
         }
     
-   export interface PostRoadSideOnlineExport  extends OnlineSearchDto {
+   export interface PostCarapplyExport  extends CarApplySearchDto {
         
       
       }
   /** 
-   * @description:  当前停车数据-excel导出
-   * @param {OnlineSearchDto} data?,  
+   * @description:  导出
+   * @param {CarApplySearchDto} data?,  
    * @return {*}
    */
-  export const post_road_side_online_export = async(data?:OnlineSearchDto,) => {
+  export const post_carApply_export = async(data?:CarApplySearchDto,) => {
     
-  const res = await server.POST<ArrayBuffer> (`/road-side/online/export`,{data,responseType: 'arraybuffer'} );
+  const res = await server.POST<ArrayBuffer> (`/carApply/export`,{data,responseType: 'arraybuffer'} );
 
         
         if (res instanceof ArrayBuffer) {
@@ -5548,325 +2486,206 @@ import { server } from '@/utils/axios/request';
         
         }
     
-   export interface PostRoadSideHistoryExport  extends OrderSearchDto {
+   export interface GetCars  extends CarsSearchDto,Paging {
         
       
       }
   /** 
-   * @description:  历史数据-excel导出
-   * @param {OrderSearchDto} data?,  
+   * @description:  车辆列表
+   * @param {GetCars} params? 
    * @return {*}
    */
-  export const post_road_side_history_export = async(data?:OrderSearchDto,) => {
+  export const get_cars = async(params?:GetCars) => {
     
-  const res = await server.POST<ArrayBuffer> (`/road-side/history/export`,{data,responseType: 'arraybuffer'} );
+  const res = await server.GET<IPage<CarVo>> (`/cars`,{params} );
 
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
+        return res?.result; 
         }
     
-   export interface GetRoadSideIdExtraPictures   {
+   export interface GetCarsIdVehiclelicense   {
         id?:string;
       
       }
   /** 
-   * @description:  订单图片
-   * @param {GetRoadSideIdExtraPictures} params? 
+   * @description:  某车行驶证详情
+   * @param {GetCarsIdVehiclelicense} params? 
    * @return {*}
    */
-  export const get_road_side_id_extra_pictures = async(params?:GetRoadSideIdExtraPictures) => {
+  export const get_cars_id_vehicleLicense = async(params?:GetCarsIdVehiclelicense) => {
     
-  const res = await server.GET<String[]> (`/road-side/${params?.id}/extra-pictures`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetRoadSidePplOnline  extends OnlineSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  当前停车数据-带分页
-   * @param {GetRoadSidePplOnline} params? 
-   * @return {*}
-   */
-  export const get_road_side_ppl_online = async(params?:GetRoadSidePplOnline) => {
-    
-  const res = await server.GET<IPage<OnlineOrderVo>> (`/road-side/ppl/online`,{params} );
+  const res = await server.GET<UserVehicleLicenseVO> (`/cars/${params?.id}/vehicleLicense`,{params} );
 
         return res?.result; 
         }
     
-   export interface GetRoadSidePplOnlineChart  extends OnlineSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  当前停车-图表
-   * @param {GetRoadSidePplOnlineChart} params? 
-   * @return {*}
-   */
-  export const get_road_side_ppl_online_chart = async(params?:GetRoadSidePplOnlineChart) => {
-    
-  const res = await server.GET<OnlineChartVo> (`/road-side/ppl/online/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetRoadSidePplHistory  extends OrderSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  历史数据-带分页
-   * @param {GetRoadSidePplHistory} params? 
-   * @return {*}
-   */
-  export const get_road_side_ppl_history = async(params?:GetRoadSidePplHistory) => {
-    
-  const res = await server.GET<IPage<OrderVo>> (`/road-side/ppl/history`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetRoadSidePplHistoryChart  extends OrderSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  历史数据-图表
-   * @param {GetRoadSidePplHistoryChart} params? 
-   * @return {*}
-   */
-  export const get_road_side_ppl_history_chart = async(params?:GetRoadSidePplHistoryChart) => {
-    
-  const res = await server.GET<HistoryChartVo> (`/road-side/ppl/history/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetRoadSideOnline  extends OnlineSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  当前停车数据-带分页
-   * @param {GetRoadSideOnline} params? 
-   * @return {*}
-   */
-  export const get_road_side_online = async(params?:GetRoadSideOnline) => {
-    
-  const res = await server.GET<IPage<OnlineOrderVo>> (`/road-side/online`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetRoadSideOnlineId   {
+   export interface GetCarsIdHis  extends Paging {
         id?:string;
       
       }
   /** 
-   * @description:  当前停车数据-订单明细
-   * @param {GetRoadSideOnlineId} params? 
+   * @description:  车辆订单历史
+   * @param {GetCarsIdHis} params? 
    * @return {*}
    */
-  export const get_road_side_online_id = async(params?:GetRoadSideOnlineId) => {
+  export const get_cars_id_his = async(params?:GetCarsIdHis) => {
     
-  const res = await server.GET<ParkingCar> (`/road-side/online/${params?.id}`,{params} );
+  const res = await server.GET<IPage<OrderVo>> (`/cars/${params?.id}/his`,{params} );
 
         return res?.result; 
         }
     
-   export interface GetRoadSideOnlineChart  extends OnlineSearchDto {
+   export interface GetCarsChart  extends CarsSearchDto {
         
       
       }
   /** 
-   * @description:  当前停车-图表
-   * @param {GetRoadSideOnlineChart} params? 
+   * @description:  图表
+   * @param {GetCarsChart} params? 
    * @return {*}
    */
-  export const get_road_side_online_chart = async(params?:GetRoadSideOnlineChart) => {
+  export const get_cars_chart = async(params?:GetCarsChart) => {
     
-  const res = await server.GET<OnlineChartVo> (`/road-side/online/chart`,{params} );
+  const res = await server.GET<CarChartVo> (`/cars/chart`,{params} );
 
         return res?.result; 
         }
     
-   export interface GetRoadSideHistory  extends OrderSearchDto,Paging {
+   export interface GetCarapply  extends CarApplySearchDto,Paging {
         
       
       }
   /** 
-   * @description:  历史数据-带分页
-   * @param {GetRoadSideHistory} params? 
+   * @description:  申请列表
+   * @param {GetCarapply} params? 
    * @return {*}
    */
-  export const get_road_side_history = async(params?:GetRoadSideHistory) => {
+  export const get_carApply = async(params?:GetCarapply) => {
     
-  const res = await server.GET<IPage<OrderVo>> (`/road-side/history`,{params} );
+  const res = await server.GET<IPage<CarApplyVo>> (`/carApply`,{params} );
 
         return res?.result; 
         }
     
-   export interface GetRoadSideHistoryId   {
+   export interface GetCarapplyId   {
+        id?:string;status?:number;
+      
+      }
+  /** 
+   * @description:  处理审核
+   * @param {GetCarapplyId} params? 
+   * @return {*}
+   */
+  export const get_carApply_id = async(params?:GetCarapplyId) => {
+    
+  const res = await server.GET (`/carApply/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteCarapplyId   {
         id?:string;
       
       }
   /** 
-   * @description:  历史数据-订单明细
-   * @param {GetRoadSideHistoryId} params? 
+   * @description:  删除申请
+   * @param {DeleteCarapplyId} params? 
    * @return {*}
    */
-  export const get_road_side_history_id = async(params?:GetRoadSideHistoryId) => {
+  export const delete_carApply_id = async(params?:DeleteCarapplyId) => {
     
-  const res = await server.GET<PayOrder> (`/road-side/history/${params?.id}`,{params} );
+  const res = await server.DELETE (`/carApply/${params?.id}`,{params} );
 
-        return res?.result; 
-        }
-    
-   export interface GetRoadSideHistoryChart  extends OrderSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  历史数据-图表
-   * @param {GetRoadSideHistoryChart} params? 
-   * @return {*}
-   */
-  export const get_road_side_history_chart = async(params?:GetRoadSideHistoryChart) => {
-    
-  const res = await server.GET<HistoryChartVo> (`/road-side/history/chart`,{params} );
-
-        return res?.result; 
+        return res?.success; 
         }
      
-    export interface OnlineSearchDto{
-     /** 点位列表 */
- lotIds?:string[];
- /** 区域 */
- areaId?:string;
- /** 街道 */
- streetId?:string;
- /** 点位 */
- lotId?:string;
- /** 0全部 1地磁 2地锁 */
- type?:number;
- /** 人员类型 */
- laborType?:number;
- /** 点位期数 */
- periods?:string[];
-  id?:string;
- /** 车牌号-模糊查询-后台自动小写转大写 */
- plateNumber?:string;
- /** 车位号 */
- placeNum?:string;
- /** 缴费类型 */
- chargeType?:number;
- /** 是否已拍照 */
- isPhotographed?:boolean;
- /** 是否是本地车 */
- isLocalCar?:boolean;
- /** 是否是新能源车 */
- isNewEnergyCar?:boolean;
- /** 超过的停车天数 */
- days?:number;
-
-    } 
-    export interface OrderSearchDto{
-     /** 具体日期 */
- date?:string;
- /** 查询开始日期 */
+    export interface CarsSearchDto{
+     /** 查询开始日期 */
  from?:string;
  /** 查询结束日期 */
  to?:string;
- /** ���位列表 */
- lotIds?:string[];
- /** 区域 */
- areaId?:string;
- /** 街道 */
- streetId?:string;
- /** 点位 */
- lotId?:string;
- /** 0全部 1地磁 2地锁 */
- type?:number;
- /** 人员类型 */
- laborType?:number;
- /** 点位期数 */
- periods?:string[];
-  id?:string;
- /** 车位号 */
- placeNum?:string;
- /** 车牌号-模糊查询-后台自动小写转大写 */
+ /** 车牌号码,右模糊 */
  plateNumber?:string;
- /** 支付方式 */
- payMode?:number;
- /** 用户ID */
- appUserId?:string;
- /** 支付用户ID */
- payUserId?:string;
- /** 车辆ID */
- carId?:string;
- /** 应付金额(前端传元) */
- realMoney?:number;
- /** 应付金额最小(前端传元) */
- realMoneyMin?:number;
- /** 应付金额最大(前端传元) */
- realMoneyMax?:number;
- /** 优惠金额(前端传元) */
- discountMoney?:number;
- /** 优惠金额最小(前端传元) */
- discountMoneyMin?:number;
- /** 优惠金额最大(前端传元) */
- discountMoneyMax?:number;
- /** 订单状态 */
- status?:boolean;
- /** 支付开始时间-带时分秒 */
- paidFrom?:string;
- /** 支付结束时间-带时分秒 */
- paidTo?:string;
- /** 是否查询优惠数量-默认不查 */
- searchDiscountCount?:boolean;
- /** 缴费类型 */
- chargeType?:number;
- /** 是否已拍照 */
- isPhotographed?:boolean;
- /** 是否免费时段 */
- isFreeTime?:boolean;
- /** 是否有优惠 */
- isDiscount?:boolean;
+ /** 欠费笔数(大于等于) */
+ unpaidCountMin?:number;
+ /** 欠费笔数(小于等于) */
+ unpaidCountMax?:number;
+ /** 欠费金额(大于等于）单位分 */
+ unpaidMoneyMin?:number;
+ /** 欠费金额(小于等于）单位分 */
+ unpaidMoneyMax?:number;
+ /** 缴费笔数(大于等于) */
+ paidCountMin?:number;
+ /** 缴费笔数(小于等于) */
+ paidCountMax?:number;
+ /** 缴费金额(大于等于）单位分 */
+ paidMoneyMin?:number;
+ /** 缴费金额(小于等于）单位分 */
+ paidMoneyMax?:number;
  /** 是否是本地车 */
- isLocalCar?:boolean;
+ isLocalPlate?:boolean;
+ /** 是否是注册用户（有手机号） */
+ isRegUser?:boolean;
  /** 是否是新能源车 */
- isNewEnergyCar?:boolean;
-  fromTime?:string;
-  toTime?:string;
+ isNewEnergy?:boolean;
+  orderBy?:string;
 
     } 
-    export interface OnlineOrderVo{
+    export interface CarApplySearchDto{
+     /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+ /** 车牌号码,右模糊 */
+ plateNumber?:string;
+
+    } 
+    export interface CarVo{
+     /** id */
+ id?:string;
+ /** 车牌号 */
+ plateNumber?:string;
+ /** 可联系电话 */
+ phone?:string;
+ /** 电话 */
+ paidPhone?:string;
+ /** 停车次数 */
+ parkCount?:number;
+ /** 缴费笔数 */
+ paidCount?:number;
+ /** 累计缴费,单位:分 */
+ paidSum?:number;
+ /** 欠费笔数 */
+ unpaidCount?:number;
+ /** 累计欠费,单位:分 */
+ unpaidSum?:number;
+  carType?:MsgType;
+  createdAt?:string;
+
+    } 
+    export interface UserVehicleLicenseVO{
       id?:string;
-  address?:string;
-  placeNum?:string;
-  plateNumber?:string;
-  startAt?:string;
- /** 停车图片 */
- picture?:string;
- /** 开始信息来源 */
- beginType?:MsgType;
- /** 缴费类型 */
- chargeType?:MsgType;
-
-    } 
-    export interface OnlineChartVo{
-      total?:number;
-  lotNameMap?:{[key:string]:string};
-  sumMap?:{[key:string]:number};
-  timeMap?:{[key:string]:number};
+ /** 号牌号码 */
+ plateNo?:string;
+ /** 行驶证照片 */
+ licenseImage?:string;
+ /** 车辆类型 */
+ vehicleType?:string;
+ /** 所有人 */
+ owner?:string;
+ /** 住址 */
+ address?:string;
+ /** 使用性质 */
+ useCharacter?:string;
+ /** 品牌类型 */
+ model?:string;
+ /** 车辆识别代号 */
+ vin?:string;
+ /** 发动机号码 */
+ engineNo?:string;
+ /** 注册日期 */
+ registerDate?:string;
+ /** 发证日期 */
+ issueDate?:string;
 
     } 
     export interface OrderVo{
@@ -5916,820 +2735,31 @@ import { server } from '@/utils/axios/request';
  chargeType?:MsgType;
 
     } 
-    export interface HistoryChartVo{
-     /** 总订单数 */
- total?:number;
- /** 总停车时长,分钟数 */
- parkTime?:number;
-  timeMap?:{[key:string]:number};
-  payCountMap?:{[key:string]:string};
-  payTypeMap?:{[key:string]:string};
-  plateTypeMap?:{[key:string]:string};
-  plateCountMap?:{[key:string]:string};
+    export interface CarChartVo{
+     /** 牌照类型, 1. 新能源车 2. 普通车 */
+ plateTypeMap?:{[key:string]:number};
+ /** 停车时长分析, 1.0～10次 2. 11～20次 3. 21～30次,4.30～50次,5.50次以上 */
+ parkCountMap?:{[key:string]:number};
+ /** 累计缴费, 1. 10元以内 2. 11～30元 3.31～50元 4.51～100元 5.100元以上 */
+ payMoneyGroup?:{[key:string]:number};
 
     } 
-    export interface ParkingCar{
+    export interface CarApplyVo{
       id?:string;
-  appUserId?:string;
-  carId?:string;
-  plateNumber?:string;
-  startAt?:string;
-  areaId?:string;
-  areaName?:string;
-  streetId?:string;
-  streetName?:string;
-  lotId?:string;
-  lotName?:string;
-  placeId?:string;
-  placeNum?:string;
-  picture?:string;
-  beginType?:MsgType;
-  merged?:boolean;
-  pdaEndAt?:string;
-  chargeType?:MsgType;
-  retake?:boolean;
-  createdAt?:string;
-  address?:string;
-
-    } 
-    export interface PayOrder{
-      id?:string;
-  status?:MsgType;
-  payAt?:string;
-  mode?:MsgType;
-  originalMoney?:number;
-  targetMoney?:number;
-  realMoney?:number;
-  discountMoney?:number;
-  startAt?:string;
-  endAt?:string;
-  duringTime?:number;
-  picture?:string;
-  appUserId?:string;
-  payUserId?:string;
-  carId?:string;
-  plateNumber?:string;
-  areaId?:string;
-  areaName?:string;
-  streetId?:string;
-  streetName?:string;
-  lotId?:string;
-  lotName?:string;
-  placeId?:string;
-  placeNum?:string;
-  beginType?:MsgType;
-  endType?:MsgType;
-  merged?:boolean;
-  cdr?:boolean;
-  chargeType?:MsgType;
-  createdAt?:string;
-  updatedAt?:string;
-  deleted?:boolean;
-
-    }
-   export interface GetSystemUsers  extends UserSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  用户列表-带分页
-   * @param {GetSystemUsers} params? 
-   * @return {*}
-   */
-  export const get_system_users = async(params?:GetSystemUsers) => {
-    
-  const res = await server.GET<IPage<UserVo>> (`/system/users`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface PutSystemUsers  extends UserDto {
-        
-      
-      }
-  /** 
-   * @description:  更新用户
-   * @param {UserDto} data?,  
-   * @return {*}
-   */
-  export const put_system_users = async(data?:UserDto,) => {
-    
-  const res = await server.PUT (`/system/users`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostSystemUsers  extends UserDto {
-        
-      
-      }
-  /** 
-   * @description:  添加用户
-   * @param {UserDto} data?,  
-   * @return {*}
-   */
-  export const post_system_users = async(data?:UserDto,) => {
-    
-  const res = await server.POST (`/system/users`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PutSystemUsersIdResetStatus   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  更新用户状态
-   * @param {PutSystemUsersIdResetStatus} params? 
-   * @return {*}
-   */
-  export const put_system_users_id_reset_status = async(params?:PutSystemUsersIdResetStatus) => {
-    
-  const res = await server.PUT (`/system/users/${params?.id}/reset-status`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface PutSystemUsersResetPass  extends ResetPassDto {
-        
-      
-      }
-  /** 
-   * @description:  更新用户密码
-   * @param {ResetPassDto} data?,  
-   * @return {*}
-   */
-  export const put_system_users_reset_pass = async(data?:ResetPassDto,) => {
-    
-  const res = await server.PUT (`/system/users/reset-pass`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface GetSystemRoles extends Paging{}
-  /** 
-   * @description:  角色列表-带分页
-   * @param {GetSystemRoles} params? 
-   * @return {*}
-   */
-  export const get_system_roles = async(params?:GetSystemRoles) => {
-    
-  const res = await server.GET<IPage<SysRole>> (`/system/roles`, {params} );
-
-        return res?.result; 
-        }
-    
-   export interface PutSystemRoles  extends RoleDto {
-        
-      
-      }
-  /** 
-   * @description:  更新角色
-   * @param {RoleDto} data?,  
-   * @return {*}
-   */
-  export const put_system_roles = async(data?:RoleDto,) => {
-    
-  const res = await server.PUT (`/system/roles`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostSystemRoles  extends RoleDto {
-        
-      
-      }
-  /** 
-   * @description:  添加角色
-   * @param {RoleDto} data?,  
-   * @return {*}
-   */
-  export const post_system_roles = async(data?:RoleDto,) => {
-    
-  const res = await server.POST (`/system/roles`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PutSystemMenus  extends MenuDto {
-        
-      
-      }
-  /** 
-   * @description:  修改菜单
-   * @param {MenuDto} data?,  
-   * @return {*}
-   */
-  export const put_system_menus = async(data?:MenuDto,) => {
-    
-  const res = await server.PUT (`/system/menus`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostSystemMenus  extends MenuDto {
-        
-      
-      }
-  /** 
-   * @description:  添加菜单
-   * @param {MenuDto} data?,  
-   * @return {*}
-   */
-  export const post_system_menus = async(data?:MenuDto,) => {
-    
-  const res = await server.POST (`/system/menus`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PutSystemDictValue  extends DictValueDto {
-        
-      
-      }
-  /** 
-   * @description:  修改值
-   * @param {DictValueDto} data?,  
-   * @return {*}
-   */
-  export const put_system_dict_value = async(data?:DictValueDto,) => {
-    
-  const res = await server.PUT (`/system/dict/value`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostSystemDictValue  extends DictValueDto {
-        
-      
-      }
-  /** 
-   * @description:  添加值
-   * @param {DictValueDto} data?,  
-   * @return {*}
-   */
-  export const post_system_dict_value = async(data?:DictValueDto,) => {
-    
-  const res = await server.POST (`/system/dict/value`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PutSystemDictType  extends DictTypeDto {
-        
-      
-      }
-  /** 
-   * @description:  修改类型
-   * @param {DictTypeDto} data?,  
-   * @return {*}
-   */
-  export const put_system_dict_type = async(data?:DictTypeDto,) => {
-    
-  const res = await server.PUT (`/system/dict/type`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostSystemDictType  extends DictTypeDto {
-        
-      
-      }
-  /** 
-   * @description:  添加类型
-   * @param {DictTypeDto} data?,  
-   * @return {*}
-   */
-  export const post_system_dict_type = async(data?:DictTypeDto,) => {
-    
-  const res = await server.POST (`/system/dict/type`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PutSystemDepartments  extends DepDto {
-        
-      
-      }
-  /** 
-   * @description:  更新部门
-   * @param {DepDto} data?,  
-   * @return {*}
-   */
-  export const put_system_departments = async(data?:DepDto,) => {
-    
-  const res = await server.PUT (`/system/departments`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface PostSystemDepartments  extends DepDto {
-        
-      
-      }
-  /** 
-   * @description:  添加部门
-   * @param {DepDto} data?,  
-   * @return {*}
-   */
-  export const post_system_departments = async(data?:DepDto,) => {
-    
-  const res = await server.POST (`/system/departments`,{data} );
-
-        return res?.success; 
-        }
-    
-   
-  /** 
-   * @description:  获取可同步菜单列表
-     
-   * @return {*}
-   */
-  export const get_system_menus_sync = async() => {
-    
-  const res = await server.GET<SyncMenuVo[]> (`/system/menus/sync`, );
-
-        return res?.result??[]; 
-        }
-    
-   export interface PostSystemMenusSync  extends SyncMenuDto {
-        
-      
-      }
-  /** 
-   * @description:  增量更新菜单
-   * @param {SyncMenuDto} data?,  
-   * @return {*}
-   */
-  export const post_system_menus_sync = async(data?:SyncMenuDto,) => {
-    
-  const res = await server.POST (`/system/menus/sync`,{data} );
-
-        return res?.success; 
-        }
-    
-   export interface GetSystemUsersIdRoles   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  用户已有角色
-   * @param {GetSystemUsersIdRoles} params? 
-   * @return {*}
-   */
-  export const get_system_users_id_roles = async(params?:GetSystemUsersIdRoles) => {
-    
-  const res = await server.GET<string[]> (`/system/users/${params?.id}/roles`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   
-  /** 
-   * @description:  可用角色列表
-     
-   * @return {*}
-   */
-  export const get_system_users_roles = async() => {
-    
-  const res = await server.GET<SysRole[]> (`/system/users/roles`, );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetSystemRolesIdMenuids   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  角色已选菜单权限Ids
-   * @param {GetSystemRolesIdMenuids} params? 
-   * @return {*}
-   */
-  export const get_system_roles_id_menuIds = async(params?:GetSystemRolesIdMenuids) => {
-    
-  const res = await server.GET<string[]> (`/system/roles/${params?.id}/menuIds`,{params} );
-
-        return res?.result??[]; 
-        }
-    
-   
-  /** 
-   * @description:  角色菜单权限树
-     
-   * @return {*}
-   */
-  export const get_system_roles_menus = async() => {
-    
-  const res = await server.GET<PermissionTree[]> (`/system/roles/menus`, );
-
-        return res?.result??[]; 
-        }
-    
-   
-  /** 
-   * @description:  菜单权限树
-     
-   * @return {*}
-   */
-  export const get_system_menus_tree = async() => {
-    
-  const res = await server.GET<PermissionTree[]> (`/system/menus/tree`, );
-
-        return res?.result??[]; 
-        }
-    
-   export interface GetSystemDictValuesId  extends Paging {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  值列表-分页
-   * @param {GetSystemDictValuesId} params? 
-   * @return {*}
-   */
-  export const get_system_dict_values_id = async(params?:GetSystemDictValuesId) => {
-    
-  const res = await server.GET<IPage<SysDictValue>> (`/system/dict/values/${params?.id}`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetSystemDictTypes extends Paging{}
-  /** 
-   * @description:  类型列表-分页
-   * @param {GetSystemDictTypes} params? 
-   * @return {*}
-   */
-  export const get_system_dict_types = async(params?:GetSystemDictTypes) => {
-    
-  const res = await server.GET<IPage<SysDictType>> (`/system/dict/types`, {params} );
-
-        return res?.result; 
-        }
-    
-   
-  /** 
-   * @description:  同步数据
-     
-   * @return {*}
-   */
-  export const get_system_dict_sync = async() => {
-    
-  const res = await server.GET (`/system/dict/sync`, );
-
-        return res?.success; 
-        }
-    
-   
-  /** 
-   * @description:  部门列表树
-     
-   * @return {*}
-   */
-  export const get_system_departments_tree = async() => {
-    
-  const res = await server.GET<DepTree[]> (`/system/departments/tree`, );
-
-        return res?.result??[]; 
-        }
-    
-   export interface DeleteSystemUsersId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除用户
-   * @param {DeleteSystemUsersId} params? 
-   * @return {*}
-   */
-  export const delete_system_users_id = async(params?:DeleteSystemUsersId) => {
-    
-  const res = await server.DELETE (`/system/users/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface DeleteSystemRolesId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除角色
-   * @param {DeleteSystemRolesId} params? 
-   * @return {*}
-   */
-  export const delete_system_roles_id = async(params?:DeleteSystemRolesId) => {
-    
-  const res = await server.DELETE (`/system/roles/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface DeleteSystemMenusId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除菜单
-   * @param {DeleteSystemMenusId} params? 
-   * @return {*}
-   */
-  export const delete_system_menus_id = async(params?:DeleteSystemMenusId) => {
-    
-  const res = await server.DELETE (`/system/menus/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface DeleteSystemDictValueId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除值
-   * @param {DeleteSystemDictValueId} params? 
-   * @return {*}
-   */
-  export const delete_system_dict_value_id = async(params?:DeleteSystemDictValueId) => {
-    
-  const res = await server.DELETE (`/system/dict/value/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface DeleteSystemDictTypeId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除类型
-   * @param {DeleteSystemDictTypeId} params? 
-   * @return {*}
-   */
-  export const delete_system_dict_type_id = async(params?:DeleteSystemDictTypeId) => {
-    
-  const res = await server.DELETE (`/system/dict/type/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-    
-   export interface DeleteSystemDepartmentsId   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  删除部门
-   * @param {DeleteSystemDepartmentsId} params? 
-   * @return {*}
-   */
-  export const delete_system_departments_id = async(params?:DeleteSystemDepartmentsId) => {
-    
-  const res = await server.DELETE (`/system/departments/${params?.id}`,{params} );
-
-        return res?.success; 
-        }
-     
-    export interface UserDto{
-     /** 用户ID */
- id?:string;
- /** 用户账号 */
- username?:string;
- /** 用户密码 */
- password?:string;
- /** 用户真实姓名 */
- name?:string;
- /** 性别 1男 2女 */
- sex?:number;
- /** 电话号码 */
+ /** 车牌号 */
+ plateNumber?:string;
+ /** 绑定手机 */
  phone?:string;
- /** 身份证号 */
- idCard?:string;
- /** 邮箱 */
- email?:string;
- /** 部门ID */
- depId?:string;
- /** 状态 true正常false停用  默认正常 */
- status?:boolean;
- /** 角色ID数组(非必须) */
- roleIds?:string[];
-
-    } 
-    export interface ResetPassDto{
-     /** 用户ID */
- id?:string;
- /** 用户密码 */
- password?:string;
-
-    } 
-    export interface RoleDto{
-     /** 角色ID */
- id?:string;
- /** 角色名称 */
- roleName?:string;
- /** 权限编码 */
- code?:string;
- /** 状态 true正常 false停用  默认正常 */
- status?:boolean;
- /** 排序 */
- sort?:number;
- /** 所选菜单权限ID集合 */
- menuIds?:string[];
-
-    } 
-    export interface MenuDto{
-     /** 权限ID */
- id?:string;
- /** 父级目录或菜单ID */
- parentId?:string;
- /** 权限名称 */
- permissionName?:string;
- /** 图标 */
- icon?:string;
- /** 权限编码 */
- code?:string;
- /** 排序 */
- sort?:number;
- /** 资源类型 1目录 2菜单 3按钮 */
- resourceType?:number;
- /** 路由或跳转连接 */
- url?:string;
- /** 是否可见 默认可见 */
- visible?:boolean;
- /** 是否可用 默认可用 */
- status?:boolean;
-
-    } 
-    export interface DictValueDto{
-      id?:string;
- /** 字典类型 */
- type?:string;
- /** 字典标签 */
- label?:string;
- /** 字典值 */
- value?:string;
- /** 是否启用 */
- enabled?:boolean;
- /** 排序 */
- sort?:number;
-  remark?:string;
-
-    } 
-    export interface DictTypeDto{
-      id?:string;
- /** 字典类型 */
- type?:string;
- /** 是否启用 */
- enabled?:boolean;
-  remark?:string;
-
-    } 
-    export interface DepDto{
-     /** 部门ID */
- id?:string;
- /** 部门名称 */
- depName?:string;
- /** 排序 */
- sort?:number;
- /** 上级部门ID */
- parentId?:string;
- /** 负责人姓名 */
- leader?:string;
- /** 负责人电话 */
- leaderPhone?:string;
-
-    } 
-    export interface SyncMenuDto{
-      permissions?:string[];
-
-    } 
-    export interface UserSearchDto{
-     /** 部门ID */
- depId?:string;
- /** 用户真实姓名 */
- name?:string;
- /** 电话号码 */
- phone?:string;
-
-    } 
-    export interface UserVo{
-      id?:string;
- /** 用户账号 */
- username?:string;
- /** 用户真实姓名 */
- name?:string;
- /** 电话号码 */
- phone?:string;
- /** 性别 0未填写，1男，2女 */
- sex?:number;
- /** 状态 true正常，false停用 */
- status?:boolean;
- /** 激活状态 true激活，false未激活 */
- active?:boolean;
- /** 部门ID */
- depId?:string;
- /** 部门名称 */
- depName?:string;
- /** 已有角色，逗号分隔 */
- roles?:string;
- /** 已有停车场，逗号分隔 */
- parks?:string;
- /** 创建时间 */
+ /** 车辆类型 */
+ carType?:MsgType;
+  carTypeStr?:string;
+ /** 申请时间 */
  createdAt?:string;
-
-    } 
-    export interface SysRole{
-      id?:string;
-  roleName?:string;
-  code?:string;
-  status?:boolean;
-  sort?:number;
-  createdAt?:string;
-  updatedAt?:string;
-  deleted?:boolean;
-
-    } 
-    export interface PermissionTree{
-      id?:string;
- /** 父级菜单ID */
- parentId?:string;
- /** 名称 */
- permissionName?:string;
- /** 地址 */
- url?:string;
- /** 排序号 */
- sort?:number;
- /** 权限字符串 */
- code?:string;
- /** 显示状态 */
- visible?:boolean;
- /** 菜单状态 */
- status?:boolean;
- /** 图标 */
- icon?:string;
- /** 资源类型 1目录 2菜单 3按钮 */
- resourceType?:number;
- /** 子菜单 */
- children?:PermissionTree[];
-
-    } 
-    export interface SyncMenuVo{
-     /** ID */
- id?:string;
- /** 父级权限ID */
- parentId?:string;
- /** 权限名称 */
- permissionName?:string;
- /** 资源类型 1目录 2菜单 3按钮 */
- resourceType?:number;
- /** 图标 */
- icon?:string;
- /** 权限code */
- code?:string;
- /** 地址(路由) */
- url?:string;
- /** 排序号 */
- sort?:number;
- /** 状态 true正常 false停用  默认正常 */
- status?:boolean;
-  exist?:SyncMenuVo;
- /** 子菜单 */
- children?:SyncMenuVo[];
-
-    } 
-    export interface SysDictValue{
-      id?:string;
-  type?:string;
-  label?:string;
-  value?:string;
-  enabled?:boolean;
-  sort?:number;
-  remark?:string;
-
-    } 
-    export interface SysDictType{
-      id?:string;
-  type?:string;
-  enabled?:boolean;
-  remark?:string;
-  system?:boolean;
-
-    } 
-    export interface DepTree{
-      id?:string;
- /** 上级部门ID */
- parentId?:string;
- /** 部门名称 */
- depName?:string;
- /** 负责人 */
- leader?:string;
- /** 负责人电话 */
- leaderPhone?:string;
- /** 排序 */
- sort?:number;
-  createdAt?:string;
-  updatedAt?:string;
+ /** 上传图片 */
+ picUrls?:string[];
+ /** 审核结果 */
+ status?:MsgType;
+  statusStr?:string;
 
     }
    export interface PostStatisticsWalkExport  extends TimeRangeDate {
@@ -7582,6 +3612,1748 @@ import { server } from '@/utils/axios/request';
   payType?:string;
 
     }
+   export interface PostRoadSidePplOnlineExport  extends OnlineSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  当前停车数据-excel导出
+   * @param {OnlineSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_road_side_ppl_online_export = async(data?:OnlineSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/road-side/ppl/online/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostRoadSidePplHistoryExport  extends OrderSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  历史数据-excel导出
+   * @param {OrderSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_road_side_ppl_history_export = async(data?:OrderSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/road-side/ppl/history/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostRoadSideOnlineExport  extends OnlineSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  当前停车数据-excel导出
+   * @param {OnlineSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_road_side_online_export = async(data?:OnlineSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/road-side/online/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostRoadSideHistoryExport  extends OrderSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  历史数据-excel导出
+   * @param {OrderSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_road_side_history_export = async(data?:OrderSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/road-side/history/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface GetRoadSideIdExtraPictures   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  订单图片
+   * @param {GetRoadSideIdExtraPictures} params? 
+   * @return {*}
+   */
+  export const get_road_side_id_extra_pictures = async(params?:GetRoadSideIdExtraPictures) => {
+    
+  const res = await server.GET<string[]> (`/road-side/${params?.id}/extra-pictures`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetRoadSidePplOnline  extends OnlineSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  当前停车数据-带分页
+   * @param {GetRoadSidePplOnline} params? 
+   * @return {*}
+   */
+  export const get_road_side_ppl_online = async(params?:GetRoadSidePplOnline) => {
+    
+  const res = await server.GET<IPage<OnlineOrderVo>> (`/road-side/ppl/online`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetRoadSidePplOnlineChart  extends OnlineSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  当前停车-图表
+   * @param {GetRoadSidePplOnlineChart} params? 
+   * @return {*}
+   */
+  export const get_road_side_ppl_online_chart = async(params?:GetRoadSidePplOnlineChart) => {
+    
+  const res = await server.GET<OnlineChartVo> (`/road-side/ppl/online/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetRoadSidePplHistory  extends OrderSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  历史数据-带分页
+   * @param {GetRoadSidePplHistory} params? 
+   * @return {*}
+   */
+  export const get_road_side_ppl_history = async(params?:GetRoadSidePplHistory) => {
+    
+  const res = await server.GET<IPage<OrderVo>> (`/road-side/ppl/history`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetRoadSidePplHistoryChart  extends OrderSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  历史数据-图表
+   * @param {GetRoadSidePplHistoryChart} params? 
+   * @return {*}
+   */
+  export const get_road_side_ppl_history_chart = async(params?:GetRoadSidePplHistoryChart) => {
+    
+  const res = await server.GET<HistoryChartVo> (`/road-side/ppl/history/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetRoadSideOnline  extends OnlineSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  当前停车数据-带分页
+   * @param {GetRoadSideOnline} params? 
+   * @return {*}
+   */
+  export const get_road_side_online = async(params?:GetRoadSideOnline) => {
+    
+  const res = await server.GET<IPage<OnlineOrderVo>> (`/road-side/online`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetRoadSideOnlineId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  当前停车数据-订单明细
+   * @param {GetRoadSideOnlineId} params? 
+   * @return {*}
+   */
+  export const get_road_side_online_id = async(params?:GetRoadSideOnlineId) => {
+    
+  const res = await server.GET<ParkingCar> (`/road-side/online/${params?.id}`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetRoadSideOnlineChart  extends OnlineSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  当前停车-图表
+   * @param {GetRoadSideOnlineChart} params? 
+   * @return {*}
+   */
+  export const get_road_side_online_chart = async(params?:GetRoadSideOnlineChart) => {
+    
+  const res = await server.GET<OnlineChartVo> (`/road-side/online/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetRoadSideHistory  extends OrderSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  历史数据-带分页
+   * @param {GetRoadSideHistory} params? 
+   * @return {*}
+   */
+  export const get_road_side_history = async(params?:GetRoadSideHistory) => {
+    
+  const res = await server.GET<IPage<OrderVo>> (`/road-side/history`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetRoadSideHistoryId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  历史数据-订单明细
+   * @param {GetRoadSideHistoryId} params? 
+   * @return {*}
+   */
+  export const get_road_side_history_id = async(params?:GetRoadSideHistoryId) => {
+    
+  const res = await server.GET<PayOrder> (`/road-side/history/${params?.id}`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetRoadSideHistoryChart  extends OrderSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  历史数据-图表
+   * @param {GetRoadSideHistoryChart} params? 
+   * @return {*}
+   */
+  export const get_road_side_history_chart = async(params?:GetRoadSideHistoryChart) => {
+    
+  const res = await server.GET<HistoryChartVo> (`/road-side/history/chart`,{params} );
+
+        return res?.result; 
+        }
+     
+    export interface OnlineSearchDto{
+     /** 点位列表 */
+ lotIds?:string[];
+ /** 区域 */
+ areaId?:string;
+ /** 街道 */
+ streetId?:string;
+ /** 点位 */
+ lotId?:string;
+ /** 0全部 1地磁 2地锁 */
+ type?:number;
+ /** 人员类型 */
+ laborType?:number;
+ /** 点位期数 */
+ periods?:string[];
+  id?:string;
+ /** 车牌号-模糊查询-后台自动小写转大写 */
+ plateNumber?:string;
+ /** 车位号 */
+ placeNum?:string;
+ /** 缴费类型 */
+ chargeType?:number;
+ /** 是否已拍照 */
+ isPhotographed?:boolean;
+ /** 是否是本地车 */
+ isLocalCar?:boolean;
+ /** 是否是新能源车 */
+ isNewEnergyCar?:boolean;
+ /** 超过的停车天数 */
+ days?:number;
+
+    } 
+    export interface OrderSearchDto{
+     /** 具体日期 */
+ date?:string;
+ /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+ /** ���位列表 */
+ lotIds?:string[];
+ /** 区域 */
+ areaId?:string;
+ /** 街道 */
+ streetId?:string;
+ /** 点位 */
+ lotId?:string;
+ /** 0全部 1地磁 2地锁 */
+ type?:number;
+ /** 人员类型 */
+ laborType?:number;
+ /** 点位期数 */
+ periods?:string[];
+  id?:string;
+ /** 车位号 */
+ placeNum?:string;
+ /** 车牌号-模糊查询-后台自动小写转大写 */
+ plateNumber?:string;
+ /** 支付方式 */
+ payMode?:number;
+ /** 用户ID */
+ appUserId?:string;
+ /** 支付用户ID */
+ payUserId?:string;
+ /** 车辆ID */
+ carId?:string;
+ /** 应付金额(前端传元) */
+ realMoney?:number;
+ /** 应付金额最小(前端传元) */
+ realMoneyMin?:number;
+ /** 应付金额最大(前端传元) */
+ realMoneyMax?:number;
+ /** 优惠金额(前端传元) */
+ discountMoney?:number;
+ /** 优惠金额最小(前端传元) */
+ discountMoneyMin?:number;
+ /** 优惠金额最大(前端传元) */
+ discountMoneyMax?:number;
+ /** 订单状态 */
+ status?:boolean;
+ /** 支付开始时间-带时分秒 */
+ paidFrom?:string;
+ /** 支付结束时间-带时分秒 */
+ paidTo?:string;
+ /** 是否查询优惠数量-默认不查 */
+ searchDiscountCount?:boolean;
+ /** 缴费类型 */
+ chargeType?:number;
+ /** 是否已拍照 */
+ isPhotographed?:boolean;
+ /** 是否免费时段 */
+ isFreeTime?:boolean;
+ /** 是否有优惠 */
+ isDiscount?:boolean;
+ /** 是否是本地车 */
+ isLocalCar?:boolean;
+ /** 是否是新能源车 */
+ isNewEnergyCar?:boolean;
+  fromTime?:string;
+  toTime?:string;
+
+    } 
+    export interface OnlineOrderVo{
+      id?:string;
+  address?:string;
+  placeNum?:string;
+  plateNumber?:string;
+  startAt?:string;
+ /** 停车图片 */
+ picture?:string;
+ /** 开始信息来源 */
+ beginType?:MsgType;
+ /** 缴费类型 */
+ chargeType?:MsgType;
+
+    } 
+    export interface OnlineChartVo{
+      total?:number;
+  lotNameMap?:{[key:string]:string};
+  sumMap?:{[key:string]:number};
+  timeMap?:{[key:string]:number};
+
+    } 
+    export interface OrderVo{
+      id?:string;
+ /** 微信用户ID */
+ appUserId?:string;
+ /** 开始停车时间 */
+ startAt?:string;
+ /** 结束停车时间 */
+ endAt?:string;
+  position?:string;
+ /** 车位号 */
+ placeNum?:string;
+ /** 车牌号 */
+ plateNumber?:string;
+ /** 停车图片 */
+ picture?:string;
+ /** 区域 */
+ areaName?:string;
+ /** 街道 */
+ streetName?:string;
+ /** 停车点名字 */
+ lotName?:string;
+ /** 原始金额(单位:分) */
+ originalMoney?:number;
+ /** 实际金额(单位:分) */
+ realMoney?:number;
+ /** 优惠金额(单位:分) */
+ discountMoney?:number;
+ /** 支付状态 */
+ status?:MsgType;
+ /** 支付时间 */
+ payAt?:string;
+ /** 支付方式 0免费 1活动免费 5现金 6余额 7微信支付 8支付宝  */
+ mode?:MsgType;
+ /** 使用优惠券名称 */
+ couponName?:string;
+ /** 开始信息来源 */
+ beginType?:MsgType;
+ /** 结束信息来源 */
+ endType?:MsgType;
+ /** 子订单数量 */
+ itemCount?:number;
+ /** 优惠数量 */
+ discountCount?:number;
+ /** 缴费类型 */
+ chargeType?:MsgType;
+
+    } 
+    export interface HistoryChartVo{
+     /** 总订单数 */
+ total?:number;
+ /** 总停车时长,分钟数 */
+ parkTime?:number;
+  timeMap?:{[key:string]:number};
+  payCountMap?:{[key:string]:string};
+  payTypeMap?:{[key:string]:string};
+  plateTypeMap?:{[key:string]:string};
+  plateCountMap?:{[key:string]:string};
+
+    } 
+    export interface ParkingCar{
+      id?:string;
+  appUserId?:string;
+  carId?:string;
+  plateNumber?:string;
+  startAt?:string;
+  areaId?:string;
+  areaName?:string;
+  streetId?:string;
+  streetName?:string;
+  lotId?:string;
+  lotName?:string;
+  placeId?:string;
+  placeNum?:string;
+  picture?:string;
+  beginType?:MsgType;
+  merged?:boolean;
+  pdaEndAt?:string;
+  chargeType?:MsgType;
+  retake?:boolean;
+  createdAt?:string;
+  address?:string;
+
+    } 
+    export interface PayOrder{
+      id?:string;
+  status?:MsgType;
+  payAt?:string;
+  mode?:MsgType;
+  originalMoney?:number;
+  targetMoney?:number;
+  realMoney?:number;
+  discountMoney?:number;
+  startAt?:string;
+  endAt?:string;
+  duringTime?:number;
+  picture?:string;
+  appUserId?:string;
+  payUserId?:string;
+  carId?:string;
+  plateNumber?:string;
+  areaId?:string;
+  areaName?:string;
+  streetId?:string;
+  streetName?:string;
+  lotId?:string;
+  lotName?:string;
+  placeId?:string;
+  placeNum?:string;
+  beginType?:MsgType;
+  endType?:MsgType;
+  merged?:boolean;
+  cdr?:boolean;
+  chargeType?:MsgType;
+  createdAt?:string;
+  updatedAt?:string;
+  deleted?:boolean;
+
+    }
+   export interface PostLogsSupportExport  extends KfLogSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  客服日志-导出
+   * @param {KfLogSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_logs_support_export = async(data?:KfLogSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/logs/support/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostLogsPatrolExport  extends PatrolLogSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  巡查日志-导出
+   * @param {PatrolLogSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_logs_patrol_export = async(data?:PatrolLogSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/logs/patrol/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostLogsLoginExport  extends LoginLogSearch {
+        
+      
+      }
+  /** 
+   * @description:  登录日志-导出
+   * @param {LoginLogSearch} data?,  
+   * @return {*}
+   */
+  export const post_logs_login_export = async(data?:LoginLogSearch,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/logs/login/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostLogsJournalExport  extends JournalLogSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  值守日志-导出
+   * @param {JournalLogSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_logs_journal_export = async(data?:JournalLogSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/logs/journal/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface GetLogsTopup  extends SystemLogSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  系统日志-带分页
+   * @param {GetLogsTopup} params? 
+   * @return {*}
+   */
+  export const get_logs_topUp = async(params?:GetLogsTopup) => {
+    
+  const res = await server.GET<IPage<SysTopUpLog>> (`/logs/topUp`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetLogsSystem  extends SystemLogSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  系统日志-带分页
+   * @param {GetLogsSystem} params? 
+   * @return {*}
+   */
+  export const get_logs_system = async(params?:GetLogsSystem) => {
+    
+  const res = await server.GET<IPage<SysLogVo>> (`/logs/system`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetLogsSupport  extends KfLogSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  客服日志-带分页
+   * @param {GetLogsSupport} params? 
+   * @return {*}
+   */
+  export const get_logs_support = async(params?:GetLogsSupport) => {
+    
+  const res = await server.GET<IPage<OrderAdjustVo>> (`/logs/support`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetLogsSupportChart  extends KfLogSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  客服日志图表
+   * @param {GetLogsSupportChart} params? 
+   * @return {*}
+   */
+  export const get_logs_support_chart = async(params?:GetLogsSupportChart) => {
+    
+  const res = await server.GET<LogChartVo> (`/logs/support/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetLogsPatrol  extends PatrolLogSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  巡查日志-带分页
+   * @param {GetLogsPatrol} params? 
+   * @return {*}
+   */
+  export const get_logs_patrol = async(params?:GetLogsPatrol) => {
+    
+  const res = await server.GET<IPage<PatrolLogVo>> (`/logs/patrol`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetLogsPatrolChart  extends PatrolLogSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  巡查日志图表
+   * @param {GetLogsPatrolChart} params? 
+   * @return {*}
+   */
+  export const get_logs_patrol_chart = async(params?:GetLogsPatrolChart) => {
+    
+  const res = await server.GET<LogChartVo> (`/logs/patrol/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetLogsOrder  extends OrderRecordSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  订单全日志查询
+   * @param {GetLogsOrder} params? 
+   * @return {*}
+   */
+  export const get_logs_order = async(params?:GetLogsOrder) => {
+    
+  const res = await server.GET<OrderRecordLogVo[]> (`/logs/order`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetLogsLogin  extends LoginLogSearch,Paging {
+        
+      
+      }
+  /** 
+   * @description:  登录日志-带分页
+   * @param {GetLogsLogin} params? 
+   * @return {*}
+   */
+  export const get_logs_login = async(params?:GetLogsLogin) => {
+    
+  const res = await server.GET<IPage<SysLoginLog>> (`/logs/login`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetLogsJournal  extends JournalLogSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  值守日志-带分页
+   * @param {GetLogsJournal} params? 
+   * @return {*}
+   */
+  export const get_logs_journal = async(params?:GetLogsJournal) => {
+    
+  const res = await server.GET<IPage<JournalLogVo>> (`/logs/journal`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetLogsJournalChart  extends JournalLogSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  值守日志图表
+   * @param {GetLogsJournalChart} params? 
+   * @return {*}
+   */
+  export const get_logs_journal_chart = async(params?:GetLogsJournalChart) => {
+    
+  const res = await server.GET<LogChartVo> (`/logs/journal/chart`,{params} );
+
+        return res?.result; 
+        }
+     
+    export interface KfLogSearchDto{
+     /** 操作类型 1.免单 2.核减 3.修改车牌 */
+ actionType?:number;
+ /** 处理人姓名 */
+ patrolUserName?:string;
+ /** 点位 */
+ placeNum?:string;
+ /** 车牌号-模糊搜索 */
+ plateNumber?:string;
+ /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+
+    } 
+    export interface OrderAdjustVo{
+      id?:string;
+  orderId?:string;
+  position?:string;
+  plateNumber?:string;
+  actionType?:MsgType;
+  actionTypeStr?:string;
+  placeNum?:string;
+  pilotoffAt?:string;
+  patrolId?:string;
+  patrolUserName?:string;
+  patrolUserPhone?:string;
+  changeFrom?:string;
+  changeTo?:string;
+  remarks?:string;
+  createdAt?:string;
+
+    } 
+    export interface PatrolLogSearchDto{
+     /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+ /** 操作人 */
+ name?:string;
+ /** 操作 */
+ operation?:number;
+
+    } 
+    export interface LoginLogSearch{
+     /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+  name?:string;
+
+    } 
+    export interface JournalLogSearchDto{
+     /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+ /** 点位ID */
+ lotId?:string;
+ /** 街道ID */
+ streetId?:string;
+ /** 区域ID */
+ areaId?:string;
+ /** 车位号 */
+ placeNum?:string;
+ /** 值守人员名称 */
+ pdaUserName?:string;
+ /** 巡查人员名称 */
+ patrolUserName?:string;
+ /** 车牌号 */
+ plateNumber?:string;
+ /** 上报类型 */
+ reportMsgType?:number;
+ /** 是否已处理 */
+ hasProcess?:number;
+
+    } 
+    export interface SystemLogSearchDto{
+     /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+  name?:string;
+  phone?:string;
+
+    } 
+    export interface SysTopUpLog{
+      id?:string;
+  name?:string;
+  ip?:string;
+  phone?:string;
+  money?:number;
+  createdAt?:string;
+
+    } 
+    export interface SysLogVo{
+      id?:string;
+ /** IP地址 */
+ ip?:string;
+ /** 操作 */
+ operation?:string;
+ /** 执行方法 */
+ method?:string;
+ /** 耗费时间/毫秒 */
+ costTime?:number;
+ /** 操作参数 */
+ paramJson?:string;
+ /** 操作人 */
+ createdUser?:string;
+ /** 创建时间 */
+ createdAt?:string;
+
+    } 
+    export interface LogChartVo{
+     /** 类型统计 */
+ typeMap?:{[key:string]:number};
+ /** 数量统计 最近30天 */
+ numMap?:{[key:string]:number};
+ /** 状态统计 -1-驳回,0-未处理 1-已处理,2-过期 */
+ statusMap?:{[key:string]:number};
+
+    } 
+    export interface PatrolLogVo{
+      id?:string;
+  pplId?:string;
+  operation?:MsgType;
+  position?:string;
+  deviceSn?:string;
+  plateNumber?:string;
+  operationStr?:string;
+  placeNum?:string;
+  patrolId?:string;
+  patrolUserName?:string;
+  changeFrom?:string;
+  changeTo?:string;
+  orderId?:string;
+  createdAt?:string;
+
+    } 
+    export interface OrderRecordSearchDto{
+     /** 订单id */
+ orderId?:string;
+ /** 消息类型 */
+ msgType?:number;
+ /** 消息子类型 */
+ msgSubType?:number;
+
+    } 
+    export interface OrderRecordContent{
+      text?:string;
+  changeFrom?:string;
+  changeTo?:string;
+  remarks?:string;
+
+    } 
+    export interface OrderRecordDevice{
+      id?:string;
+  sn?:string;
+
+    } 
+    export interface OrderRecordLogSubTypeVo{
+      type?:number;
+  node?:string;
+
+    } 
+    export interface OrderRecordLogVo{
+      id?:string;
+  createdAt?:string;
+  launchUser?:OrderRecordUser;
+ /** 处理时间 */
+ processedAt?:string;
+  processUser?:OrderRecordUser;
+ /** 处理状态 */
+ processStatus?:MsgType;
+ /** 触发事件主体id */
+ eventId?:string;
+ /** 点位 */
+ lotId?:string;
+ /** 地址 */
+ address?:string;
+ /** 车位号 */
+ placeNum?:string;
+  device?:OrderRecordDevice;
+ /** 车牌 */
+ plateNum?:string;
+ /** 消息类型 */
+ msgType?:MsgType;
+ /** 消息子类型 */
+ msgSubtype?:number;
+  msgSubTypeInfo?:OrderRecordLogSubTypeVo;
+  msgContent?:OrderRecordContent;
+
+    } 
+    export interface OrderRecordUser{
+      id?:string;
+  name?:string;
+  phone?:string;
+  urls?:string[];
+
+    } 
+    export interface SysLoginLog{
+      id?:string;
+  account?:string;
+  name?:string;
+  ip?:string;
+  success?:boolean;
+  successStr?:string;
+  msg?:string;
+  createdAt?:string;
+
+    } 
+    export interface JournalLogVo{
+      id?:string;
+ /** 上报人名字 */
+ pdaUserName?:string;
+ /** 点位详细地址 */
+ position?:string;
+ /** 停车位编号 */
+ placeNum?:string;
+ /** 照片列表 */
+ pictures?:string[];
+ /** 上报类型 */
+ msgType?:MsgType;
+  msgTypeStr?:string;
+ /** 上报时间 */
+ reportDateTime?:string;
+ /** 处理时间 */
+ processDateTime?:string;
+ /** 处理人 */
+ patrolUserName?:string;
+ /** 修改前数据 */
+ changeFrom?:string;
+ /** 修改后数据 */
+ changeTo?:string;
+ /** 处理图片 */
+ processPic?:string;
+ /** 处理状态 */
+ processStatus?:MsgType;
+  processStatusStr?:string;
+  parkingCarId?:string;
+  orderId?:string;
+  processUser?:OrderRecordUser;
+
+    }
+   export interface GetSystemUsers  extends UserSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  用户列表-带分页
+   * @param {GetSystemUsers} params? 
+   * @return {*}
+   */
+  export const get_system_users = async(params?:GetSystemUsers) => {
+    
+  const res = await server.GET<IPage<UserVo>> (`/system/users`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface PutSystemUsers  extends UserDto {
+        
+      
+      }
+  /** 
+   * @description:  更新用户
+   * @param {UserDto} data?,  
+   * @return {*}
+   */
+  export const put_system_users = async(data?:UserDto,) => {
+    
+  const res = await server.PUT (`/system/users`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostSystemUsers  extends UserDto {
+        
+      
+      }
+  /** 
+   * @description:  添加用户
+   * @param {UserDto} data?,  
+   * @return {*}
+   */
+  export const post_system_users = async(data?:UserDto,) => {
+    
+  const res = await server.POST (`/system/users`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PutSystemUsersIdResetStatus   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  更新用户状态
+   * @param {PutSystemUsersIdResetStatus} params? 
+   * @return {*}
+   */
+  export const put_system_users_id_reset_status = async(params?:PutSystemUsersIdResetStatus) => {
+    
+  const res = await server.PUT (`/system/users/${params?.id}/reset-status`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface PutSystemUsersResetPass  extends ResetPassDto {
+        
+      
+      }
+  /** 
+   * @description:  更新用户密码
+   * @param {ResetPassDto} data?,  
+   * @return {*}
+   */
+  export const put_system_users_reset_pass = async(data?:ResetPassDto,) => {
+    
+  const res = await server.PUT (`/system/users/reset-pass`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface GetSystemRoles extends Paging{}
+  /** 
+   * @description:  角色列表-带分页
+   * @param {GetSystemRoles} params? 
+   * @return {*}
+   */
+  export const get_system_roles = async(params?:GetSystemRoles) => {
+    
+  const res = await server.GET<IPage<SysRole>> (`/system/roles`, {params} );
+
+        return res?.result; 
+        }
+    
+   export interface PutSystemRoles  extends RoleDto {
+        
+      
+      }
+  /** 
+   * @description:  更新角色
+   * @param {RoleDto} data?,  
+   * @return {*}
+   */
+  export const put_system_roles = async(data?:RoleDto,) => {
+    
+  const res = await server.PUT (`/system/roles`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostSystemRoles  extends RoleDto {
+        
+      
+      }
+  /** 
+   * @description:  添加角色
+   * @param {RoleDto} data?,  
+   * @return {*}
+   */
+  export const post_system_roles = async(data?:RoleDto,) => {
+    
+  const res = await server.POST (`/system/roles`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PutSystemMenus  extends MenuDto {
+        
+      
+      }
+  /** 
+   * @description:  修改菜单
+   * @param {MenuDto} data?,  
+   * @return {*}
+   */
+  export const put_system_menus = async(data?:MenuDto,) => {
+    
+  const res = await server.PUT (`/system/menus`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostSystemMenus  extends MenuDto {
+        
+      
+      }
+  /** 
+   * @description:  添加菜单
+   * @param {MenuDto} data?,  
+   * @return {*}
+   */
+  export const post_system_menus = async(data?:MenuDto,) => {
+    
+  const res = await server.POST (`/system/menus`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PutSystemDictValue  extends DictValueDto {
+        
+      
+      }
+  /** 
+   * @description:  修改值
+   * @param {DictValueDto} data?,  
+   * @return {*}
+   */
+  export const put_system_dict_value = async(data?:DictValueDto,) => {
+    
+  const res = await server.PUT (`/system/dict/value`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostSystemDictValue  extends DictValueDto {
+        
+      
+      }
+  /** 
+   * @description:  添加值
+   * @param {DictValueDto} data?,  
+   * @return {*}
+   */
+  export const post_system_dict_value = async(data?:DictValueDto,) => {
+    
+  const res = await server.POST (`/system/dict/value`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PutSystemDictType  extends DictTypeDto {
+        
+      
+      }
+  /** 
+   * @description:  修改类型
+   * @param {DictTypeDto} data?,  
+   * @return {*}
+   */
+  export const put_system_dict_type = async(data?:DictTypeDto,) => {
+    
+  const res = await server.PUT (`/system/dict/type`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostSystemDictType  extends DictTypeDto {
+        
+      
+      }
+  /** 
+   * @description:  添加类型
+   * @param {DictTypeDto} data?,  
+   * @return {*}
+   */
+  export const post_system_dict_type = async(data?:DictTypeDto,) => {
+    
+  const res = await server.POST (`/system/dict/type`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PutSystemDepartments  extends DepDto {
+        
+      
+      }
+  /** 
+   * @description:  更新部门
+   * @param {DepDto} data?,  
+   * @return {*}
+   */
+  export const put_system_departments = async(data?:DepDto,) => {
+    
+  const res = await server.PUT (`/system/departments`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostSystemDepartments  extends DepDto {
+        
+      
+      }
+  /** 
+   * @description:  添加部门
+   * @param {DepDto} data?,  
+   * @return {*}
+   */
+  export const post_system_departments = async(data?:DepDto,) => {
+    
+  const res = await server.POST (`/system/departments`,{data} );
+
+        return res?.success; 
+        }
+    
+   
+  /** 
+   * @description:  获取可同步菜单列表
+     
+   * @return {*}
+   */
+  export const get_system_menus_sync = async() => {
+    
+  const res = await server.GET<SyncMenuVo[]> (`/system/menus/sync`, );
+
+        return res?.result??[]; 
+        }
+    
+   export interface PostSystemMenusSync  extends SyncMenuDto {
+        
+      
+      }
+  /** 
+   * @description:  增量更新菜单
+   * @param {SyncMenuDto} data?,  
+   * @return {*}
+   */
+  export const post_system_menus_sync = async(data?:SyncMenuDto,) => {
+    
+  const res = await server.POST (`/system/menus/sync`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface GetSystemUsersIdRoles   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  用户已有角色
+   * @param {GetSystemUsersIdRoles} params? 
+   * @return {*}
+   */
+  export const get_system_users_id_roles = async(params?:GetSystemUsersIdRoles) => {
+    
+  const res = await server.GET<string[]> (`/system/users/${params?.id}/roles`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   
+  /** 
+   * @description:  可用角色列表
+     
+   * @return {*}
+   */
+  export const get_system_users_roles = async() => {
+    
+  const res = await server.GET<SysRole[]> (`/system/users/roles`, );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetSystemRolesIdMenuids   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  角色已选菜单权限Ids
+   * @param {GetSystemRolesIdMenuids} params? 
+   * @return {*}
+   */
+  export const get_system_roles_id_menuIds = async(params?:GetSystemRolesIdMenuids) => {
+    
+  const res = await server.GET<string[]> (`/system/roles/${params?.id}/menuIds`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   
+  /** 
+   * @description:  角色菜单权限树
+     
+   * @return {*}
+   */
+  export const get_system_roles_menus = async() => {
+    
+  const res = await server.GET<PermissionTree[]> (`/system/roles/menus`, );
+
+        return res?.result??[]; 
+        }
+    
+   
+  /** 
+   * @description:  菜单权限树
+     
+   * @return {*}
+   */
+  export const get_system_menus_tree = async() => {
+    
+  const res = await server.GET<PermissionTree[]> (`/system/menus/tree`, );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetSystemDictValuesId  extends Paging {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  值列表-分页
+   * @param {GetSystemDictValuesId} params? 
+   * @return {*}
+   */
+  export const get_system_dict_values_id = async(params?:GetSystemDictValuesId) => {
+    
+  const res = await server.GET<IPage<SysDictValue>> (`/system/dict/values/${params?.id}`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetSystemDictTypes extends Paging{}
+  /** 
+   * @description:  类型列表-分页
+   * @param {GetSystemDictTypes} params? 
+   * @return {*}
+   */
+  export const get_system_dict_types = async(params?:GetSystemDictTypes) => {
+    
+  const res = await server.GET<IPage<SysDictType>> (`/system/dict/types`, {params} );
+
+        return res?.result; 
+        }
+    
+   
+  /** 
+   * @description:  同步数据
+     
+   * @return {*}
+   */
+  export const get_system_dict_sync = async() => {
+    
+  const res = await server.GET (`/system/dict/sync`, );
+
+        return res?.success; 
+        }
+    
+   
+  /** 
+   * @description:  部门列表树
+     
+   * @return {*}
+   */
+  export const get_system_departments_tree = async() => {
+    
+  const res = await server.GET<DepTree[]> (`/system/departments/tree`, );
+
+        return res?.result??[]; 
+        }
+    
+   export interface DeleteSystemUsersId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除用户
+   * @param {DeleteSystemUsersId} params? 
+   * @return {*}
+   */
+  export const delete_system_users_id = async(params?:DeleteSystemUsersId) => {
+    
+  const res = await server.DELETE (`/system/users/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteSystemRolesId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除角色
+   * @param {DeleteSystemRolesId} params? 
+   * @return {*}
+   */
+  export const delete_system_roles_id = async(params?:DeleteSystemRolesId) => {
+    
+  const res = await server.DELETE (`/system/roles/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteSystemMenusId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除菜单
+   * @param {DeleteSystemMenusId} params? 
+   * @return {*}
+   */
+  export const delete_system_menus_id = async(params?:DeleteSystemMenusId) => {
+    
+  const res = await server.DELETE (`/system/menus/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteSystemDictValueId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除值
+   * @param {DeleteSystemDictValueId} params? 
+   * @return {*}
+   */
+  export const delete_system_dict_value_id = async(params?:DeleteSystemDictValueId) => {
+    
+  const res = await server.DELETE (`/system/dict/value/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteSystemDictTypeId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除类型
+   * @param {DeleteSystemDictTypeId} params? 
+   * @return {*}
+   */
+  export const delete_system_dict_type_id = async(params?:DeleteSystemDictTypeId) => {
+    
+  const res = await server.DELETE (`/system/dict/type/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteSystemDepartmentsId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除部门
+   * @param {DeleteSystemDepartmentsId} params? 
+   * @return {*}
+   */
+  export const delete_system_departments_id = async(params?:DeleteSystemDepartmentsId) => {
+    
+  const res = await server.DELETE (`/system/departments/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+     
+    export interface UserDto{
+     /** 用户ID */
+ id?:string;
+ /** 用户账号 */
+ username?:string;
+ /** 用户密码 */
+ password?:string;
+ /** 用户真实姓名 */
+ name?:string;
+ /** 性别 1男 2女 */
+ sex?:number;
+ /** 电话号码 */
+ phone?:string;
+ /** 身份证号 */
+ idCard?:string;
+ /** 邮箱 */
+ email?:string;
+ /** 部门ID */
+ depId?:string;
+ /** 状态 true正常false停用  默认正常 */
+ status?:boolean;
+ /** 角色ID数组(非必须) */
+ roleIds?:string[];
+
+    } 
+    export interface ResetPassDto{
+     /** 用户ID */
+ id?:string;
+ /** 用户密码 */
+ password?:string;
+
+    } 
+    export interface RoleDto{
+     /** 角色ID */
+ id?:string;
+ /** 角色名称 */
+ roleName?:string;
+ /** 权限编码 */
+ code?:string;
+ /** 状态 true正常 false停用  默认正常 */
+ status?:boolean;
+ /** 排序 */
+ sort?:number;
+ /** 所选菜单权限ID集合 */
+ menuIds?:string[];
+
+    } 
+    export interface MenuDto{
+     /** 权限ID */
+ id?:string;
+ /** 父级目录或菜单ID */
+ parentId?:string;
+ /** 权限名称 */
+ permissionName?:string;
+ /** 图标 */
+ icon?:string;
+ /** 权限编码 */
+ code?:string;
+ /** 排序 */
+ sort?:number;
+ /** 资源类型 1目录 2菜单 3按钮 */
+ resourceType?:number;
+ /** 路由或跳转连接 */
+ url?:string;
+ /** 是否可见 默认可见 */
+ visible?:boolean;
+ /** 是否可用 默认可用 */
+ status?:boolean;
+
+    } 
+    export interface DictValueDto{
+      id?:string;
+ /** 字典类型 */
+ type?:string;
+ /** 字典标签 */
+ label?:string;
+ /** 字典值 */
+ value?:string;
+ /** 是否启用 */
+ enabled?:boolean;
+ /** 排序 */
+ sort?:number;
+  remark?:string;
+
+    } 
+    export interface DictTypeDto{
+      id?:string;
+ /** 字典类型 */
+ type?:string;
+ /** 是否启用 */
+ enabled?:boolean;
+  remark?:string;
+
+    } 
+    export interface DepDto{
+     /** 部门ID */
+ id?:string;
+ /** 部门名称 */
+ depName?:string;
+ /** 排序 */
+ sort?:number;
+ /** 上级部门ID */
+ parentId?:string;
+ /** 负责人姓名 */
+ leader?:string;
+ /** 负责人电话 */
+ leaderPhone?:string;
+
+    } 
+    export interface SyncMenuDto{
+      permissions?:string[];
+
+    } 
+    export interface UserSearchDto{
+     /** 部门ID */
+ depId?:string;
+ /** 用户真实姓名 */
+ name?:string;
+ /** 电话号码 */
+ phone?:string;
+
+    } 
+    export interface UserVo{
+      id?:string;
+ /** 用户账号 */
+ username?:string;
+ /** 用户真实姓名 */
+ name?:string;
+ /** 电话号码 */
+ phone?:string;
+ /** 性别 0未填写，1男，2女 */
+ sex?:number;
+ /** 状态 true正常，false停用 */
+ status?:boolean;
+ /** 激活状态 true激活，false未激活 */
+ active?:boolean;
+ /** 部门ID */
+ depId?:string;
+ /** 部门名称 */
+ depName?:string;
+ /** 已有角色，逗号分隔 */
+ roles?:string;
+ /** 已有停车场，逗号分隔 */
+ parks?:string;
+ /** 创建时间 */
+ createdAt?:string;
+
+    } 
+    export interface SysRole{
+      id?:string;
+  roleName?:string;
+  code?:string;
+  status?:boolean;
+  sort?:number;
+  createdAt?:string;
+  updatedAt?:string;
+  deleted?:boolean;
+
+    } 
+    export interface PermissionTree{
+      id?:string;
+ /** 父级菜单ID */
+ parentId?:string;
+ /** 名称 */
+ permissionName?:string;
+ /** 地址 */
+ url?:string;
+ /** 排序号 */
+ sort?:number;
+ /** 权限字符串 */
+ code?:string;
+ /** 显示状态 */
+ visible?:boolean;
+ /** 菜单状态 */
+ status?:boolean;
+ /** 图标 */
+ icon?:string;
+ /** 资源类型 1目录 2菜单 3按钮 */
+ resourceType?:number;
+ /** 子菜单 */
+ children?:PermissionTree[];
+
+    } 
+    export interface SyncMenuVo{
+     /** ID */
+ id?:string;
+ /** 父级权限ID */
+ parentId?:string;
+ /** 权限名称 */
+ permissionName?:string;
+ /** 资源类型 1目录 2菜单 3按钮 */
+ resourceType?:number;
+ /** 图标 */
+ icon?:string;
+ /** 权限code */
+ code?:string;
+ /** 地址(路由) */
+ url?:string;
+ /** 排序号 */
+ sort?:number;
+ /** 状态 true正常 false停用  默认正常 */
+ status?:boolean;
+  exist?:SyncMenuVo;
+ /** 子菜单 */
+ children?:SyncMenuVo[];
+
+    } 
+    export interface SysDictValue{
+      id?:string;
+  type?:string;
+  label?:string;
+  value?:string;
+  enabled?:boolean;
+  sort?:number;
+  remark?:string;
+
+    } 
+    export interface SysDictType{
+      id?:string;
+  type?:string;
+  enabled?:boolean;
+  remark?:string;
+  system?:boolean;
+
+    } 
+    export interface DepTree{
+      id?:string;
+ /** 上级部门ID */
+ parentId?:string;
+ /** 部门名称 */
+ depName?:string;
+ /** 负责人 */
+ leader?:string;
+ /** 负责人电话 */
+ leaderPhone?:string;
+ /** 排序 */
+ sort?:number;
+  createdAt?:string;
+  updatedAt?:string;
+
+    }
    export interface PutInformationTopUpDiscountsId  extends TopUpDiscountsDto {
         id?:string;
       
@@ -7843,7 +5615,7 @@ import { server } from '@/utils/axios/request';
    */
   export const put_information_ppls_id_qrcode = async(params?:PutInformationPplsIdQrcode) => {
     
-  const res = await server.PUT<String> (`/information/ppls/${params?.id}/qrcode`,{params} );
+  const res = await server.PUT<string> (`/information/ppls/${params?.id}/qrcode`,{params} );
 
         return res?.result; 
         }
@@ -8773,7 +6545,7 @@ import { server } from '@/utils/axios/request';
       
       }
   /** 
-   * @description:  切换是否可预���
+   * @description:  切换是否可预约
    * @param {PostInformationDevicesSwitchReserve} params? 
    * @return {*}
    */
@@ -10178,510 +7950,255 @@ import { server } from '@/utils/axios/request';
  lotIds?:string[];
 
     }
-   export interface PostLogsSupportExport  extends KfLogSearchDto {
+   export interface GetTccYdps  extends YdpSearchDto,Paging {
         
       
       }
   /** 
-   * @description:  客服日志-导出
-   * @param {KfLogSearchDto} data?,  
+   * @description:  诱导屏-带分页
+   * @param {GetTccYdps} params? 
    * @return {*}
    */
-  export const post_logs_support_export = async(data?:KfLogSearchDto,) => {
+  export const get_tcc_ydps = async(params?:GetTccYdps) => {
     
-  const res = await server.POST<ArrayBuffer> (`/logs/support/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostLogsPatrolExport  extends PatrolLogSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  巡查日志-导出
-   * @param {PatrolLogSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_logs_patrol_export = async(data?:PatrolLogSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/logs/patrol/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostLogsLoginExport  extends LoginLogSearch {
-        
-      
-      }
-  /** 
-   * @description:  登录日志-导出
-   * @param {LoginLogSearch} data?,  
-   * @return {*}
-   */
-  export const post_logs_login_export = async(data?:LoginLogSearch,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/logs/login/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface PostLogsJournalExport  extends JournalLogSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  值守日志-导出
-   * @param {JournalLogSearchDto} data?,  
-   * @return {*}
-   */
-  export const post_logs_journal_export = async(data?:JournalLogSearchDto,) => {
-    
-  const res = await server.POST<ArrayBuffer> (`/logs/journal/export`,{data,responseType: 'arraybuffer'} );
-
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
-        }
-    
-   export interface GetLogsTopup  extends SystemLogSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  系统日志-带分页
-   * @param {GetLogsTopup} params? 
-   * @return {*}
-   */
-  export const get_logs_topUp = async(params?:GetLogsTopup) => {
-    
-  const res = await server.GET<IPage<SysTopUpLog>> (`/logs/topUp`,{params} );
+  const res = await server.GET<IPage<YdpVo>> (`/tcc/ydps`,{params} );
 
         return res?.result; 
         }
     
-   export interface GetLogsSystem  extends SystemLogSearchDto,Paging {
+   export interface PutTccYdps  extends YdpDto {
         
       
       }
   /** 
-   * @description:  系统日志-带分页
-   * @param {GetLogsSystem} params? 
+   * @description:  更新诱导屏
+   * @param {YdpDto} data?,  
    * @return {*}
    */
-  export const get_logs_system = async(params?:GetLogsSystem) => {
+  export const put_tcc_ydps = async(data?:YdpDto,) => {
     
-  const res = await server.GET<IPage<SysLogVo>> (`/logs/system`,{params} );
+  const res = await server.PUT (`/tcc/ydps`,{data} );
 
-        return res?.result; 
+        return res?.success; 
         }
     
-   export interface GetLogsSupport  extends KfLogSearchDto,Paging {
+   export interface PostTccYdps  extends YdpDto {
         
       
       }
   /** 
-   * @description:  客服日志-带分页
-   * @param {GetLogsSupport} params? 
+   * @description:  添加诱导屏
+   * @param {YdpDto} data?,  
    * @return {*}
    */
-  export const get_logs_support = async(params?:GetLogsSupport) => {
+  export const post_tcc_ydps = async(data?:YdpDto,) => {
     
-  const res = await server.GET<IPage<OrderAdjustVo>> (`/logs/support`,{params} );
+  const res = await server.POST (`/tcc/ydps`,{data} );
 
-        return res?.result; 
+        return res?.success; 
         }
     
-   export interface GetLogsSupportChart  extends KfLogSearchDto {
-        
+   export interface GetTccYdpsCards   {
+        id?:string;
       
       }
   /** 
-   * @description:  客服日志图表
-   * @param {GetLogsSupportChart} params? 
+   * @description:  诱导屏下已有卡
+   * @param {GetTccYdpsCards} params? 
    * @return {*}
    */
-  export const get_logs_support_chart = async(params?:GetLogsSupportChart) => {
+  export const get_tcc_ydps_cards = async(params?:GetTccYdpsCards) => {
     
-  const res = await server.GET<LogChartVo> (`/logs/support/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetLogsPatrol  extends PatrolLogSearchDto,Paging {
-        
-      
-      }
-  /** 
-   * @description:  巡查日志-带分页
-   * @param {GetLogsPatrol} params? 
-   * @return {*}
-   */
-  export const get_logs_patrol = async(params?:GetLogsPatrol) => {
-    
-  const res = await server.GET<IPage<PatrolLogVo>> (`/logs/patrol`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetLogsPatrolChart  extends PatrolLogSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  巡查日志图表
-   * @param {GetLogsPatrolChart} params? 
-   * @return {*}
-   */
-  export const get_logs_patrol_chart = async(params?:GetLogsPatrolChart) => {
-    
-  const res = await server.GET<LogChartVo> (`/logs/patrol/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetLogsOrder  extends OrderRecordSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  订单全日志查询
-   * @param {GetLogsOrder} params? 
-   * @return {*}
-   */
-  export const get_logs_order = async(params?:GetLogsOrder) => {
-    
-  const res = await server.GET<OrderRecordLogVo[]> (`/logs/order`,{params} );
+  const res = await server.GET<YdpCardRgplVo[]> (`/tcc/ydps/cards`,{params} );
 
         return res?.result??[]; 
         }
     
-   export interface GetLogsLogin  extends LoginLogSearch,Paging {
+   export interface PutTccYdpsCards  extends YdpCardDto {
         
       
       }
   /** 
-   * @description:  登录日志-带分页
-   * @param {GetLogsLogin} params? 
+   * @description:  编辑卡号
+   * @param {YdpCardDto} data?,  
    * @return {*}
    */
-  export const get_logs_login = async(params?:GetLogsLogin) => {
+  export const put_tcc_ydps_cards = async(data?:YdpCardDto,) => {
     
-  const res = await server.GET<IPage<SysLoginLog>> (`/logs/login`,{params} );
+  const res = await server.PUT (`/tcc/ydps/cards`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostTccYdpsCards  extends YdpCardDto {
+        
+      
+      }
+  /** 
+   * @description:  添加卡号
+   * @param {YdpCardDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_ydps_cards = async(data?:YdpCardDto,) => {
+    
+  const res = await server.POST (`/tcc/ydps/cards`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface GetTccVoiceText extends Paging{}
+  /** 
+   * @description:  查询-分页
+   * @param {GetTccVoiceText} params? 
+   * @return {*}
+   */
+  export const get_tcc_voice_text = async(params?:GetTccVoiceText) => {
+    
+  const res = await server.GET<IPage<DztccVoiceText>> (`/tcc/voice-text`, {params} );
 
         return res?.result; 
         }
     
-   export interface GetLogsJournal  extends JournalLogSearchDto,Paging {
+   export interface PutTccVoiceText  extends DztccVoiceText {
         
       
       }
   /** 
-   * @description:  值守日志-带分页
-   * @param {GetLogsJournal} params? 
+   * @description:  修改
+   * @param {DztccVoiceText} data?,  
    * @return {*}
    */
-  export const get_logs_journal = async(params?:GetLogsJournal) => {
+  export const put_tcc_voice_text = async(data?:DztccVoiceText,) => {
     
-  const res = await server.GET<IPage<JournalLogVo>> (`/logs/journal`,{params} );
+  const res = await server.PUT (`/tcc/voice-text`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface GetTccMerchants  extends DztccMerchantSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  停车场商户-带分页
+   * @param {GetTccMerchants} params? 
+   * @return {*}
+   */
+  export const get_tcc_merchants = async(params?:GetTccMerchants) => {
+    
+  const res = await server.GET<IPage<DztccMerchantVo>> (`/tcc/merchants`,{params} );
 
         return res?.result; 
         }
     
-   export interface GetLogsJournalChart  extends JournalLogSearchDto {
+   export interface PutTccMerchants  extends DztccMerchantDto {
         
       
       }
   /** 
-   * @description:  值守日志图表
-   * @param {GetLogsJournalChart} params? 
+   * @description:  更新停车场商户
+   * @param {DztccMerchantDto} data?,  
    * @return {*}
    */
-  export const get_logs_journal_chart = async(params?:GetLogsJournalChart) => {
+  export const put_tcc_merchants = async(data?:DztccMerchantDto,) => {
     
-  const res = await server.GET<LogChartVo> (`/logs/journal/chart`,{params} );
+  const res = await server.PUT (`/tcc/merchants`,{data} );
 
-        return res?.result; 
+        return res?.success; 
         }
-     
-    export interface KfLogSearchDto{
-     /** 操作类型 1.免单 2.核减 3.修改车牌 */
- actionType?:number;
- /** 处理人姓名 */
- patrolUserName?:string;
- /** 点位 */
- placeNum?:string;
- /** 车牌号-模糊搜索 */
- plateNumber?:string;
- /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
-
-    } 
-    export interface OrderAdjustVo{
-      id?:string;
-  orderId?:string;
-  position?:string;
-  plateNumber?:string;
-  actionType?:MsgType;
-  actionTypeStr?:string;
-  placeNum?:string;
-  pilotoffAt?:string;
-  patrolId?:string;
-  patrolUserName?:string;
-  patrolUserPhone?:string;
-  changeFrom?:string;
-  changeTo?:string;
-  remarks?:string;
-  createdAt?:string;
-
-    } 
-    export interface PatrolLogSearchDto{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
- /** 操作人 */
- name?:string;
- /** 操作 */
- operation?:number;
-
-    } 
-    export interface LoginLogSearch{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
-  name?:string;
-
-    } 
-    export interface JournalLogSearchDto{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
- /** 点位ID */
- lotId?:string;
- /** 街道ID */
- streetId?:string;
- /** 区域ID */
- areaId?:string;
- /** 车位号 */
- placeNum?:string;
- /** 值守人员名称 */
- pdaUserName?:string;
- /** 巡查人员名称 */
- patrolUserName?:string;
- /** 车牌号 */
- plateNumber?:string;
- /** 上报类型 */
- reportMsgType?:number;
- /** 是否已处理 */
- hasProcess?:number;
-
-    } 
-    export interface SystemLogSearchDto{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
-  name?:string;
-  phone?:string;
-
-    } 
-    export interface SysTopUpLog{
-      id?:string;
-  name?:string;
-  ip?:string;
-  phone?:string;
-  money?:number;
-  createdAt?:string;
-
-    } 
-    export interface SysLogVo{
-      id?:string;
- /** IP地址 */
- ip?:string;
- /** 操作 */
- operation?:string;
- /** 执行方法 */
- method?:string;
- /** 耗费时间/毫秒 */
- costTime?:number;
- /** 操作参数 */
- paramJson?:string;
- /** 操作人 */
- createdUser?:string;
- /** 创建时间 */
- createdAt?:string;
-
-    } 
-    export interface LogChartVo{
-     /** 类型统计 */
- typeMap?:{[key:string]:number};
- /** 数量统计 最近30天 */
- numMap?:{[key:string]:number};
- /** 状态统计 -1-驳回,0-未处理 1-已处理,2-过期 */
- statusMap?:{[key:string]:number};
-
-    } 
-    export interface PatrolLogVo{
-      id?:string;
-  pplId?:string;
-  operation?:MsgType;
-  position?:string;
-  deviceSn?:string;
-  plateNumber?:string;
-  operationStr?:string;
-  placeNum?:string;
-  patrolId?:string;
-  patrolUserName?:string;
-  changeFrom?:string;
-  changeTo?:string;
-  orderId?:string;
-  createdAt?:string;
-
-    } 
-    export interface OrderRecordSearchDto{
-     /** 订单id */
- orderId?:string;
- /** 消息类型 */
- msgType?:number;
- /** 消息子类型 */
- msgSubType?:number;
-
-    } 
-    export interface OrderRecordContent{
-      text?:string;
-  changeFrom?:string;
-  changeTo?:string;
-  remarks?:string;
-
-    } 
-    export interface OrderRecordDevice{
-      id?:string;
-  sn?:string;
-
-    } 
-    export interface OrderRecordLogSubTypeVo{
-      type?:number;
-  node?:string;
-
-    } 
-    export interface OrderRecordLogVo{
-      id?:string;
-  createdAt?:string;
-  launchUser?:OrderRecordUser;
- /** 处理时间 */
- processedAt?:string;
-  processUser?:OrderRecordUser;
- /** 处理状态 */
- processStatus?:MsgType;
- /** 触发事件主体id */
- eventId?:string;
- /** 点位 */
- lotId?:string;
- /** 地址 */
- address?:string;
- /** 车位号 */
- placeNum?:string;
-  device?:OrderRecordDevice;
- /** 车牌 */
- plateNum?:string;
- /** 消息类型 */
- msgType?:MsgType;
- /** 消息子类型 */
- msgSubtype?:number;
-  msgSubTypeInfo?:OrderRecordLogSubTypeVo;
-  msgContent?:OrderRecordContent;
-
-    } 
-    export interface OrderRecordUser{
-      id?:string;
-  name?:string;
-  phone?:string;
-  urls?:string[];
-
-    } 
-    export interface SysLoginLog{
-      id?:string;
-  account?:string;
-  name?:string;
-  ip?:string;
-  success?:boolean;
-  successStr?:string;
-  msg?:string;
-  createdAt?:string;
-
-    } 
-    export interface JournalLogVo{
-      id?:string;
- /** 上报人名字 */
- pdaUserName?:string;
- /** 点位详细地址 */
- position?:string;
- /** 停车位编号 */
- placeNum?:string;
- /** 照片列表 */
- pictures?:string[];
- /** 上报类型 */
- msgType?:MsgType;
-  msgTypeStr?:string;
- /** 上报时间 */
- reportDateTime?:string;
- /** 处理时间 */
- processDateTime?:string;
- /** 处理人 */
- patrolUserName?:string;
- /** 修改前数据 */
- changeFrom?:string;
- /** 修改后数据 */
- changeTo?:string;
- /** 处理图片 */
- processPic?:string;
- /** 处理状态 */
- processStatus?:MsgType;
-  processStatusStr?:string;
-  parkingCarId?:string;
-  orderId?:string;
-  processUser?:OrderRecordUser;
-
-    }
-   export interface PostCarsExport  extends CarsSearchDto {
+    
+   export interface PostTccMerchants  extends DztccMerchantDto {
         
       
       }
   /** 
-   * @description:  车辆列表-excel导出
-   * @param {CarsSearchDto} data?,  
+   * @description:  添加停车场商户
+   * @param {DztccMerchantDto} data?,  
    * @return {*}
    */
-  export const post_cars_export = async(data?:CarsSearchDto,) => {
+  export const post_tcc_merchants = async(data?:DztccMerchantDto,) => {
     
-  const res = await server.POST<ArrayBuffer> (`/cars/export`,{data,responseType: 'arraybuffer'} );
+  const res = await server.POST (`/tcc/merchants`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PutTccCarsSpecial  extends SpecialCarDto {
+        
+      
+      }
+  /** 
+   * @description:  特殊车辆-编辑
+   * @param {SpecialCarDto} data?,  
+   * @return {*}
+   */
+  export const put_tcc_cars_special = async(data?:SpecialCarDto,) => {
+    
+  const res = await server.PUT (`/tcc/cars/special`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostTccCarsSpecial  extends SpecialCarDto {
+        
+      
+      }
+  /** 
+   * @description:  特殊车辆-新增
+   * @param {SpecialCarDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_cars_special = async(data?:SpecialCarDto,) => {
+    
+  const res = await server.POST (`/tcc/cars/special`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PutTccBasicInfoChannel  extends ChannelDto {
+        
+      
+      }
+  /** 
+   * @description:  编辑通道
+   * @param {ChannelDto} data?,  
+   * @return {*}
+   */
+  export const put_tcc_basic_info_channel = async(data?:ChannelDto,) => {
+    
+  const res = await server.PUT (`/tcc/basic-info/channel`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostTccBasicInfoChannel  extends ChannelDto {
+        
+      
+      }
+  /** 
+   * @description:  添加通道
+   * @param {ChannelDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_basic_info_channel = async(data?:ChannelDto,) => {
+    
+  const res = await server.POST (`/tcc/basic-info/channel`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostTccOrdersExport  extends HistorySearchDto {
+        
+      
+      }
+  /** 
+   * @description:  历史停车-导出
+   * @param {HistorySearchDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_orders_export = async(data?:HistorySearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/tcc/orders/export`,{data,responseType: 'arraybuffer'} );
 
         
         if (res instanceof ArrayBuffer) {
@@ -10692,324 +8209,3175 @@ import { server } from '@/utils/axios/request';
         
         }
     
-   export interface PostCarsExportoverdue  extends CarsSearchDto {
+   export interface PostTccMonthlyUpdMonthBatch  extends UpdMonthBatchDto {
         
       
       }
   /** 
-   * @description:  车辆列表明细-excel导出
-   * @param {CarsSearchDto} data?,  
+   * @description:  批量管理包月状态
+   * @param {UpdMonthBatchDto} data?,  
    * @return {*}
    */
-  export const post_cars_exportOverDue = async(data?:CarsSearchDto,) => {
+  export const post_tcc_monthly_upd_month_batch = async(data?:UpdMonthBatchDto,) => {
     
-  const res = await server.POST<ArrayBuffer> (`/cars/exportOverDue`,{data,responseType: 'arraybuffer'} );
+  const res = await server.POST (`/tcc/monthly/upd-month-batch`,{data} );
 
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
+        return res?.success; 
         }
     
-   export interface PostCarapplyExport  extends CarApplySearchDto {
+   export interface PostTccMonthlyRemoveApply  extends RemoveApplyDto {
         
       
       }
   /** 
-   * @description:  导出
-   * @param {CarApplySearchDto} data?,  
+   * @description:  移除申请
+   * @param {RemoveApplyDto} data?,  
    * @return {*}
    */
-  export const post_carApply_export = async(data?:CarApplySearchDto,) => {
+  export const post_tcc_monthly_remove_apply = async(data?:RemoveApplyDto,) => {
     
-  const res = await server.POST<ArrayBuffer> (`/carApply/export`,{data,responseType: 'arraybuffer'} );
+  const res = await server.POST (`/tcc/monthly/remove-apply`,{data} );
 
-        
-        if (res instanceof ArrayBuffer) {
-          return res as ArrayBuffer;
-        } else {
-          return null;
-        }
-        
+        return res?.success; 
         }
     
-   export interface GetCars  extends CarsSearchDto,Paging {
+   export interface PostTccMonthlyMonthUpd  extends UpdMonthDto {
         
       
       }
   /** 
-   * @description:  车辆列表
-   * @param {GetCars} params? 
+   * @description:  更新停车场包月信息
+   * @param {UpdMonthDto} data?,  
    * @return {*}
    */
-  export const get_cars = async(params?:GetCars) => {
+  export const post_tcc_monthly_month_upd = async(data?:UpdMonthDto,) => {
     
-  const res = await server.GET<IPage<CarVo>> (`/cars`,{params} );
+  const res = await server.POST (`/tcc/monthly/month-upd`,{data} );
 
-        return res?.result; 
+        return res?.success; 
         }
     
-   export interface GetCarsIdVehiclelicense   {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  某车行驶证详情
-   * @param {GetCarsIdVehiclelicense} params? 
-   * @return {*}
-   */
-  export const get_cars_id_vehicleLicense = async(params?:GetCarsIdVehiclelicense) => {
-    
-  const res = await server.GET<UserVehicleLicenseVO> (`/cars/${params?.id}/vehicleLicense`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetCarsIdHis  extends Paging {
-        id?:string;
-      
-      }
-  /** 
-   * @description:  车辆订单历史
-   * @param {GetCarsIdHis} params? 
-   * @return {*}
-   */
-  export const get_cars_id_his = async(params?:GetCarsIdHis) => {
-    
-  const res = await server.GET<IPage<OrderVo>> (`/cars/${params?.id}/his`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetCarsChart  extends CarsSearchDto {
-        
-      
-      }
-  /** 
-   * @description:  图表
-   * @param {GetCarsChart} params? 
-   * @return {*}
-   */
-  export const get_cars_chart = async(params?:GetCarsChart) => {
-    
-  const res = await server.GET<CarChartVo> (`/cars/chart`,{params} );
-
-        return res?.result; 
-        }
-    
-   export interface GetCarapply  extends CarApplySearchDto,Paging {
+   export interface PostTccMonthlyMonthApply  extends QueryApplyDto,Paging {
         
       
       }
   /** 
    * @description:  申请列表
-   * @param {GetCarapply} params? 
+   * @param {QueryApplyDto} data?,* @param {PostTccMonthlyMonthApply} params? 
    * @return {*}
    */
-  export const get_carApply = async(params?:GetCarapply) => {
+  export const post_tcc_monthly_month_apply = async(data?:QueryApplyDto,params?:PostTccMonthlyMonthApply) => {
     
-  const res = await server.GET<IPage<CarApplyVo>> (`/carApply`,{params} );
+  const res = await server.POST<IPage<ApplyVo>> (`/tcc/monthly/month-apply`,{data,params} );
 
         return res?.result; 
         }
     
-   export interface GetCarapplyId   {
-        id?:string;status?:number;
+   export interface PostTccMerchantsRechargeExport  extends LogSearchDto {
+        
       
       }
   /** 
-   * @description:  处理审核
-   * @param {GetCarapplyId} params? 
+   * @description:  充值记录-导出
+   * @param {LogSearchDto} data?,  
    * @return {*}
    */
-  export const get_carApply_id = async(params?:GetCarapplyId) => {
+  export const post_tcc_merchants_recharge_export = async(data?:LogSearchDto,) => {
     
-  const res = await server.GET (`/carApply/${params?.id}`,{params} );
+  const res = await server.POST<ArrayBuffer> (`/tcc/merchants/recharge/export`,{data,responseType: 'arraybuffer'} );
 
-        return res?.success; 
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
         }
     
-   export interface DeleteCarapplyId   {
+   export interface PostTccMerchantsPaymentExport  extends LogSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  缴费记录-导出
+   * @param {LogSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_merchants_payment_export = async(data?:LogSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/tcc/merchants/payment/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostTccMerchantsExport  extends DztccMerchantSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  停车场商户-excel导出
+   * @param {DztccMerchantSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_merchants_export = async(data?:DztccMerchantSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/tcc/merchants/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostTccFinancialTemporaryExport  extends FinancialSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  临停财务-导出
+   * @param {FinancialSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_financial_temporary_export = async(data?:FinancialSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/tcc/financial/temporary/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostTccFinancialMonthRechargeExport  extends FinancialSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  月卡充值数据-导出
+   * @param {FinancialSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_financial_month_recharge_export = async(data?:FinancialSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/tcc/financial/month-recharge/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostTccFinancialAllExport  extends FinancialSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  财务总计-导出
+   * @param {FinancialSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_financial_all_export = async(data?:FinancialSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/tcc/financial/all/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostTccCarsExport  extends TccCarSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  车辆管理-导出
+   * @param {TccCarSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_cars_export = async(data?:TccCarSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/tcc/cars/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostTccBasicInfoParkidQrcode   {
+        parkId?:string;
+      
+      }
+  /** 
+   * @description:  二维码导出
+   * @param {PostTccBasicInfoParkidQrcode} params? 
+   * @return {*}
+   */
+  export const post_tcc_basic_info_parkId_qrcode = async(params?:PostTccBasicInfoParkidQrcode) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/tcc/basic-info/${params?.parkId}/qrcode`,{params,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostTccBasicInfoSyncMcId   {
         id?:string;
       
       }
   /** 
-   * @description:  删除申请
-   * @param {DeleteCarapplyId} params? 
+   * @description:  同步信息(月租,通道)
+   * @param {PostTccBasicInfoSyncMcId} params? 
    * @return {*}
    */
-  export const delete_carApply_id = async(params?:DeleteCarapplyId) => {
+  export const post_tcc_basic_info_sync_mc_id = async(params?:PostTccBasicInfoSyncMcId) => {
     
-  const res = await server.DELETE (`/carApply/${params?.id}`,{params} );
+  const res = await server.POST (`/tcc/basic-info/sync-mc/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface GetTccBasicInfoRuleId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  停车场收费规则
+   * @param {GetTccBasicInfoRuleId} params? 
+   * @return {*}
+   */
+  export const get_tcc_basic_info_rule_id = async(params?:GetTccBasicInfoRuleId) => {
+    
+  const res = await server.GET<Rule> (`/tcc/basic-info/rule/${params?.id}`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface PostTccBasicInfoRuleId  extends Rule {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  保存停车场收费规则
+   * @param {Rule} data?,* @param {PostTccBasicInfoRuleId} params? 
+   * @return {*}
+   */
+  export const post_tcc_basic_info_rule_id = async(data?:Rule,params?:PostTccBasicInfoRuleId) => {
+    
+  const res = await server.POST (`/tcc/basic-info/rule/${params?.id}`,{data,params} );
+
+        return res?.success; 
+        }
+    
+   export interface PostTccBasicInfoParkUpd  extends UpdBasicInfoDto {
+        
+      
+      }
+  /** 
+   * @description:  手动更新停车场
+   * @param {UpdBasicInfoDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_basic_info_park_upd = async(data?:UpdBasicInfoDto,) => {
+    
+  const res = await server.POST (`/tcc/basic-info/park-upd`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostTccBasicInfoParkAdd  extends ParkAddDto {
+        
+      
+      }
+  /** 
+   * @description:  新增停车场
+   * @param {ParkAddDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_basic_info_park_add = async(data?:ParkAddDto,) => {
+    
+  const res = await server.POST<Boolean> (`/tcc/basic-info/park-add`,{data} );
+
+        return res?.result; 
+        }
+    
+   export interface PostTccBasicInfoMembers  extends QueryMemberDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  会员信息-分页
+   * @param {QueryMemberDto} data?,* @param {PostTccBasicInfoMembers} params? 
+   * @return {*}
+   */
+  export const post_tcc_basic_info_members = async(data?:QueryMemberDto,params?:PostTccBasicInfoMembers) => {
+    
+  const res = await server.POST<IPage<MemberVo>> (`/tcc/basic-info/members`,{data,params} );
+
+        return res?.result; 
+        }
+    
+   export interface PostTccBasicInfoMembersExport  extends QueryMemberDto {
+        
+      
+      }
+  /** 
+   * @description:  会员信息-导出
+   * @param {QueryMemberDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_basic_info_members_export = async(data?:QueryMemberDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/tcc/basic-info/members/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostTccBasicInfoMember  extends DztccMemberDto {
+        
+      
+      }
+  /** 
+   * @description:  会员信息-添加会员
+   * @param {DztccMemberDto} data?,  
+   * @return {*}
+   */
+  export const post_tcc_basic_info_member = async(data?:DztccMemberDto,) => {
+    
+  const res = await server.POST (`/tcc/basic-info/member`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface GetTccYdpsList   {
+        name?:string;
+      
+      }
+  /** 
+   * @description:  诱导屏无分页
+   * @param {GetTccYdpsList} params? 
+   * @return {*}
+   */
+  export const get_tcc_ydps_list = async(params?:GetTccYdpsList) => {
+    
+  const res = await server.GET<DztccYdp[]> (`/tcc/ydps/list`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetTccStatisticsZz   {
+        days?:number;
+      
+      }
+  /** 
+   * @description:  停车周转率
+   * @param {GetTccStatisticsZz} params? 
+   * @return {*}
+   */
+  export const get_tcc_statistics_zz = async(params?:GetTccStatisticsZz) => {
+    
+  const res = await server.GET<TccGraph[]> (`/tcc/statistics/zz`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetTccStatisticsUse   {
+        date?:string;
+      
+      }
+  /** 
+   * @description:  停车利用率,1-进场，2-出场
+   * @param {GetTccStatisticsUse} params? 
+   * @return {*}
+   */
+  export const get_tcc_statistics_use = async(params?:GetTccStatisticsUse) => {
+    
+  const res = await server.GET<TccGraph[]> (`/tcc/statistics/use`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetTccStatisticsTime   {
+        days?:number;
+      
+      }
+  /** 
+   * @description:  时长分析
+   * @param {GetTccStatisticsTime} params? 
+   * @return {*}
+   */
+  export const get_tcc_statistics_time = async(params?:GetTccStatisticsTime) => {
+    
+  const res = await server.GET<TccTimeStatistics> (`/tcc/statistics/time`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccStatisticsPay   {
+        date?:string;
+      
+      }
+  /** 
+   * @description:  支付占比-收入类型
+   * @param {GetTccStatisticsPay} params? 
+   * @return {*}
+   */
+  export const get_tcc_statistics_pay = async(params?:GetTccStatisticsPay) => {
+    
+  const res = await server.GET<TccPayStatistics> (`/tcc/statistics/pay`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccStatisticsIncome   {
+        date?:string;
+      
+      }
+  /** 
+   * @description:  收费趋势分析
+   * @param {GetTccStatisticsIncome} params? 
+   * @return {*}
+   */
+  export const get_tcc_statistics_income = async(params?:GetTccStatisticsIncome) => {
+    
+  const res = await server.GET<TccIncomeStatistics> (`/tcc/statistics/income`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccOrders  extends HistorySearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  历史停车-带分页
+   * @param {GetTccOrders} params? 
+   * @return {*}
+   */
+  export const get_tcc_orders = async(params?:GetTccOrders) => {
+    
+  const res = await server.GET<IPage<DztccOrderVo>> (`/tcc/orders`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccOrderId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  订单详情
+   * @param {GetTccOrderId} params? 
+   * @return {*}
+   */
+  export const get_tcc_order_id = async(params?:GetTccOrderId) => {
+    
+  const res = await server.GET<DztccOrderVo> (`/tcc/order/${params?.id}`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccOnline  extends OnlineSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  正在停车-带分页
+   * @param {GetTccOnline} params? 
+   * @return {*}
+   */
+  export const get_tcc_online = async(params?:GetTccOnline) => {
+    
+  const res = await server.GET<IPage<DztccParkingVo>> (`/tcc/online`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccOnlineChart  extends OnlineSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  当前停车-图表
+   * @param {GetTccOnlineChart} params? 
+   * @return {*}
+   */
+  export const get_tcc_online_chart = async(params?:GetTccOnlineChart) => {
+    
+  const res = await server.GET<OnlineChartVo> (`/tcc/online/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccMonthlyOpenCharge   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  开通缴费
+   * @param {GetTccMonthlyOpenCharge} params? 
+   * @return {*}
+   */
+  export const get_tcc_monthly_open_charge = async(params?:GetTccMonthlyOpenCharge) => {
+    
+  const res = await server.GET (`/tcc/monthly/open-charge`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface GetTccMerchantsRecharge  extends LogSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  充值记录-分页
+   * @param {GetTccMerchantsRecharge} params? 
+   * @return {*}
+   */
+  export const get_tcc_merchants_recharge = async(params?:GetTccMerchantsRecharge) => {
+    
+  const res = await server.GET<IPage<RechargeVo>> (`/tcc/merchants/recharge`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccMerchantsRechargeChart  extends LogSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  充值记录-图表
+   * @param {GetTccMerchantsRechargeChart} params? 
+   * @return {*}
+   */
+  export const get_tcc_merchants_recharge_chart = async(params?:GetTccMerchantsRechargeChart) => {
+    
+  const res = await server.GET<RechargeChartVo[]> (`/tcc/merchants/recharge/chart`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetTccMerchantsPayment  extends LogSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  缴费记录-分页
+   * @param {GetTccMerchantsPayment} params? 
+   * @return {*}
+   */
+  export const get_tcc_merchants_payment = async(params?:GetTccMerchantsPayment) => {
+    
+  const res = await server.GET<IPage<PaymentVo>> (`/tcc/merchants/payment`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccHistoryChart  extends HistorySearchDto {
+        
+      
+      }
+  /** 
+   * @description:  历史数据-图表
+   * @param {GetTccHistoryChart} params? 
+   * @return {*}
+   */
+  export const get_tcc_history_chart = async(params?:GetTccHistoryChart) => {
+    
+  const res = await server.GET<TccHistoryChartVo> (`/tcc/history/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccFinancialTemporary  extends FinancialSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  临停财务-带分页
+   * @param {GetTccFinancialTemporary} params? 
+   * @return {*}
+   */
+  export const get_tcc_financial_temporary = async(params?:GetTccFinancialTemporary) => {
+    
+  const res = await server.GET<IPage<TccTemporaryVo>> (`/tcc/financial/temporary`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccFinancialTemporaryChart  extends FinancialSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  临停财务-图表
+   * @param {GetTccFinancialTemporaryChart} params? 
+   * @return {*}
+   */
+  export const get_tcc_financial_temporary_chart = async(params?:GetTccFinancialTemporaryChart) => {
+    
+  const res = await server.GET<TccTemporaryChart> (`/tcc/financial/temporary/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccFinancialMonthRecharge  extends FinancialSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  月卡充值数据-带分页
+   * @param {GetTccFinancialMonthRecharge} params? 
+   * @return {*}
+   */
+  export const get_tcc_financial_month_recharge = async(params?:GetTccFinancialMonthRecharge) => {
+    
+  const res = await server.GET<IPage<TccccMonthlyLogVo>> (`/tcc/financial/month-recharge`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccFinancialAll  extends FinancialSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  财务总计-带分页
+   * @param {GetTccFinancialAll} params? 
+   * @return {*}
+   */
+  export const get_tcc_financial_all = async(params?:GetTccFinancialAll) => {
+    
+  const res = await server.GET<IPage<TccFinancialVo>> (`/tcc/financial/all`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccFinancialAllChart  extends FinancialSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  财务总计-图表
+   * @param {GetTccFinancialAllChart} params? 
+   * @return {*}
+   */
+  export const get_tcc_financial_all_chart = async(params?:GetTccFinancialAllChart) => {
+    
+  const res = await server.GET<TccFinancialChart> (`/tcc/financial/all/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccDatacenterPlaceStatistics   {
+        parkId?:string;
+      
+      }
+  /** 
+   * @description:  右上-泊位分析
+   * @param {GetTccDatacenterPlaceStatistics} params? 
+   * @return {*}
+   */
+  export const get_tcc_dataCenter_place_statistics = async(params?:GetTccDatacenterPlaceStatistics) => {
+    
+  const res = await server.GET<TccPlaceStatics> (`/tcc/dataCenter/place-statistics`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccDatacenterParkStatistics   {
+        parkId?:string;
+      
+      }
+  /** 
+   * @description:  左上-车辆出入趋势图
+   * @param {GetTccDatacenterParkStatistics} params? 
+   * @return {*}
+   */
+  export const get_tcc_dataCenter_park_statistics = async(params?:GetTccDatacenterParkStatistics) => {
+    
+  const res = await server.GET<DataCenterInOutStatistics> (`/tcc/dataCenter/park-statistics`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccDatacenterOutStatistics   {
+        parkId?:string;
+      
+      }
+  /** 
+   * @description:  左下-出车数据分析
+   * @param {GetTccDatacenterOutStatistics} params? 
+   * @return {*}
+   */
+  export const get_tcc_dataCenter_out_statistics = async(params?:GetTccDatacenterOutStatistics) => {
+    
+  const res = await server.GET<TccOutStatics> (`/tcc/dataCenter/out-statistics`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccDatacenterOrderRank   {
+        parkId?:string;
+      
+      }
+  /** 
+   * @description:  停车场订单排行
+   * @param {GetTccDatacenterOrderRank} params? 
+   * @return {*}
+   */
+  export const get_tcc_dataCenter_order_rank = async(params?:GetTccDatacenterOrderRank) => {
+    
+  const res = await server.GET<TccOrderRank[]> (`/tcc/dataCenter/order-rank`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetTccDatacenterMoneyStatistics   {
+        parkId?:string;
+      
+      }
+  /** 
+   * @description:  中间-金额/订单数据
+   * @param {GetTccDatacenterMoneyStatistics} params? 
+   * @return {*}
+   */
+  export const get_tcc_dataCenter_money_statistics = async(params?:GetTccDatacenterMoneyStatistics) => {
+    
+  const res = await server.GET<TccMoneyStatics> (`/tcc/dataCenter/money-statistics`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccDatacenterInStatistics   {
+        parkId?:string;
+      
+      }
+  /** 
+   * @description:  右下-车辆入场分析
+   * @param {GetTccDatacenterInStatistics} params? 
+   * @return {*}
+   */
+  export const get_tcc_dataCenter_in_statistics = async(params?:GetTccDatacenterInStatistics) => {
+    
+  const res = await server.GET<TccInStatics> (`/tcc/dataCenter/in-statistics`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccCars  extends TccCarSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  车辆管理-带分页
+   * @param {GetTccCars} params? 
+   * @return {*}
+   */
+  export const get_tcc_cars = async(params?:GetTccCars) => {
+    
+  const res = await server.GET<IPage<TccCarVo>> (`/tcc/cars`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccCarsSpecials  extends SpecialCarSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  特殊车辆查询-分页
+   * @param {GetTccCarsSpecials} params? 
+   * @return {*}
+   */
+  export const get_tcc_cars_specials = async(params?:GetTccCarsSpecials) => {
+    
+  const res = await server.GET<IPage<SpecialCarVo>> (`/tcc/cars/specials`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccCarsSpecialId  extends Paging {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  特殊车辆-删除
+   * @param {GetTccCarsSpecialId} params? 
+   * @return {*}
+   */
+  export const get_tcc_cars_special_id = async(params?:GetTccCarsSpecialId) => {
+    
+  const res = await server.GET<IPage<SpecialCarVo>> (`/tcc/cars/special/${params?.id}`,{params} );
+
+        return res?.result; 
+        }
+    
+   
+  /** 
+   * @description:  停车场列表
+     
+   * @return {*}
+   */
+  export const get_tcc_basic_info_parks = async() => {
+    
+  const res = await server.GET<BasicInfoVo[]> (`/tcc/basic-info/parks`, );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetTccBasicInfoParkParkid   {
+        parkId?:string;
+      
+      }
+  /** 
+   * @description:  停车场综合信息
+   * @param {GetTccBasicInfoParkParkid} params? 
+   * @return {*}
+   */
+  export const get_tcc_basic_info_park_parkId = async(params?:GetTccBasicInfoParkParkid) => {
+    
+  const res = await server.GET<ParkInfoVo> (`/tcc/basic-info/park/${params?.parkId}`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccBasicInfoMemberMonthId   {
+        id?:string;month?:number;
+      
+      }
+  /** 
+   * @description:  会员信息-添加会员包月
+   * @param {GetTccBasicInfoMemberMonthId} params? 
+   * @return {*}
+   */
+  export const get_tcc_basic_info_member_month_id = async(params?:GetTccBasicInfoMemberMonthId) => {
+    
+  const res = await server.GET (`/tcc/basic-info/member/month/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface GetTccBasicInfoMemberChart  extends QueryMemberDto {
+        
+      
+      }
+  /** 
+   * @description:  会员信息-图表
+   * @param {GetTccBasicInfoMemberChart} params? 
+   * @return {*}
+   */
+  export const get_tcc_basic_info_member_chart = async(params?:GetTccBasicInfoMemberChart) => {
+    
+  const res = await server.GET<MemberChart> (`/tcc/basic-info/member/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetTccBasicInfoChannelsId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  通道信息
+   * @param {GetTccBasicInfoChannelsId} params? 
+   * @return {*}
+   */
+  export const get_tcc_basic_info_channels_id = async(params?:GetTccBasicInfoChannelsId) => {
+    
+  const res = await server.GET<ChannelVo[]> (`/tcc/basic-info/channels/${params?.id}`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   
+  /** 
+   * @description:  车辆类型
+     
+   * @return {*}
+   */
+  export const get_tcc_basic_info_car_types = async() => {
+    
+  const res = await server.GET<MsgType[]> (`/tcc/basic-info/car-types`, );
+
+        return res?.result??[]; 
+        }
+    
+   export interface DeleteTccYdpsId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除诱导屏
+   * @param {DeleteTccYdpsId} params? 
+   * @return {*}
+   */
+  export const delete_tcc_ydps_id = async(params?:DeleteTccYdpsId) => {
+    
+  const res = await server.DELETE (`/tcc/ydps/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteTccYdpsCardsId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除卡号
+   * @param {DeleteTccYdpsCardsId} params? 
+   * @return {*}
+   */
+  export const delete_tcc_ydps_cards_id = async(params?:DeleteTccYdpsCardsId) => {
+    
+  const res = await server.DELETE (`/tcc/ydps/cards/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteTccMerchantsId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除停车场商户
+   * @param {DeleteTccMerchantsId} params? 
+   * @return {*}
+   */
+  export const delete_tcc_merchants_id = async(params?:DeleteTccMerchantsId) => {
+    
+  const res = await server.DELETE (`/tcc/merchants/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteTccBasicInfoChannelId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除通道
+   * @param {DeleteTccBasicInfoChannelId} params? 
+   * @return {*}
+   */
+  export const delete_tcc_basic_info_channel_id = async(params?:DeleteTccBasicInfoChannelId) => {
+    
+  const res = await server.DELETE (`/tcc/basic-info/channel/${params?.id}`,{params} );
 
         return res?.success; 
         }
      
-    export interface CarsSearchDto{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
- /** 车牌号码,右模糊 */
- plateNumber?:string;
- /** 欠费笔数(大于等于) */
- unpaidCountMin?:number;
- /** 欠费笔数(小于等于) */
- unpaidCountMax?:number;
- /** 欠费金额(大于等于）单位分 */
- unpaidMoneyMin?:number;
- /** 欠费金额(小于等于）单位分 */
- unpaidMoneyMax?:number;
- /** 缴费笔数(大于等于) */
- paidCountMin?:number;
- /** 缴费笔数(小于等于) */
- paidCountMax?:number;
- /** 缴费金额(大于等于）单位分 */
- paidMoneyMin?:number;
- /** 缴费金额(小于等于）单位分 */
- paidMoneyMax?:number;
- /** 是否是本地车 */
- isLocalPlate?:boolean;
- /** 是否是注册用户（有手机号） */
- isRegUser?:boolean;
- /** 是否是新能源车 */
- isNewEnergy?:boolean;
-  orderBy?:string;
+    export interface YdpDto{
+      id?:string;
+  name?:string;
+  level?:number;
+  url?:string;
 
     } 
-    export interface CarApplySearchDto{
-     /** 查询开始日期 */
- from?:string;
- /** 查询结束日期 */
- to?:string;
- /** 车牌号码,右模糊 */
- plateNumber?:string;
+    export interface YdpCardDto{
+      id?:string;
+ /** 诱导屏ID */
+ ydpId?:string;
+ /** 停车场ID */
+ parkId?:string;
+ /** 编号 */
+ number?:string;
+ /** 宽 */
+ width?:number;
+ /** 高 */
+ height?:number;
+ /** 类型 1 总车位 2 剩余车位 3总车位+剩余车位 */
+ type?:number;
 
     } 
-    export interface CarVo{
-     /** id */
- id?:string;
- /** 车牌号 */
- plateNumber?:string;
- /** 可联系电话 */
- phone?:string;
- /** 电话 */
- paidPhone?:string;
- /** 停车次数 */
- parkCount?:number;
- /** 缴费笔数 */
- paidCount?:number;
- /** 累计缴费,单位:分 */
- paidSum?:number;
- /** 欠费笔数 */
- unpaidCount?:number;
- /** 累计欠费,单位:分 */
- unpaidSum?:number;
-  carType?:MsgType;
+    export interface DztccVoiceText{
+      id?:string;
+  type?:MsgType;
+  inText?:string;
+  inVoice?:string;
+  outText?:string;
+  outVoice?:string;
   createdAt?:string;
 
     } 
-    export interface UserVehicleLicenseVO{
+    export interface DztccMerchantDto{
       id?:string;
- /** 号牌号码 */
+ /** 商户名称 */
+ name?:string;
+ /** 联系人 */
+ contactName?:string;
+ /** 联系电话 */
+ contactPhone?:string;
+ /** 关联停车场 */
+ parkId?:string;
+
+    } 
+    export interface SpecialCarDto{
+      id?:string;
+  parkId?:string;
+  plateNo?:string;
+  remark?:string;
+ /** 车辆类型  0-白名单  1-黑名单 */
+ carType?:number;
+
+    } 
+    export interface ChannelDto{
+      id?:string;
+  parkId?:string;
+  exId?:string;
+  name?:string;
+  inlet?:boolean;
+  voiceNo?:string;
+
+    } 
+    export interface HistorySearchDto{
+     /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+ /** 停车场id(必填) */
+ parkId?:string;
+ /** 车牌号码,右模糊 */
+ plateNumber?:string;
+ /** 订单号 */
+ id?:string;
+
+    } 
+    export interface UpdMonthBatchDto{
+     /** 停车场 */
+ ids?:string[];
+ /** 是否开启包月 */
+ monthEnabled?:boolean;
+
+    } 
+    export interface RemoveApplyDto{
+      id?:string;
+ /** 原因 -1-其它，0-未支付，1-没有包月需求 */
+ reason?:number;
+ /** 备注 */
+ remark?:string;
+
+    } 
+    export interface TccMonthlyMoney{
+      month?:number;
+  money?:number;
+  discountMoney?:number;
+
+    } 
+    export interface UpdMonthDto{
+     /** 停车场识别码 */
+ id?:string;
+ /** 包月名额数，为空不限制名额 */
+ monthTotal?:number;
+ /** 包月金额 */
+ monthMoneyActual?:TccMonthlyMoney[];
+ /** 折扣截止日期 */
+ discountEndDate?:string;
+
+    } 
+    export interface QueryApplyDto{
+     /** 停车场id */
+ parkId?:string;
+ /** 0-申请列表，1-移除列表 */
+ status?:number;
+
+    } 
+    export interface ApplyVo{
+      id?:string;
+ /** 车场名字 */
+ parkName?:string;
+ /** 姓名 */
+ ownerName?:string;
+ /** 车牌 */
  plateNo?:string;
- /** 行驶证照片 */
- licenseImage?:string;
- /** 车辆类型 */
- vehicleType?:string;
- /** 所有人 */
- owner?:string;
- /** 住址 */
- address?:string;
- /** 使用性质 */
- useCharacter?:string;
- /** 品牌类型 */
- model?:string;
- /** 车辆识别代号 */
- vin?:string;
- /** 发动机号码 */
- engineNo?:string;
- /** 注册日期 */
- registerDate?:string;
- /** 发证日期 */
- issueDate?:string;
-
-    } 
-    export interface OrderVo{
-      id?:string;
- /** 微信用户ID */
- appUserId?:string;
- /** 开始停车时间 */
- startAt?:string;
- /** 结束停车时间 */
- endAt?:string;
-  position?:string;
- /** 车位号 */
- placeNum?:string;
- /** 车牌号 */
- plateNumber?:string;
- /** 停车图片 */
- picture?:string;
- /** 区域 */
- areaName?:string;
- /** 街道 */
- streetName?:string;
- /** 停车点名字 */
- lotName?:string;
- /** 原始金额(单位:分) */
- originalMoney?:number;
- /** 实际金额(单位:分) */
- realMoney?:number;
- /** 优惠金额(单位:分) */
- discountMoney?:number;
- /** 支付状态 */
- status?:MsgType;
- /** 支付时间 */
- payAt?:string;
- /** 支付方式 0免费 1活动免费 5现金 6余额 7微信支付 8支付宝  */
- mode?:MsgType;
- /** 使用优惠券名称 */
- couponName?:string;
- /** 开始信息来源 */
- beginType?:MsgType;
- /** 结束信息来源 */
- endType?:MsgType;
- /** 子订单数量 */
- itemCount?:number;
- /** 优惠数量 */
- discountCount?:number;
- /** 缴费类型 */
- chargeType?:MsgType;
-
-    } 
-    export interface CarChartVo{
-     /** 牌照类型, 1. 新能源车 2. 普通车 */
- plateTypeMap?:{[key:string]:number};
- /** 停车时长分析, 1.0～10次 2. 11～20次 3. 21～30次,4.30～50次,5.50次以上 */
- parkCountMap?:{[key:string]:number};
- /** 累计缴费, 1. 10元以内 2. 11～30元 3.31～50元 4.51～100元 5.100元以上 */
- payMoneyGroup?:{[key:string]:number};
-
-    } 
-    export interface CarApplyVo{
-      id?:string;
- /** 车牌号 */
- plateNumber?:string;
- /** 绑定手机 */
- phone?:string;
- /** 车辆类型 */
- carType?:MsgType;
-  carTypeStr?:string;
+ /** 颜色 */
+ color?:string;
+ /** 联系电话 */
+ ownerPhone?:string;
+ /** 地址 */
+ ownerAddress?:string;
  /** 申请时间 */
  createdAt?:string;
- /** 上传图片 */
- picUrls?:string[];
- /** 审核结果 */
+ /** 申请状态 */
  status?:MsgType;
-  statusStr?:string;
+ /** 移除原因 */
+ reason?:MsgType;
+ /** 备注 */
+ remark?:string;
+
+    } 
+    export interface LogSearchDto{
+     /** 起始月 yyyy-mm */
+ from?:string;
+ /** 结束月 yyyy-mm */
+ to?:string;
+  start?:string;
+  end?:string;
+
+    } 
+    export interface DztccMerchantSearchDto{
+     /** 商户名称 */
+ name?:string;
+ /** 联系人 */
+ contactName?:string;
+ /** 联系电话 */
+ contactPhone?:string;
+ /** 关联停车场 */
+ parkId?:string;
+
+    } 
+    export interface FinancialSearchDto{
+     /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+ /** 停车场id(非必填) */
+ parkId?:string;
+
+    } 
+    export interface TccCarSearchDto{
+     /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+ /** 停车场ID */
+ parkId?:string;
+ /** 手机号 */
+ phone?:string;
+ /** 车牌 */
+ plateNo?:string;
+
+    } 
+    export interface Rule{
+     /** 免费停车时长(单位:分钟) */
+ freeMin?:number;
+ /** 最大计费金额周期（单位：小时） */
+ maxPriceHour?:number;
+ /** 每计费周期最大金额（单位：分） */
+ maxPrice?:number;
+  computeBegin?:string;
+  computeEnd?:string;
+ /** 起步价时间 单位：小时 */
+ startHour?:number;
+ /** 起步价 单位：分 */
+ startPrice?:number;
+ /** 标准计费周期 单位：小时 */
+ hour?:number;
+ /** 标准计费价格  单位：分 */
+ price?:number;
+
+    } 
+    export interface GeoPoint{
+     /** 经度 */
+ lon?:number;
+ /** 纬度 */
+ lat?:number;
+
+    } 
+    export interface UpdBasicInfoDto{
+      id?:string;
+  name?:string;
+  total?:number;
+  fixedTotal?:number;
+  point?:GeoPoint;
+  address?:string;
+ /** 管理方 */
+ manager?:string;
+ /** 联系人 */
+ contactMan?:string;
+ /** 联系人电话 */
+ contactPhone?:string;
+ /** 收费规则文本描述 */
+ ruleText?:string;
+ /** 0-公开，1-私有 */
+ type?:number;
+
+    } 
+    export interface ParkAddDto{
+     /** 停车场id */
+ parkId?:string;
+ /** 厂商 */
+ factory?:number;
+  name?:string;
+  total?:number;
+  fixedTotal?:number;
+  point?:GeoPoint;
+  address?:string;
+  manager?:string;
+  contactMan?:string;
+  contactPhone?:string;
+  ruleText?:string;
+ /** 0-公开，1-私有 */
+ type?:number;
+
+    } 
+    export interface QueryMemberDto{
+     /** 停车场ID */
+ parkId?:string;
+ /** 车主名 */
+ ownerName?:string;
+ /** 手机号码 */
+ ownerPhone?:string;
+ /** 车牌号码 */
+ plateNo?:string;
+ /** 卡片类型 */
+ carType?:number;
+ /** 是否过期 */
+ overdue?:boolean;
+  pageNum?:number;
+  pageSize?:number;
+
+    } 
+    export interface MemberVo{
+      id?:string;
+ /** 车场名称 */
+ parkName?:string;
+ /** 卡片类型 */
+ carType?:MsgType;
+ /** 母车标识 */
+ motherFlag?:boolean;
+ /** 车牌号 */
+ plateNo?:string;
+ /** 车位类型 */
+ spaceType?:MsgType;
+ /** 建卡时间 */
+ createTime?:string;
+ /** 启用时间 */
+ enableTime?:string;
+ /** 到期时间 */
+ expireTime?:string;
+ /** 是否过期 */
+ overdue?:boolean;
+ /** 车辆是否被锁定 */
+ lockFlag?:boolean;
+ /** 锁定时间 */
+ lockTime?:string;
+ /** 黑名单标识 */
+ blacklistFlag?:boolean;
+ /** 会员名称 */
+ ownerName?:string;
+ /** 会员手机号码 */
+ ownerPhone?:string;
+
+    } 
+    export interface DztccMemberDto{
+      parkId?:string;
+  plateNo?:string;
+  name?:string;
+
+    } 
+    export interface YdpSearchDto{
+      parkId?:string;
+  ydpId?:string;
+  level?:number;
+
+    } 
+    export interface YdpVo{
+      id?:string;
+  name?:string;
+  rgpls?:string;
+  level?:number;
+  url?:string;
+
+    } 
+    export interface DztccYdp{
+      id?:string;
+  name?:string;
+  level?:number;
+  url?:string;
+  createdAt?:string;
+  updatedAt?:string;
+  deleted?:boolean;
+
+    } 
+    export interface YdpCardRgplVo{
+      parkId?:string;
+  rgplName?:string;
+  cards?:YdpCardVo[];
+
+    } 
+    export interface YdpCardVo{
+      id?:string;
+  ydpId?:string;
+  parkId?:string;
+  parkName?:string;
+  number?:string;
+  width?:number;
+  height?:number;
+  type?:number;
+
+    } 
+    export interface TccGraph{
+     /** x轴坐标 */
+ key?:string;
+ /** y轴数据1 */
+ value1?:number;
+ /** y轴数据2 */
+ value2?:number;
+
+    } 
+    export interface TccTimeStatistics{
+     /** 0-15分钟 */
+ zero?:number;
+ /** 15-60分钟 */
+ one?:number;
+ /** 1-2小时 */
+ two?:number;
+ /** 2-4小时 */
+ three?:number;
+ /** 4小时以上 */
+ four?:number;
+
+    } 
+    export interface TccPayStatistics{
+     /** 支付占比-微信支付 */
+ wechat?:number;
+ /** 支付占比-支付宝支付 */
+ ali?:number;
+ /** 现金 */
+ cash?:number;
+ /** 收入类型-临停 */
+ temp?:number;
+ /** 收入类型-包月 */
+ month?:number;
+ /** 收入类型-商户 */
+ merchant?:number;
+
+    } 
+    export interface TccIncomeInner{
+      date?:string;
+ /** 已收 */
+ income?:number;
+ /** 订单笔数 */
+ orderNum?:number;
+ /** 临停 */
+ temp?:number;
+ /** 包月 */
+ month?:number;
+ /** 上一天已收 */
+ lastIncome?:number;
+ /** 上一天订单笔数 */
+ lastOrderNum?:number;
+ /** 上一天临停 */
+ lastTemp?:number;
+ /** 上一天包月 */
+ lastMonth?:number;
+
+    } 
+    export interface TccIncomeStatistics{
+      left?:TccIncomeInner;
+ /** 右侧曲线图 */
+ right?:TccIncomeInner[];
+
+    } 
+    export interface DztccOrderVo{
+      id?:string;
+ /** 车牌号 */
+ plateNo?:string;
+ /** 停车场 */
+ parkName?:string;
+ /** 通行证类型 */
+ carType?:MsgType;
+ /** 入场时间 */
+ enterTime?:string;
+ /** 入场照片 */
+ enterPic?:string;
+ /** 车辆类型 1：小车，2：大车，3：超大车 */
+ vehicleType?:MsgType;
+ /** 出场时间 */
+ exitTime?:string;
+ /** 出场照片 */
+ exitPic?:string;
+ /** 总金额 */
+ totalAmount?:number;
+ /** 免费金额 */
+ freeAmount?:number;
+ /** 支付金额 */
+ paidAmount?:number;
+ /** 停车时长:秒 */
+ parkingSeconds?:number;
+ /**  支付方式 0：现金,1：场中支付（中央缴费、微信）,2：第三方代收,3：ATM,10 余额 */
+ payType?:number;
+
+    } 
+    export interface OnlineSearchDto{
+     /** 停车场id(必填) */
+ parkId?:string;
+ /** 车牌号码,右模糊 */
+ plateNumber?:string;
+ /** 订单号 */
+ id?:string;
+  from?:string;
+  fromTime?:string;
+
+    } 
+    export interface DztccParkingVo{
+      id?:string;
+ /** 车牌号 */
+ plateNo?:string;
+  parkId?:string;
+ /** 停车场 */
+ parkName?:string;
+ /** 通行证类型 */
+ carType?:MsgType;
+ /** 入场时间 */
+ enterTime?:string;
+ /** 入场照片 */
+ enterPic?:string;
+ /** 车辆类型 1：小车，2：大车，3：超大车 */
+ vehicleType?:MsgType;
+  createdAt?:string;
+
+    } 
+    export interface OnlineChartVo{
+      total?:number;
+  parkNameMap?:{[key:string]:string};
+  sumMap?:{[key:string]:number};
+  timeMap?:{[key:string]:number};
+
+    } 
+    export interface DztccMerchantVo{
+      id?:string;
+  createdAt?:string;
+ /** 商户名称 */
+ name?:string;
+ /** 联系人 */
+ contactName?:string;
+ /** 联系电话 */
+ contactPhone?:string;
+ /** 关联停车场 */
+ parkId?:string;
+  parkName?:string;
+ /** 商户余额 */
+ amount?:number;
+
+    } 
+    export interface RechargeVo{
+      id?:string;
+ /** 商户名 */
+ merchantName?:string;
+ /** 原始金额 */
+ originalMoney?:number;
+ /** 支付金额 */
+ realMoney?:number;
+  createdAt?:string;
+  tccName?:string;
+
+    } 
+    export interface RechargeChartVo{
+     /** 日期/月份 */
+ date?:string;
+ /** 金额 */
+ money?:number;
+
+    } 
+    export interface PaymentVo{
+      id?:string;
+ /** 商户名称 */
+ merchantName?:string;
+ /** 车牌 */
+ plateNo?:string;
+ /** 金额 分 */
+ money?:number;
+  tccName?:string;
+  createdAt?:string;
+ /** 关联订单id */
+ linkId?:string;
+
+    } 
+    export interface TccHistoryChartVo{
+     /** 总订单数 */
+ total?:number;
+ /** 总停车时长,分钟数 */
+ parkTime?:number;
+ /** 停车时长分析, 1. 0~15分钟 2. 15~60分钟 3. 1~2小时 4. 2~4 小时 5. 4小时以上 */
+ timeMap?:{[key:string]:number};
+ /** 收费分析, 1. 免费 2. 欠费 3. 付费 */
+ payCountMap?:{[key:string]:number};
+ /** 支付类型, 4：现金,1：场中支付（中央缴费、微信）,2：第三方代收,3：ATM,5 余额 */
+ payTypeMap?:{[key:string]:number};
+ /** 牌照类型, 1. 新能源车 2. 普通车 */
+ plateTypeMap?:{[key:string]:number};
+ /** 车牌统计 */
+ plateCountMap?:{[key:string]:number};
+
+    } 
+    export interface TccTemporaryVo{
+      date?:string;
+ /** 应收 */
+ income?:number;
+ /** 已收 */
+ received?:number;
+ /** 欠费 */
+ arrears?:number;
+ /** 优惠 */
+ discount?:number;
+ /** 微信 */
+ wechat?:number;
+ /** 支付宝 */
+ ali?:number;
+ /** 余额 */
+ wallet?:number;
+ /** 现金 */
+ cash?:number;
+
+    } 
+    export interface TccTemporaryChart{
+     /** 收入类型 现金 */
+ cash?:number;
+ /** 收入类型 微信 */
+ wechat?:number;
+ /** 收入类型 支付宝 */
+ ali?:number;
+ /** 总收入柱状图 */
+ right?:TccTemporaryVo[];
+
+    } 
+    export interface TccccMonthlyLogVo{
+      date?:string;
+ /** 停车场名字 */
+ parkName?:string;
+ /** 车牌号 */
+ plateNo?:string;
+ /** 充值金额分 */
+ moneyNum?:number;
+ /** 周期 0:天,1:周，2:月,3:年 */
+ unit?:number;
+ /** 数量 */
+ period?:number;
+ /** 有效时间 */
+ validTime?:string;
+ /** 退款金额 */
+ refundMoney?:number;
+ /** 退款时间 */
+ refundTime?:string;
+
+    } 
+    export interface TccFinancialVo{
+      date?:string;
+ /** 总分 */
+ total?:number;
+ /** 临停财务分 */
+ temporary?:number;
+ /** 月租分 */
+ recharge?:number;
+ /** 商户充值分 */
+ topUp?:number;
+ /** 退款金额分 */
+ refundMoney?:number;
+
+    } 
+    export interface TccFinancialChart{
+     /** 收入类型 月租 */
+ month?:number;
+ /** 收入类型 临停 */
+ temp?:number;
+ /** 收入类型 充值 */
+ topUp?:number;
+ /** 总收入柱状图 */
+ right?:TccFinancialVo[];
+
+    } 
+    export interface TccPlaceStatics{
+     /** 总停车场 */
+ totalTcc?:number;
+ /** 周转率 */
+ turnoverRate?:string;
+ /** 占有率 */
+ usedRate?:string;
+ /** 总泊位数 */
+ total?:number;
+
+    } 
+    export interface DataCenterInOutStatistics{
+     /** 进车列表-前端直接用 */
+ inCount?:number[];
+ /** 出车列表-前端直接用 */
+ outCount?:number[];
+  xaxis?:string[];
+
+    } 
+    export interface TccOutStatics{
+      normal?:TccOutStaticsInner;
+  error?:TccOutStaticsInner;
+  free?:TccOutStaticsInner;
+
+    } 
+    export interface TccOutStaticsInner{
+      total?:number;
+  money?:number;
+
+    } 
+    export interface TccOrderRank{
+      parkName?:string;
+  orderCount?:number;
+
+    } 
+    export interface TccMoneyStatics{
+     /** 总车位数 */
+ place?:number;
+ /** 占用车位数 */
+ usePlace?:number;
+ /** 可用车位数 */
+ validPlace?:number;
+ /** 已产生的订单总数 */
+ orderTotal?:number;
+ /** 实收金额 单位：分 */
+ real?:number;
+ /** 未收金额 */
+ not?:number;
+ /** 折扣金额 */
+ free?:number;
+ /** 现金 */
+ cash?:number;
+ /** 手机支付 */
+ mobile?:number;
+ /** 月卡支付 */
+ month?:number;
+
+    } 
+    export interface TccInStatics{
+     /** 总数 */
+ total?:number;
+ /** 临时车 */
+ temp?:number;
+ /** 月租车 */
+ month?:number;
+ /** 免费车 */
+ free?:number;
+ /** 储值车 */
+ value?:number;
+
+    } 
+    export interface TccCarVo{
+     /** 车牌 */
+ plateNo?:string;
+ /** 手机号 */
+ phone?:string;
+  carType?:MsgType;
+  parkTime?:number;
+  paid?:number;
+
+    } 
+    export interface SpecialCarSearchDto{
+      parkId?:string;
+  plateNo?:string;
+ /** 车辆类型  0-白名单  1-黑名单 */
+ carType?:number;
+
+    } 
+    export interface SpecialCarVo{
+      id?:string;
+  parkId?:string;
+  parkName?:string;
+  plateNo?:string;
+  carType?:MsgType;
+  remark?:string;
+
+    } 
+    export interface BasicInfoVo{
+     /** id */
+ id?:string;
+ /** 名称 */
+ name?:string;
+ /** 厂商 */
+ factory?:MsgType;
+ /** 停车场总车位数 */
+ total?:number;
+ /** 固定车位总数 */
+ fixedTotal?:number;
+  point?:GeoPoint;
+ /** 地址 */
+ address?:string;
+ /** 管理方 */
+ manager?:string;
+ /** 联系人 */
+ contactMan?:string;
+ /** 联系人电话 */
+ contactPhone?:string;
+ /** 收费规则文本描述 */
+ ruleText?:string;
+ /** 剩余车位数 */
+ available?:number;
+ /** 剩余临时车位数 */
+ tempAvailable?:number;
+ /** 剩余固定车位数 */
+ fixedAvailable?:number;
+ /** 预定车位总数 */
+ orderTotal?:number;
+ /** 已使用预定车位数 */
+ orderOccupy?:number;
+ /** 最后更新时间 */
+ updateTime?:string;
+ /** 是否在线,true false */
+ online?:boolean;
+ /** 上线时间 */
+ uptime?:string;
+ /** 下线时间 */
+ downtime?:string;
+ /** 在线时长单位：秒 */
+ onlineSeconds?:string;
+ /** 现有包月车数量 */
+ monthNum?:number;
+ /** 包月上限 */
+ monthTotal?:number;
+ /** 包月价格 */
+ monthMoney?:number;
+ /** 包月价格-分月 */
+ monthMoneyActual?:TccMonthlyMoney[];
+ /** 优惠是否开启 */
+ discountEnabled?:boolean;
+ /** 优惠截至日期 */
+ discountEndDate?:string;
+ /** 包月状态 */
+ monthEnabled?:boolean;
+ /** 停车场类型 */
+ type?:MsgType;
+ /** 二维码 */
+ qrCode?:string;
+
+    } 
+    export interface ChannelVo{
+     /** 通道id */
+ id?:string;
+ /** 通道名称 */
+ name?:string;
+ /** 通行方向是否是入口 */
+ inlet?:boolean;
+ /** 二维码 */
+ qrcode?:string;
+
+    } 
+    export interface ChargeRule{
+      passportTypeName?:string;
+  areaNames?:string[];
+  carTypeName?:string;
+  chargeType?:number;
+  timesMoney?:number;
+  timesFreeTime?:number;
+  maxOneTimePay?:number;
+  maxOneDayPay?:number;
+  timeSegments?:TimeSegment[];
+
+    } 
+    export interface ParkInfoVo{
+      basic?:BasicInfoVo;
+ /** 通道信息 */
+ channels?:ChannelVo[];
+ /** 计费规则 */
+ rules?:ChargeRule[];
+
+    } 
+    export interface TimeMoney{
+      time?:number;
+  money?:number;
+
+    } 
+    export interface TimeSegment{
+      startTime?:string;
+  endTime?:string;
+  chargeStrategy?:number;
+  freeTime?:number;
+  firstTime?:number;
+  firstMoney?:number;
+  intervalTime?:number;
+  intervalMoney?:number;
+  oneTimeMoney?:number;
+  oneSegmentMaxMoney?:number;
+  timeMoneyList?:TimeMoney[];
+
+    } 
+    export interface MemberChart{
+     /** 月卡车数量 */
+ month?:number;
+ /** 临时数量 */
+ temp?:number;
+ /** 贵宾车数量 */
+ vip?:number;
+ /** 已过期数量 */
+ expire?:number;
+ /** 未过期数量 */
+ valid?:number;
+ /** 月租排行 */
+ rankList?:MemberChartInner[];
+
+    } 
+    export interface MemberChartInner{
+      tccName?:string;
+  count?:number;
+
+    }
+   export interface GetStaffWorkTags   {
+        type?:number;
+      
+      }
+  /** 
+   * @description:  undefined
+   * @param {GetStaffWorkTags} params? 
+   * @return {*}
+   */
+  export const get_staff_work_tags = async(params?:GetStaffWorkTags) => {
+    
+  const res = await server.GET<DeviceWorkTag[]> (`/staff/work-tags`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface PutStaffWorkTags  extends DeviceWorkTagDto {
+        
+      
+      }
+  /** 
+   * @description:  undefined
+   * @param {DeviceWorkTagDto} data?,  
+   * @return {*}
+   */
+  export const put_staff_work_tags = async(data?:DeviceWorkTagDto,) => {
+    
+  const res = await server.PUT (`/staff/work-tags`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffWorkTags  extends DeviceWorkTagDto {
+        
+      
+      }
+  /** 
+   * @description:  undefined
+   * @param {DeviceWorkTagDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_work_tags = async(data?:DeviceWorkTagDto,) => {
+    
+  const res = await server.POST (`/staff/work-tags`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface GetStaffPdaUsers  extends PdaSearchDtoCore,Paging {
+        
+      
+      }
+  /** 
+   * @description:  员工列表-带分页
+   * @param {GetStaffPdaUsers} params? 
+   * @return {*}
+   */
+  export const get_staff_pda_users = async(params?:GetStaffPdaUsers) => {
+    
+  const res = await server.GET<IPage<PdaUserVo>> (`/staff/pda-users`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface PutStaffPdaUsers  extends PdaUserDto {
+        
+      
+      }
+  /** 
+   * @description:  修改员工信息
+   * @param {PdaUserDto} data?,  
+   * @return {*}
+   */
+  export const put_staff_pda_users = async(data?:PdaUserDto,) => {
+    
+  const res = await server.PUT<Boolean> (`/staff/pda-users`,{data} );
+
+        return res?.result; 
+        }
+    
+   export interface PostStaffPdaUsers  extends PdaUserDto {
+        
+      
+      }
+  /** 
+   * @description:  添加员工
+   * @param {PdaUserDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_pda_users = async(data?:PdaUserDto,) => {
+    
+  const res = await server.POST (`/staff/pda-users`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PutStaffPdaUsersPassword  extends StaffResetPasswordDto {
+        
+      
+      }
+  /** 
+   * @description:  修改员工密码
+   * @param {StaffResetPasswordDto} data?,  
+   * @return {*}
+   */
+  export const put_staff_pda_users_password = async(data?:StaffResetPasswordDto,) => {
+    
+  const res = await server.PUT<Boolean> (`/staff/pda-users/password`,{data} );
+
+        return res?.result; 
+        }
+    
+   export interface GetStaffPatrolUsers  extends PatrolUserSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  巡查人员列表
+   * @param {GetStaffPatrolUsers} params? 
+   * @return {*}
+   */
+  export const get_staff_patrol_users = async(params?:GetStaffPatrolUsers) => {
+    
+  const res = await server.GET<IPage<PatrolUserResult>> (`/staff/patrol-users`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface PutStaffPatrolUsers  extends PatrolUserDto {
+        
+      
+      }
+  /** 
+   * @description:  更新巡查人员
+   * @param {PatrolUserDto} data?,  
+   * @return {*}
+   */
+  export const put_staff_patrol_users = async(data?:PatrolUserDto,) => {
+    
+  const res = await server.PUT (`/staff/patrol-users`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffPatrolUsers  extends PatrolUserDto {
+        
+      
+      }
+  /** 
+   * @description:  添加巡查人员
+   * @param {PatrolUserDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_patrol_users = async(data?:PatrolUserDto,) => {
+    
+  const res = await server.POST (`/staff/patrol-users`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PutStaffPatrolUsersPassword  extends StaffResetPasswordDto {
+        
+      
+      }
+  /** 
+   * @description:  修改员工密码
+   * @param {StaffResetPasswordDto} data?,  
+   * @return {*}
+   */
+  export const put_staff_patrol_users_password = async(data?:StaffResetPasswordDto,) => {
+    
+  const res = await server.PUT<Boolean> (`/staff/patrol-users/password`,{data} );
+
+        return res?.result; 
+        }
+    
+   export interface GetStaffPatrolRoles extends Paging{}
+  /** 
+   * @description:  巡查角色列表-带分页
+   * @param {GetStaffPatrolRoles} params? 
+   * @return {*}
+   */
+  export const get_staff_patrol_roles = async(params?:GetStaffPatrolRoles) => {
+    
+  const res = await server.GET<IPage<PatrolRole>> (`/staff/patrol-roles`, {params} );
+
+        return res?.result; 
+        }
+    
+   export interface PutStaffPatrolRoles  extends PatrolRoleDto {
+        
+      
+      }
+  /** 
+   * @description:  更新巡查角色
+   * @param {PatrolRoleDto} data?,  
+   * @return {*}
+   */
+  export const put_staff_patrol_roles = async(data?:PatrolRoleDto,) => {
+    
+  const res = await server.PUT (`/staff/patrol-roles`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffPatrolRoles  extends PatrolRoleDto {
+        
+      
+      }
+  /** 
+   * @description:  添加巡查角色
+   * @param {PatrolRoleDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_patrol_roles = async(data?:PatrolRoleDto,) => {
+    
+  const res = await server.POST (`/staff/patrol-roles`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffWorkExport  extends StaffWorkSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  工作记录-导出
+   * @param {StaffWorkSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_work_export = async(data?:StaffWorkSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/staff/work/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface GetStaffPerformanceScore  extends PdaPerformanceDetailSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  点位绩效扣分总数据
+   * @param {GetStaffPerformanceScore} params? 
+   * @return {*}
+   */
+  export const get_staff_performance_score = async(params?:GetStaffPerformanceScore) => {
+    
+  const res = await server.GET<PdaPerformanceScoreVo> (`/staff/performance/score`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface PostStaffPerformanceScore   {
+        file?:File;
+      [key:string]:any
+      }
+  /** 
+   * @description:  扣分
+   * @param {PostStaffPerformanceScore} params? 
+   * @return {*}
+   */
+  export const post_staff_performance_score = async(params?:PostStaffPerformanceScore) => {
+     
+      const formdata = new FormData();
+      for (const key in params) {
+        if (Object.prototype.hasOwnProperty.call(params, key)) {
+          const element = params[key];
+          formdata.set(key, element);
+        }
+      }
+      
+  const res = await server.POST (`/staff/performance/score`,{data:formdata} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffPerformanceScoreItemsExport  extends PdaPerformanceDetailSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  绩效扣分明细-导出
+   * @param {PdaPerformanceDetailSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_performance_score_items_export = async(data?:PdaPerformanceDetailSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/staff/performance/score/items/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostStaffPerformanceRule  extends PdaPerformanceRuleDto {
+        
+      
+      }
+  /** 
+   * @description:  设置绩效扣分规则
+   * @param {PdaPerformanceRuleDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_performance_rule = async(data?:PdaPerformanceRuleDto,) => {
+    
+  const res = await server.POST (`/staff/performance/rule`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffPerformanceItemsExport  extends PdaPerformanceDetailSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  点位绩效明细-导出
+   * @param {PdaPerformanceDetailSearchDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_performance_items_export = async(data?:PdaPerformanceDetailSearchDto,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/staff/performance/items/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostStaffPerformanceExport  extends PdaPerformanceSearchDtoCore {
+        
+      
+      }
+  /** 
+   * @description:  总体绩效列表-导出
+   * @param {PdaPerformanceSearchDtoCore} data?,  
+   * @return {*}
+   */
+  export const post_staff_performance_export = async(data?:PdaPerformanceSearchDtoCore,) => {
+    
+  const res = await server.POST<ArrayBuffer> (`/staff/performance/export`,{data,responseType: 'arraybuffer'} );
+
+        
+        if (res instanceof ArrayBuffer) {
+          return res as ArrayBuffer;
+        } else {
+          return null;
+        }
+        
+        }
+    
+   export interface PostStaffPerformanceArchive  extends TimeLocalDate {
+        
+      
+      }
+  /** 
+   * @description:  归档某日数据
+   * @param {TimeLocalDate} data?,  
+   * @return {*}
+   */
+  export const post_staff_performance_archive = async(data?:TimeLocalDate,) => {
+    
+  const res = await server.POST (`/staff/performance/archive`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffPerformanceArchiveFromTo  extends TimeDateWithFromTo {
+        
+      
+      }
+  /** 
+   * @description:  归档指定日期开始结束数据
+   * @param {TimeDateWithFromTo} data?,  
+   * @return {*}
+   */
+  export const post_staff_performance_archive_from_to = async(data?:TimeDateWithFromTo,) => {
+    
+  const res = await server.POST (`/staff/performance/archive-from-to`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffPdaUsersIdUnbindlot   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  员工解除绑定停车点
+   * @param {PostStaffPdaUsersIdUnbindlot} params? 
+   * @return {*}
+   */
+  export const post_staff_pda_users_id_unbindLot = async(params?:PostStaffPdaUsersIdUnbindlot) => {
+    
+  const res = await server.POST (`/staff/pda-users/${params?.id}/unbindLot`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffPdaUsersBindlot  extends PdaBindLotDto {
+        
+      
+      }
+  /** 
+   * @description:  员工绑定停车点
+   * @param {PdaBindLotDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_pda_users_bindLot = async(data?:PdaBindLotDto,) => {
+    
+  const res = await server.POST (`/staff/pda-users/bindLot`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffPatrolUsersTrackMap  extends PatrolTrackMapDto {
+        
+      
+      }
+  /** 
+   * @description:  查看地锁巡查的轨迹-地图模式
+   * @param {PatrolTrackMapDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_patrol_users_track_map = async(data?:PatrolTrackMapDto,) => {
+    
+  const res = await server.POST<PatrolTrackMapVo[]> (`/staff/patrol-users/track/map`,{data} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface PostStaffPatrolUsersTrackList  extends PatrolTrackListDto {
+        
+      
+      }
+  /** 
+   * @description:  查看地锁巡查的轨迹-列表模式
+   * @param {PatrolTrackListDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_patrol_users_track_list = async(data?:PatrolTrackListDto,) => {
+    
+  const res = await server.POST<PatrolTrackListVo[]> (`/staff/patrol-users/track/list`,{data} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface PostStaffPatrolUsersBind  extends BindPatrolLot {
+        
+      
+      }
+  /** 
+   * @description:  编辑修改巡查人员和停车点
+   * @param {BindPatrolLot} data?,  
+   * @return {*}
+   */
+  export const post_staff_patrol_users_bind = async(data?:BindPatrolLot,) => {
+    
+  const res = await server.POST (`/staff/patrol-users/bind`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffPatrolUsersBindRole  extends PatrolRoleBindDto {
+        
+      
+      }
+  /** 
+   * @description:  绑定角色
+   * @param {PatrolRoleBindDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_patrol_users_bind_role = async(data?:PatrolRoleBindDto,) => {
+    
+  const res = await server.POST (`/staff/patrol-users/bind-role`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface PostStaffPatrolUsersBindLotGroup  extends BindPatrolLotGroupDto {
+        
+      
+      }
+  /** 
+   * @description:  绑定点位组
+   * @param {BindPatrolLotGroupDto} data?,  
+   * @return {*}
+   */
+  export const post_staff_patrol_users_bind_lot_group = async(data?:BindPatrolLotGroupDto,) => {
+    
+  const res = await server.POST (`/staff/patrol-users/bind-lot-group`,{data} );
+
+        return res?.success; 
+        }
+    
+   export interface GetStaffWork  extends StaffWorkSearchDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  查看工作记录详情-带分页
+   * @param {GetStaffWork} params? 
+   * @return {*}
+   */
+  export const get_staff_work = async(params?:GetStaffWork) => {
+    
+  const res = await server.GET<IPage<WorkIndexRecord>> (`/staff/work`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetStaffWorkTop  extends StaffWorkSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  查看工作记录-上面标签数据
+   * @param {GetStaffWorkTop} params? 
+   * @return {*}
+   */
+  export const get_staff_work_top = async(params?:GetStaffWorkTop) => {
+    
+  const res = await server.GET<WorkIndexTag[]> (`/staff/work/top`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetStaffWorkDetail   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  查询记录上报详情
+   * @param {GetStaffWorkDetail} params? 
+   * @return {*}
+   */
+  export const get_staff_work_detail = async(params?:GetStaffWorkDetail) => {
+    
+  const res = await server.GET<WorkRecordReport> (`/staff/work/detail`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetStaffPerformance  extends PdaPerformanceSearchDtoCore,Paging {
+        
+      
+      }
+  /** 
+   * @description:  总体绩效列表-带分页
+   * @param {GetStaffPerformance} params? 
+   * @return {*}
+   */
+  export const get_staff_performance = async(params?:GetStaffPerformance) => {
+    
+  const res = await server.GET<IPage<PdaPerformanceVo>> (`/staff/performance`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetStaffPerformanceScoreItems  extends PdaPerformanceDetailSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  绩效扣分明细-无分页
+   * @param {GetStaffPerformanceScoreItems} params? 
+   * @return {*}
+   */
+  export const get_staff_performance_score_items = async(params?:GetStaffPerformanceScoreItems) => {
+    
+  const res = await server.GET<PdaPerformanceScoreItemVo[]> (`/staff/performance/score/items`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetStaffPerformanceItems  extends PdaPerformanceDetailSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  点位绩效明细-最多31条数据-无分页
+   * @param {GetStaffPerformanceItems} params? 
+   * @return {*}
+   */
+  export const get_staff_performance_items = async(params?:GetStaffPerformanceItems) => {
+    
+  const res = await server.GET<PdaPerformanceItemVo[]> (`/staff/performance/items`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetStaffPdaUsersIdMsg   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  员工详情-管理信息
+   * @param {GetStaffPdaUsersIdMsg} params? 
+   * @return {*}
+   */
+  export const get_staff_pda_users_id_msg = async(params?:GetStaffPdaUsersIdMsg) => {
+    
+  const res = await server.GET<PdaUserAllDayInfo> (`/staff/pda-users/${params?.id}/msg`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetStaffPdaUsersRecords  extends StaffLoginRecordDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  员工列表-登录记录-带分页
+   * @param {GetStaffPdaUsersRecords} params? 
+   * @return {*}
+   */
+  export const get_staff_pda_users_records = async(params?:GetStaffPdaUsersRecords) => {
+    
+  const res = await server.GET<IPage<StaffLoginRecord>> (`/staff/pda-users/records`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetStaffPdaUsersHistory  extends PdaHistorySearchDto {
+        
+      
+      }
+  /** 
+   * @description:  员工详情-值守记录-没有分页,查询30天内的数据
+   * @param {GetStaffPdaUsersHistory} params? 
+   * @return {*}
+   */
+  export const get_staff_pda_users_history = async(params?:GetStaffPdaUsersHistory) => {
+    
+  const res = await server.GET<PdaUserAccountsRecordVo[]> (`/staff/pda-users/history`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetStaffPdaUsersChart  extends PdaSearchDtoCore {
+        
+      
+      }
+  /** 
+   * @description:  图表
+   * @param {GetStaffPdaUsersChart} params? 
+   * @return {*}
+   */
+  export const get_staff_pda_users_chart = async(params?:GetStaffPdaUsersChart) => {
+    
+  const res = await server.GET<StaffChartVo> (`/staff/pda-users/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetStaffPatrolUsersIdLots   {
+        id?:string;type?:number;
+      
+      }
+  /** 
+   * @description:  查看某巡查人员管理的人员和点位信息
+   * @param {GetStaffPatrolUsersIdLots} params? 
+   * @return {*}
+   */
+  export const get_staff_patrol_users_id_lots = async(params?:GetStaffPatrolUsersIdLots) => {
+    
+  const res = await server.GET<PatrolLots[]> (`/staff/patrol-users/${params?.id}/lots`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetStaffPatrolUsersIdLotids   {
+        id?:string;type?:number;
+      
+      }
+  /** 
+   * @description:  查询巡查人员所管辖的停车点Ids
+   * @param {GetStaffPatrolUsersIdLotids} params? 
+   * @return {*}
+   */
+  export const get_staff_patrol_users_id_lotIds = async(params?:GetStaffPatrolUsersIdLotids) => {
+    
+  const res = await server.GET<string[]> (`/staff/patrol-users/${params?.id}/lotIds`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetStaffPatrolUsersRecords  extends StaffLoginRecordDto,Paging {
+        
+      
+      }
+  /** 
+   * @description:  登录记录-带分页
+   * @param {GetStaffPatrolUsersRecords} params? 
+   * @return {*}
+   */
+  export const get_staff_patrol_users_records = async(params?:GetStaffPatrolUsersRecords) => {
+    
+  const res = await server.GET<IPage<StaffLoginRecord>> (`/staff/patrol-users/records`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface GetStaffPatrolUsersList  extends PatrolUserSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  巡查人员列表-无分页
+   * @param {GetStaffPatrolUsersList} params? 
+   * @return {*}
+   */
+  export const get_staff_patrol_users_list = async(params?:GetStaffPatrolUsersList) => {
+    
+  const res = await server.GET<PatrolUserResult[]> (`/staff/patrol-users/list`,{params} );
+
+        return res?.result??[]; 
+        }
+    
+   export interface GetStaffPatrolUsersChart  extends PatrolUserSearchDto {
+        
+      
+      }
+  /** 
+   * @description:  图表
+   * @param {GetStaffPatrolUsersChart} params? 
+   * @return {*}
+   */
+  export const get_staff_patrol_users_chart = async(params?:GetStaffPatrolUsersChart) => {
+    
+  const res = await server.GET<StaffChartVo> (`/staff/patrol-users/chart`,{params} );
+
+        return res?.result; 
+        }
+    
+   
+  /** 
+   * @description:  巡查角色列表-无分页
+     
+   * @return {*}
+   */
+  export const get_staff_patrol_roles_list = async() => {
+    
+  const res = await server.GET<PatrolRole[]> (`/staff/patrol-roles/list`, );
+
+        return res?.result??[]; 
+        }
+    
+   export interface DeleteStaffWorkTagsId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  undefined
+   * @param {DeleteStaffWorkTagsId} params? 
+   * @return {*}
+   */
+  export const delete_staff_work_tags_id = async(params?:DeleteStaffWorkTagsId) => {
+    
+  const res = await server.DELETE (`/staff/work-tags/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteStaffPdaUsersId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除员工
+   * @param {DeleteStaffPdaUsersId} params? 
+   * @return {*}
+   */
+  export const delete_staff_pda_users_id = async(params?:DeleteStaffPdaUsersId) => {
+    
+  const res = await server.DELETE<Boolean> (`/staff/pda-users/${params?.id}`,{params} );
+
+        return res?.result; 
+        }
+    
+   export interface DeleteStaffPatrolUsersId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  退休巡查人员
+   * @param {DeleteStaffPatrolUsersId} params? 
+   * @return {*}
+   */
+  export const delete_staff_patrol_users_id = async(params?:DeleteStaffPatrolUsersId) => {
+    
+  const res = await server.DELETE (`/staff/patrol-users/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+    
+   export interface DeleteStaffPatrolRolesId   {
+        id?:string;
+      
+      }
+  /** 
+   * @description:  删除巡查角色
+   * @param {DeleteStaffPatrolRolesId} params? 
+   * @return {*}
+   */
+  export const delete_staff_patrol_roles_id = async(params?:DeleteStaffPatrolRolesId) => {
+    
+  const res = await server.DELETE (`/staff/patrol-roles/${params?.id}`,{params} );
+
+        return res?.success; 
+        }
+     
+    export interface DeviceWorkTagDto{
+      id?:string;
+  name?:string;
+ /** 0-巡查工作，1-技术工作 */
+ type?:number;
+
+    } 
+    export interface PdaUserDto{
+     /** id */
+ id?:string;
+ /** 员工编号 */
+ jobNum?:string;
+ /** 用户真实姓名 */
+ name?:string;
+ /** 电话号码 */
+ phone?:string;
+ /** 身份证号 */
+ idCard?:string;
+ /** 照片文件 */
+ file?:string;
+ /** 是否是残疾人 */
+ special?:boolean;
+
+    } 
+    export interface StaffResetPasswordDto{
+     /** id */
+ id?:string;
+ /** 密码 */
+ password?:string;
+
+    } 
+    export interface PatrolUserDto{
+     /** id */
+ id?:string;
+ /** 员工编号 */
+ jobNum?:string;
+ /** 用户真实姓名 */
+ name?:string;
+ /** 电话号码 */
+ phone?:string;
+ /** 身份证号 */
+ idCard?:string;
+ /** 照片文件 */
+ file?:string;
+ /** 1 地磁 2地锁 10混合 */
+ type?:number;
+
+    } 
+    export interface PatrolRoleDto{
+      id?:string;
+ /** 角色名称 */
+ name?:string;
+ /** 角色权限字符串 */
+ permissions?:string[];
+ /** 序号 */
+ sort?:number;
+ /** 是否是技术角色 */
+ tech?:boolean;
+
+    } 
+    export interface StaffWorkSearchDto{
+     /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+ /** 标签ID */
+ tagId?:string;
+ /** 上报人姓名 */
+ name?:string;
+  areaId?:string;
+  streetId?:string;
+  lotId?:string;
+ /** 0-上报，1-处理 */
+ type?:number;
+ /** 处理状态，0-未处理，1-已处理 */
+ status?:number;
+ /** 处理结果，0-失败，1-成功 */
+ result?:number;
+
+    } 
+    export interface PdaPerformanceDownScoreDto{
+      lotId?:string;
+  level1?:string;
+  level2?:string;
+  score?:number;
+  remarks?:string;
+
+    } 
+    export interface PdaPerformanceDetailSearchDto{
+     /** 点位ID */
+ lotId?:string;
+ /** 年月 */
+ yearMonth?:string;
+
+    } 
+    export interface PdaPerformanceRuleDto{
+     /** 规则 */
+ rule?:string;
+
+    } 
+    export interface PdaPerformanceSearchDtoCore{
+     /** 点位列表 */
+ lotIds?:string[];
+ /** 区域 */
+ areaId?:string;
+ /** 街道 */
+ streetId?:string;
+ /** 点位 */
+ lotId?:string;
+ /** 0全部 1地磁 2地锁 */
+ type?:number;
+ /** 人员类型 */
+ laborType?:number;
+ /** 点位期数 */
+ periods?:string[];
+ /** 年月 */
+ yearMonth?:string;
+  isExport?:boolean;
+
+    } 
+    export interface TimeLocalDate{
+      date?:string;
+
+    } 
+    export interface TimeDateWithFromTo{
+     /** 具体日期 */
+ date?:string;
+ /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+  fromTime?:string;
+  toTime?:string;
+
+    } 
+    export interface PdaBindLotDto{
+     /** 值守人员ID */
+ pdaUserId?:string;
+ /** 停车点ID */
+ lotId?:string;
+
+    } 
+    export interface PatrolTrackMapDto{
+     /** 人员id */
+ id?:string;
+ /** 日期,默认当天 */
+ date?:string;
+  from?:string;
+  to?:string;
+
+    } 
+    export interface PatrolTrackMapVo{
+     /** 经度 */
+ longitude?:number;
+ /** 纬度 */
+ latitude?:number;
+
+    } 
+    export interface PatrolTrackListDto{
+     /** 人员id */
+ id?:string;
+ /** 范围开始 */
+ from?:string;
+ /** 范围结束 */
+ to?:string;
+
+    } 
+    export interface PatrolTrackListVo{
+     /** 姓名 */
+ name?:string;
+ /** 初始拍照时间 */
+ firstPicTime?:string;
+ /** 最后拍照时间 */
+ lastPicTime?:string;
+ /** 拍照单数 */
+ orderNum?:number;
+ /** 点位名 */
+ address?:string;
+  os?:string[];
+
+    } 
+    export interface BindPatrolLot{
+     /** 巡查人员ID */
+ patrolId?:string;
+ /** 停车点ID列表 */
+ lotIds?:string[];
+
+    } 
+    export interface PatrolRoleBindDto{
+     /** 巡查人员ID */
+ patrolId?:string;
+ /** 巡查角色ID */
+ roleId?:string;
+
+    } 
+    export interface BindPatrolLotGroupDto{
+      patrolId?:string;
+ /** 为空时清除绑定 */
+ groupId?:string;
+
+    } 
+    export interface WorkIndexRecord{
+      id?:string;
+  name?:string;
+  lotName?:string;
+  placeNum?:string;
+  deviceSn?:string;
+  tags?:string;
+  urls?:string[];
+  createdAt?:string;
+ /** 0-上报，1-处理 */
+ type?:number;
+ /** 处理状态，0-未处理，1-已处理 */
+ status?:number;
+ /** 处理结果，0-失败，1-成功 */
+ result?:number;
+  remark?:string;
+
+    } 
+    export interface WorkIndexTag{
+      name?:string;
+  total?:number;
+
+    } 
+    export interface WorkRecordReport{
+      lotName?:string;
+  placeNum?:string;
+  tagNames?:string;
+ /** 处理状态，0-未处理，1-已处理 */
+ status?:number;
+  name?:string;
+  createdAt?:string;
+ /** 处理记录 */
+ detailList?:WorkRecordReportDetail[];
+
+    } 
+    export interface WorkRecordReportDetail{
+      createdAt?:string;
+  processId?:string;
+  processUser?:string;
+  processPhone?:string;
+  pictures?:string[];
+  remark?:string;
+ /** 处理结果，0-失败，1-成功 */
+ status?:number;
+  detailId?:string;
+
+    } 
+    export interface DeviceWorkTag{
+      id?:string;
+  name?:string;
+  system?:boolean;
+  type?:number;
+  createdAt?:string;
+  deleted?:boolean;
+
+    } 
+    export interface PdaPerformanceVo{
+      id?:string;
+  lotId?:string;
+  laborType?:MsgType;
+ /** 值守街道 */
+ address?:string;
+ /** 收费员 */
+ name?:string;
+ /** 应收 */
+ income?:number;
+ /** 已收 */
+ received?:number;
+ /** 代收 */
+ takeReceived?:number;
+ /** 电子收费 */
+ onlineReceived?:number;
+ /** 周转率 */
+ zzRate?:number;
+ /** 补贴基数 */
+ allowanceBase?:number;
+ /** 总车位数 */
+ totalPlace?:number;
+ /** 车位补贴 */
+ allowance?:number;
+ /** 收费率 */
+ chargeRate?:string;
+ /** 电子收费率 */
+ onlineChargeRate?:string;
+ /** 拍照率 */
+ photoRate?:string;
+ /** 绩效总分 */
+ chargeScore?:number;
+ /** 拍照率(得分) */
+ photoScore?:number;
+ /** 投诉 */
+ complaintScore?:number;
+ /** 行为规范(得分) */
+ behaviourScore?:number;
+ /** 自身安全(得分) */
+ safeScore?:number;
+ /** 分数 */
+ score?:number;
+
+    } 
+    export interface PdaPerformanceScoreVo{
+      id?:string;
+  score?:number;
+  chargeScore?:number;
+  photoScore?:number;
+  complaintScore?:number;
+  complaintCount?:number;
+  behaviourScore?:number;
+  behaviourCount?:number;
+  safeScore?:number;
+  safeCount?:number;
+  otherScore?:number;
+  otherCount?:number;
+
+    } 
+    export interface PdaPerformanceScoreItemVo{
+      id?:string;
+  level1?:string;
+  level2?:string;
+  score?:number;
+  operator?:string;
+  url?:string;
+  remarks?:string;
+  createdAt?:string;
+
+    } 
+    export interface PdaPerformanceItemVo{
+      id?:string;
+ /** 收费员姓名 */
+ pdaUserName?:string;
+ /** 日期 */
+ date?:string;
+  income?:number;
+  received?:number;
+  takeReceived?:number;
+  onlineReceived?:number;
+  arrears?:number;
+  zzRate?:number;
+  allowance?:number;
+  chargeRate?:string;
+  onlineChargeRate?:string;
+  photoRate?:string;
+
+    } 
+    export interface PdaSearchDtoCore{
+     /** 点位列表 */
+ lotIds?:string[];
+ /** 区域 */
+ areaId?:string;
+ /** 街道 */
+ streetId?:string;
+ /** 点位 */
+ lotId?:string;
+ /** 0全部 1地磁 2地锁 */
+ type?:number;
+ /** 人员类型 */
+ laborType?:number;
+ /** 点位期数 */
+ periods?:string[];
+ /** 姓名,模糊搜索 */
+ name?:string;
+ /** 电话,模糊搜索 */
+ phone?:string;
+ /** 是否是残疾人 */
+ special?:boolean;
+  version?:string;
+
+    } 
+    export interface PdaUserVo{
+     /** ID */
+ id?:string;
+ /** 工号 */
+ jobNum?:string;
+ /** 姓名 */
+ name?:string;
+ /** 性别 1:男  2:女 */
+ sex?:MsgType;
+ /** 年龄 */
+ age?:number;
+ /** 联系方式 */
+ phone?:string;
+ /** 身份证号 */
+ idCard?:string;
+ /** 值守区域 */
+ areaName?:string;
+ /** 值守街道 */
+ streetName?:string;
+ /** 值守点名 */
+ lotName?:string;
+ /** 停车位总数 */
+ total?:string;
+ /** 头像 */
+ avatar?:string;
+ /** 版本号 */
+ version?:string;
+ /** 设备号 */
+ imei?:string;
+ /** 支付类型 1小程序 2原生微信 */
+ payType?:number;
+ /** 是否开启小票 */
+ ticket?:boolean;
+ /** 是否是残疾人 */
+ special?:boolean;
+  workStatus?:MsgType;
+
+    } 
+    export interface PdaUserAllDayInfo{
+     /** 区域名称 */
+ areaName?:string;
+ /** 街道名称 */
+ streetName?:string;
+ /** 停车点名称 */
+ lotName?:string;
+ /** 总应收入 */
+ generalIncome?:number;
+ /** 总实收入 */
+ received?:number;
+
+    } 
+    export interface StaffLoginRecordDto{
+     /** 查询开始日期 */
+ from?:string;
+ /** 查询结束日期 */
+ to?:string;
+ /** 用户ID */
+ userId?:string;
+
+    } 
+    export interface StaffLoginRecord{
+      imei?:string;
+  version?:string;
+  createdAt?:string;
+
+    } 
+    export interface PdaHistorySearchDto{
+     /** 值守人员ID */
+ pdaUserId?:string;
+
+    } 
+    export interface PdaUserAccountsRecordVo{
+     /** 日期 */
+ accountsDate?:string;
+ /** 区域名称 */
+ areaName?:string;
+ /** 街道名称 */
+ streetName?:string;
+ /** 停车点名称 */
+ lotName?:string;
+ /** 应收金额,单位分 */
+ generalIncome?:number;
+ /** 实收金额(累计待交账),单位分 */
+ received?:number;
+
+    } 
+    export interface StaffChartVo{
+     /** 0-未填写，1-男，2-女 */
+ genderMap?:{[key:string]:number};
+ /** 0-50岁以下，1-50岁以上 */
+ ageMap?:{[key:string]:number};
+ /** 0-离职，1-在职 */
+ statusMap?:{[key:string]:number};
+
+    } 
+    export interface PatrolUserSearchDto{
+     /** 姓名-全模糊查询 */
+ name?:string;
+ /** 工作状态 1在职 0离职 */
+ workStatus?:number;
+ /** 巡查人员类型 1地磁 2地锁 10多类型 */
+ type?:number;
+ /** 点位ID */
+ lotId?:string;
+  version?:string;
+
+    } 
+    export interface PatrolUserResult{
+      id?:string;
+  jobNum?:string;
+  name?:string;
+  sex?:MsgType;
+  age?:number;
+  phone?:string;
+  avatar?:string;
+  workStatus?:MsgType;
+  lotGroupName?:string;
+  lotGroupId?:string;
+  lotNum?:number;
+  manageNum?:number;
+  type?:MsgType;
+  role?:string;
+ /** 版本号 */
+ version?:string;
+ /** 设备号 */
+ imei?:string;
+
+    } 
+    export interface PatrolLots{
+      lotName?:string;
+  pdaUserName?:string;
+  pdaUserPhone?:string;
+  total?:number;
+
+    } 
+    export interface PatrolRole{
+      id?:string;
+  name?:string;
+  permissions?:string[];
+  sort?:number;
+  createdAt?:string;
+  updatedAt?:string;
 
     }
    export interface GetFinancialCharge  extends ChargeUserSearchDto,Paging {
