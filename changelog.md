@@ -1,9 +1,15 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-11-16 16:30:43
+ * @LastEditTime: 2023-11-17 15:53:47
  * @FilePath: /swaggerapits/changelog.md
 -->
+
+### 1.1.6
+
+> 修复 flutter 文件上传接口 参数 bug
+
+> 优化 加入固定类型 比如 IPage<T>, Paging, MsgType 类型,直接生成无需在导入
 
 ### 1.1.54
 

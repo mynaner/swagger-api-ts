@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-10-19 11:07:26
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-11-06 10:07:02
+ * @LastEditTime: 2023-11-17 15:42:24
  * @FilePath: /swaggerapits/src/analyze.js
  */
 import { spliceApiFunc, spliceDefinitionsType } from "./splice.js";
@@ -12,6 +12,7 @@ import {
 
 import fs from "fs-extra";
 import { Tools } from "./tools.js";
+import { FlutterOtherType, TsxOtherType } from "./const.js";
 
 export const analyzeJson = (jsondata, pathUrl) => {
   if (!jsondata.paths) return;
@@ -78,6 +79,9 @@ const saveFile = async (pageStr, fileName, pathUrl) => {
   let url = `${pathUrl}${fileName}`;
   let fileSuffix = config?.language == "flutter" ? "dart" : "ts";
   let page = `${config?.header.join("\n")} \n
+
+
+              ${config.language == "flutter" ? FlutterOtherType : TsxOtherType}
               ${pageStr} 
               `;
 

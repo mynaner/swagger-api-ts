@@ -104,7 +104,7 @@ const templatefn = (name, summary, url, dioMethod = "get", resultType, urlParams
   const up = urlParams.find(e => e[0] == "XFile" || e[0] == "List<XFile>");
   if (up) {
     isFile = true
-    console.log(diourlParam);
+
 
 
     let dp = "null";
@@ -124,12 +124,19 @@ const templatefn = (name, summary, url, dioMethod = "get", resultType, urlParams
       }
       `
     }
-    console.log(dp);
-    console.log("------");
+
+    console.log(urlParams);
     fileStr = `
     ${dp}
     FormData formData = FormData.fromMap({ 
       "${up[1]}":fd,
+
+      ${urlParams.map(e => {
+      if (["XFile", "List<XFile>"].includes(e[0])) {
+        return "";
+      }
+      return `"${e[1]}":${e[1]}`
+    }).join(",")}
       ${params ? "...params.toJson()" : ''}
       ${dioData ? "...data.toJson()" : ''} 
     });
