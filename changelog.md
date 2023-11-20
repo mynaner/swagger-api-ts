@@ -1,11 +1,15 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-11-17 15:53:47
+ * @LastEditTime: 2023-11-20 18:30:48
  * @FilePath: /swaggerapits/changelog.md
 -->
 
-### 1.1.6
+### 1.2.1
+
+> 优化 传入参数 params 和 data 的顺序
+
+### 1.2.0
 
 > 修复 flutter 文件上传接口 参数 bug
 

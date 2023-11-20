@@ -1,8 +1,8 @@
 {
-    "url": "http://da-zhou.host",
-    "suffix": "/api-admin",
-    "output": "lib/api/admin",
+    "url": "http://tcc.host",
+    "suffix": "/admin",
+    "output": "src/apitcc",
     "header": [
-        "import { server } from '@/utils/axios/request';"
+        "import { server } from '@/utils/axios/request2';"
     ]
 }

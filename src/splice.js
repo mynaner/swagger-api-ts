@@ -6,7 +6,7 @@ import { log } from "console";
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-11-16 16:27:40
+ * @LastEditTime: 2023-11-20 17:51:37
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
@@ -128,13 +128,14 @@ const spliceApiFuncResult = (url, type, data,) => {
     let str = ""
     const d = params.find(e => e.name == "vo");
     const p = paramsList.filter(e => e.name != "vo");
-    if (d) {
-      str += `data?:${d.type},`
-    }
     if (p.length || isPaging) {
 
-      str += `params?:${funcName.split("_").map(e => titleCase(e)).join("")}`
+      str += `params?:${funcName.split("_").map(e => titleCase(e)).join("")},`
     }
+    if (d) {
+      str += `data?:${d.type}`
+    }
+
     return str;
   }
   return `

@@ -16,7 +16,7 @@
 ### 本地发布
 
 ```
-npm pack && sudo npm install swagger-api-ts-1.1.53.tgz -g
+npm pack && sudo npm install swagger-api-ts-1.2.0.tgz -g
 ```
 
 ### 命令参数
