@@ -6,7 +6,7 @@ import { log } from "console";
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2023-11-20 17:51:37
+ * @LastEditTime: 2024-02-04 17:36:32
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
@@ -104,21 +104,20 @@ const spliceApiFuncResult = (url, type, data,) => {
 
 
   const axiosConfig = () => {
-
-    if (params.length == 0 && isPaging) {
-      return ' {params}';
-    }
-    if (!params.length) return "";
-    if (havFileStr != "") return "{data:formdata}";
+    const strList = [];
+    if (havFileStr != '') strList.push("data:formdata")
     const d = params.find(e => e.name == "vo");
     const p = paramsList.filter(e => e.name != "vo");
-
-
-    let str = [];
-    if (d) str.push("data")
-    if (p.length || isPaging) str.push("params")
-    if (resultType == "ArrayBuffer") str.push("responseType: 'arraybuffer'")
-    return `{${str.join(',')}}`;
+    if (d) strList.push("data")
+    if (p.length | isPaging) strList.push("params")
+    if (resultType == "ArrayBuffer") {
+      strList.push("responseType: 'arraybuffer'")
+    }
+    if (strList.length) {
+      return `{${strList.join(',')}}`;
+    } else {
+      return ""
+    }
   }
 
   const paramsD = () => {
