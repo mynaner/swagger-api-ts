@@ -1,9 +1,17 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2024-02-04 17:37:46
+ * @LastEditTime: 2024-02-27 15:47:21
  * @FilePath: /swaggerapits/changelog.md
 -->
+
+LongList
+
+### 1.2.3
+
+> bug 修复 LongList 标记为 string[] 类型
+
+> 优化 优化不必要的类型声明
 
 ### 1.2.2
 

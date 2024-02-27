@@ -1,12 +1,12 @@
-import { type } from "os";
-import { Tools } from "./tools.js";
+
 import { log } from "console";
+import { Tools } from "./tools.js";
 
 
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2024-02-04 17:36:32
+ * @LastEditTime: 2024-02-27 15:45:25
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
@@ -52,9 +52,19 @@ const spliceApiFuncResult = (url, type, data,) => {
 
   const paramsInterface = () => {
 
+
+
     if (paramsList.length > 0) {
 
       let isExtends = params?.filter((e) => e.name == "vo" || e.name == "dot").map(e => e.type).join(",")
+
+
+
+
+      if (isExtends == "string[]" | (isExtends && paramsList.length == 1 && !isPaging)) {
+        return ""
+      }
+
 
       if (isExtends) {
         isExtends = "extends " + isExtends
@@ -75,11 +85,6 @@ const spliceApiFuncResult = (url, type, data,) => {
       }).join("")}
       ${params.find(e => e.type == "File") ? '[key:string]:any' : ''}
       }`
-
-    } else {
-      if (isPaging) {
-        return `export interface ${funcName.split("_").map(e => titleCase(e)).join("")} extends Paging{}`
-      }
 
     }
     return ""
@@ -109,7 +114,7 @@ const spliceApiFuncResult = (url, type, data,) => {
     const d = params.find(e => e.name == "vo");
     const p = paramsList.filter(e => e.name != "vo");
     if (d) strList.push("data")
-    if (p.length | isPaging) strList.push("params")
+    if (havFileStr == '' && (p.length | isPaging)) strList.push("params")
     if (resultType == "ArrayBuffer") {
       strList.push("responseType: 'arraybuffer'")
     }
@@ -122,20 +127,41 @@ const spliceApiFuncResult = (url, type, data,) => {
 
   const paramsD = () => {
 
+    if (isPaging && params.length == 0) {
+
+    }
     if (params.length == 0 && !isPaging) return "";
 
-    let str = ""
+    let str = []
     const d = params.find(e => e.name == "vo");
     const p = paramsList.filter(e => e.name != "vo");
-    if (p.length || isPaging) {
 
-      str += `params?:${funcName.split("_").map(e => titleCase(e)).join("")},`
+
+    if (p.length == 0 && isPaging) {
+      str.push("params?:Paging")
+    } else if (p.length || isPaging) {
+
+      if (p.length == 1 && p.find(e => e.name == "dot") && !isPaging) {
+
+        console.log(p.find(e => e.name == "dot").type);
+        str.push(`params?:${p.find(e => e.name == "dot").type}`)
+      } else {
+        str.push(`params?:${funcName.split("_").map(e => titleCase(e)).join("")}`)
+      }
+
+
+
     }
     if (d) {
-      str += `data?:${d.type}`
+
+      str.push(`data?:${d.type}`)
     }
 
-    return str;
+    return str.join(",");
+  }
+
+  if (isPaging && params.length == 0) {
+    console.log(paramsD());
   }
   return `
    ${paramsInterface()}
@@ -176,6 +202,7 @@ export const schemaParamsType = (data) => {
   const params = [];
   data.parameters?.forEach(element => {
 
+
     if (element.schema['$ref']) {
       const schema = element.schema['$ref'].split("/");
       params.push({ name: "dot", type: schema[schema.length - 1] })
@@ -187,10 +214,15 @@ export const schemaParamsType = (data) => {
     }
   });
   if (data.requestBody) {
-    /// 上传文件参数
+    /// 
     if (data.requestBody.content["application/json"].schema["$ref"]) {
       const schema = data.requestBody.content["application/json"].schema['$ref'].split("/");
-      params.push({ name: "vo", type: schema[schema.length - 1] })
+
+      let type = schema[schema.length - 1];
+      if (type == "LongList") {
+        type = "string[]";
+      }
+      params.push({ name: "vo", type: type })
     } else {
       params.push({
         name: "file",
@@ -303,7 +335,6 @@ export const spliceApiResultType = (data) => {
 // ${typOjb[key].map((e) => `${e.key}:${e.value};\n`).join("")}
 export const spliceDefinitionsType = (keyname, data) => {
   const listD = [];
-  // console.log(keyname);
   for (const key in data.properties) {
     if (Object.hasOwnProperty.call(data.properties, key)) {
       const element = data.properties[key];
