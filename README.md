@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2024-02-27 15:48:15
+ * @LastEditTime: 2024-02-27 15:51:24
  * @FilePath: /swaggerapits/README.md
 -->
 
@@ -32,6 +32,12 @@ swagger
 npm login
 # 发布
 npm publish
+```
+
+### tag
+
+```
+git tag -a v1.2.3 -m 'version 1.2.3'
 ```
 
 配置文件
