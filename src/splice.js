@@ -6,7 +6,7 @@ import { Tools } from "./tools.js";
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2024-02-27 15:45:25
+ * @LastEditTime: 2024-02-29 09:13:32
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
@@ -143,7 +143,6 @@ const spliceApiFuncResult = (url, type, data,) => {
 
       if (p.length == 1 && p.find(e => e.name == "dot") && !isPaging) {
 
-        console.log(p.find(e => e.name == "dot").type);
         str.push(`params?:${p.find(e => e.name == "dot").type}`)
       } else {
         str.push(`params?:${funcName.split("_").map(e => titleCase(e)).join("")}`)
@@ -160,9 +159,6 @@ const spliceApiFuncResult = (url, type, data,) => {
     return str.join(",");
   }
 
-  if (isPaging && params.length == 0) {
-    console.log(paramsD());
-  }
   return `
    ${paramsInterface()}
   /** 
