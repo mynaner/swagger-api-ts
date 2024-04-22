@@ -1,3 +1,12 @@
+
+
+## [1.2.5](https://github.com/mynaner/swagger-api-ts/compare/v1.2.4...v1.2.5) (2024-04-22)
+
+
+### 📃文档
+
+* 配置 ([e1c81b1](https://github.com/mynaner/swagger-api-ts/commit/e1c81b1884665b75b998756eb01284e60e4a5953))
+
 <!--
  * @Date: 2022-10-11 11:00:49
  * @LastEditors: dengxin 994386508@qq.com
