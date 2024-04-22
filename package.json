@@ -6,8 +6,9 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "swagger": "node ./src/index.js"
+    "swagger": "node ./src/index.js",
+    "release": "release-it",
+    "pub": "release-it --ci"
   },
   "bin": {
     "swagger": "./src/index.js"
@@ -15,6 +16,8 @@
   "author": "clooe",
   "homepage": "https://github.com/mynaner/swagger-api-ts",
   "devDependencies": {
-    "fs-extra": "^10.1.0"
+    "fs-extra": "^10.1.0",
+    "release-it": "^17.1.1",
+    "@release-it/conventional-changelog": "^8.0.1"
   }
 }

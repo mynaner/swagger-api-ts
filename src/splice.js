@@ -6,7 +6,7 @@ import { Tools } from "./tools.js";
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2024-02-29 09:13:32
+ * @LastEditTime: 2024-04-22 10:17:07
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
@@ -161,15 +161,13 @@ const spliceApiFuncResult = (url, type, data,) => {
 
   return `
    ${paramsInterface()}
-  /** 
-   * @description:  ${data.summary}
-   ${paramsD().split(",").map(e => {
-
+  /** ${config.deprecated && data.deprecated ? '\n   * @deprecated 将于下个版本被弃用' : ''}
+   * @description:  ${data.summary}${paramsD().split(",").map(e => {
     const str = e.split(":");
     if (str.length == 2 && str[0] != "") {
-      return `* @param {${str[1]}} ${str[0]}`
+      return `\n   * @param {${str[1]}} ${str[0]}`
     }
-    return " "
+    return ""
   })} 
    * @return {*}
    */
