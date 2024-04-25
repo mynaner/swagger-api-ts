@@ -1,5 +1,12 @@
 
 
+## [1.2.6](https://github.com/mynaner/swagger-api-ts/compare/v1.2.5...v1.2.6) (2024-04-25)
+
+
+### 🐞问题修复
+
+* flutter 版本优化 Map<String,String> ([96616ca](https://github.com/mynaner/swagger-api-ts/commit/96616caf6c0c99b3b6fac584236dd201c0b22c83))
+
 ## [1.2.5](https://github.com/mynaner/swagger-api-ts/compare/v1.2.4...v1.2.5) (2024-04-22)
 
 
