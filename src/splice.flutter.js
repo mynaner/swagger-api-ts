@@ -201,6 +201,7 @@ const spliceApiFuncResult = (url, type, data) => {
     return ""
   }
 
+
   /// 判断是否是导出接口 
   const resultType = (funcName.toLowerCase().includes("export") || data.summary?.includes("导出")) ? "ArrayBuffer" : spliceApiResultType(data.responses["200"]);
 
@@ -284,7 +285,6 @@ export const spliceApiResultType = (data) => {
       return `List<${types}>`;
     }
   }
-
   const types = schema[schema.length - 1]
 
 
@@ -328,6 +328,9 @@ export const spliceApiResultType = (data) => {
       return "List<String>";
     }
 
+    if (['MapStringString'].includes(types.substring(5))) {
+      return "List<Map<String,String>>";
+    }
     return `List<${types.substring(5)}>`;
   }
 
@@ -341,6 +344,7 @@ export const spliceApiResultType = (data) => {
   // if (types.substring(1) == "Text") {
   //   console.log(types);
   // }
+
 
 
   return types.substring(1);
