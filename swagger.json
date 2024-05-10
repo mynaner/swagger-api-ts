@@ -1,9 +1,0 @@
-{
-    "url": "http://zhtc.host",
-    "suffix": "/api-admin",
-    "output": "src/api",
-    "header": [
-        "import { server } from '@/utils/axios/request';",
-        "import { TccCarType } from '@/types';"
-    ]
-}

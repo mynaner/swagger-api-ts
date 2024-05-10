@@ -6,7 +6,7 @@ import { Tools } from "./tools.js";
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2024-04-22 10:17:07
+ * @LastEditTime: 2024-05-10 17:16:04
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
@@ -321,7 +321,9 @@ export const spliceApiResultType = (data) => {
   if (types.substring(1) == "SetString") {
     return "string[]";
   }
-
+  if (types.substring(1) == "Boolean") {
+    return "boolean";
+  }
 
   return types.substring(1);
 };
