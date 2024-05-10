@@ -1,5 +1,12 @@
 
 
+## [1.2.7](https://github.com/mynaner/swagger-api-ts/compare/v1.2.6...v1.2.7) (2024-05-10)
+
+
+### 🐞问题修复
+
+* bug: 修复boolean类型 (显示为Boolean) 的错误数据类型 ([0105ebb](https://github.com/mynaner/swagger-api-ts/commit/0105ebbf48d5b2d56a2ad05f6ae690e62192dfa2))
+
 ## [1.2.6](https://github.com/mynaner/swagger-api-ts/compare/v1.2.5...v1.2.6) (2024-04-25)
 
 
