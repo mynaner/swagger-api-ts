@@ -6,17 +6,17 @@ import { Tools } from "./tools.js";
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2024-05-10 17:16:04
+ * @LastEditTime: 2024-05-21 15:38:06
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
   let pageApiFunc = "";
   for (const key in data) {
-
     if (Object.hasOwnProperty.call(data, key)) {
-      const element = data[key];
-
-      pageApiFunc += spliceApiFuncResult(url, key, element,);
+      if (["POST", "GET", "DELETE", "PUT"].includes(key.toUpperCase())) {
+        const element = data[key];
+        pageApiFunc += spliceApiFuncResult(url, key, element,);
+      }
     }
   }
   return pageApiFunc;

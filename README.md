@@ -40,6 +40,10 @@ npm publish
 git tag -a v1.2.3 -m 'version 1.2.3'
 ```
 
+# 同步到淘宝镜像
+
+cnpm sync swagger-api-ts
+
 配置文件
 
 ```json
