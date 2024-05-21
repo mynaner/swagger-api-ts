@@ -1,5 +1,12 @@
 
 
+## [1.2.8](https://github.com/mynaner/swagger-api-ts/compare/v1.2.7...v1.2.8) (2024-05-21)
+
+
+### 🐞问题修复
+
+*  bug 限制接口的类型 "POST", "GET", "DELETE", "PUT" ([ddc6741](https://github.com/mynaner/swagger-api-ts/commit/ddc674124e975f3bd9e6b187000d01903f850917))
+
 ## [1.2.7](https://github.com/mynaner/swagger-api-ts/compare/v1.2.6...v1.2.7) (2024-05-10)
 
 
