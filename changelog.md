@@ -1,5 +1,12 @@
 
 
+## [1.2.9](https://github.com/mynaner/swagger-api-ts/compare/v1.2.8...v1.2.9) (2024-06-11)
+
+
+### 🐞问题修复
+
+* bug修复 ([ac1ccd8](https://github.com/mynaner/swagger-api-ts/commit/ac1ccd8779fdf8b0adde463a10b7035697940101))
+
 ## [1.2.8](https://github.com/mynaner/swagger-api-ts/compare/v1.2.7...v1.2.8) (2024-05-21)
 
 
