@@ -6,7 +6,7 @@ import { Tools } from "./tools.js";
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2024-05-21 15:38:06
+ * @LastEditTime: 2024-06-11 10:00:29
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
@@ -246,8 +246,8 @@ export const spliceApiResultType = (data) => {
     if (data.content['*/*'].schema?.type == "object") {
       return "any";
     }
-    const schema = data.content['*/*'].schema.items['$ref']?.split("/") ?? data.content['*/*'].schema.items
 
+    const schema = data.content['*/*'].schema.items?.['$ref']?.split("/") ?? data.content['*/*'].schema?.items ?? data.content['*/*'].schema
 
 
     if (schema.format == "byte") {
