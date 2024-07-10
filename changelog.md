@@ -1,5 +1,12 @@
 
 
+## [1.2.10](https://github.com/mynaner/swagger-api-ts/compare/v1.2.9...v1.2.10) (2024-07-10)
+
+
+### 🐞问题修复
+
+*  新增对 MapStringSet 类型  维护 ([c7cd32e](https://github.com/mynaner/swagger-api-ts/commit/c7cd32e86df022005ac668e0bee057975aace3dc))
+
 ## [1.2.9](https://github.com/mynaner/swagger-api-ts/compare/v1.2.8...v1.2.9) (2024-06-11)
 
 
