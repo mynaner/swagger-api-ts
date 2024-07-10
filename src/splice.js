@@ -6,7 +6,7 @@ import { Tools } from "./tools.js";
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2024-06-11 10:00:29
+ * @LastEditTime: 2024-07-10 11:44:40
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
@@ -278,11 +278,15 @@ export const spliceApiResultType = (data) => {
 
 
   if (types.substring(1, 10) == "MapString") {
-    const str = types.substring(10);
-    if (str.substring(0, 4) == "List") {
-      return `{[key:string]:${str.substring(4)}[]}`
-    }
+    let str = types.substring(10);
 
+
+    if (str.substring(0, 4) == "List") {
+      str = `${str.substring(4)}[]`
+    }
+    if (str.substring(0, 3) == "Set") {
+      str = `${str.substring(3)}[]`
+    }
     return `{[key:string]:${str}}`
   }
 
