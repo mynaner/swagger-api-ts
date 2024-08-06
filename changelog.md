@@ -1,5 +1,12 @@
 
 
+## [1.2.11](https://github.com/mynaner/swagger-api-ts/compare/v1.2.10...v1.2.11) (2024-08-06)
+
+
+### 🐞问题修复
+
+* 对 ListMapStringString 的解析 ([359aa79](https://github.com/mynaner/swagger-api-ts/commit/359aa798af947bf1288cea6a20a1abfb9fd2d747))
+
 ## [1.2.10](https://github.com/mynaner/swagger-api-ts/compare/v1.2.9...v1.2.10) (2024-07-10)
 
 
