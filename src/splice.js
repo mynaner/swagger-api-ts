@@ -1,12 +1,13 @@
 
 import { log } from "console";
 import { Tools } from "./tools.js";
+import { type } from "os";
 
 
 /*
  * @Date: 2022-10-19 11:07:47
  * @LastEditors: dengxin 994386508@qq.com
- * @LastEditTime: 2024-07-10 11:44:40
+ * @LastEditTime: 2024-08-06 15:39:04
  * @FilePath: /swaggerapits/src/splice.js
  */
 export const spliceApiFunc = (url, data,) => {
@@ -309,14 +310,28 @@ export const spliceApiResultType = (data) => {
   }
   /// 返回 List 参数的
   if (types.substring(1, 5) == "List") {
-    if (types.substring(5) == 'Long' || types.substring(5) == 'String') {
+    const type = types.substring(5);
+    if (type == 'Long' || type == 'String') {
       return "string[]";
     }
+    if (type.substring(0, 9) == "MapString") {
+      let str = type.substring(9);
 
-    if ("DztccCarType" == types.substring(5)) {
+      console.log(str);
+      if (str.substring(0, 4) == "List") {
+        str = `${str.substring(4)}[]`
+      }
+      if (str.substring(0, 3) == "Set") {
+        str = `${str.substring(3)}[]`
+      }
+      return `{[key:string]:${str}}`
+    }
+
+    if ("DztccCarType" == type) {
       return "MsgType[]"
     }
-    return `${types.substring(5)}[]`;
+
+    return `${type}[]`;
   }
 
   if (types.substring(1, 6) == "IPage") {
